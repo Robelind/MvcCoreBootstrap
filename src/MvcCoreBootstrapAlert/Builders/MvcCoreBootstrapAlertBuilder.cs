@@ -33,16 +33,6 @@ namespace MvcCoreBootstrapAlert.Builders
         }
 
         /// <summary>
-        /// Sets the button text.
-        /// </summary>
-        /// <param name="text">Text</param>
-        /// <returns>The alert builder instance.</returns>
-        public MvcCoreBootstrapAlertBuilder Text(string text)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapAlertBuilder>(() => _config.Text = text));
-        }
-
-        /// <summary>
         /// Sets whether the alert is dismissable.
         /// </summary>
         /// <param name="condition">If true, alert is dismissable</param>
@@ -51,5 +41,5 @@ namespace MvcCoreBootstrapAlert.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapAlertBuilder>(() => _config.Dismissable = condition));
         }
-}
+    }
 }
