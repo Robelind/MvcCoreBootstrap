@@ -15,6 +15,8 @@ namespace MvcCoreBootstrapAlert
         /// Renders an Mvc Core Bootstrap alert.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="text">Alert text.</param>
+        /// <param name="state">Alert contextual state.</param>
         /// <param name="configAction">Action that implements alert configuration.</param>
         /// <returns>Alert html markup.</returns>
         public static IHtmlContent MvcCoreBootstrapAlert(this IHtmlHelper htmlHelper, string text,
@@ -31,6 +33,13 @@ namespace MvcCoreBootstrapAlert
             return(new AlertRenderer().Render(config));
         }
 
+        /// <summary>
+        /// Renders an Mvc Core Bootstrap alert as a form validation summary.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="modelState">Model state.</param>
+        /// <param name="state">Alert contextual state.</param>
+        /// <returns>Alert html markup.</returns>
         public static IHtmlContent MvcCoreBootstrapAlert(this IHtmlHelper htmlHelper, ModelStateDictionary modelState,
             ContextualState state)
         {

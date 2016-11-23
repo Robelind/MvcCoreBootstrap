@@ -55,16 +55,14 @@ namespace MvcCoreBootstrapAlert.Rendering
         private void ValidationSummary(AlertConfig config)
         {
             IEnumerable<ModelError> errors = config.ModelState.SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList();
-            //string stateClass = config.ModelState.IsValid ? "validation-summary-valid" : "validation-summary-errors";
+            TagBuilder msg = new TagBuilder("span");
+            TagBuilder msgs = new TagBuilder("ul");
 
             Element.Attributes.Add("data-valmsg-summary", "true");
             if(!errors.Any())
             {
                 Element.Attributes.Add("style", "display:none;");
             }
-            //Element.AddCssClass(stateClass);
-
-            TagBuilder msg = new TagBuilder("span");
 
             if(errors.Count() > 1)
             {
@@ -75,8 +73,6 @@ namespace MvcCoreBootstrapAlert.Rendering
                 msg.InnerHtml.Append(errors.First().ErrorMessage);
             }
             Element.InnerHtml.AppendHtml(msg);
-
-            TagBuilder msgs = new TagBuilder("ul");
 
             foreach(ModelError error in errors)
             {
