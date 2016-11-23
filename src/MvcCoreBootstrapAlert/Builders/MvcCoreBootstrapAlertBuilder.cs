@@ -41,5 +41,16 @@ namespace MvcCoreBootstrapAlert.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapAlertBuilder>(() => _config.Dismissable = condition));
         }
+
+        /// <summary>
+        /// Sets a css class for the alert element.
+        /// </summary>
+        /// <param name="cssClass">Name of css class.</param>
+        /// <param name="condition">If true, the css class will be set for the alert element.</param>
+        /// <returns>The alert builder instance.</returns>
+        public MvcCoreBootstrapAlertBuilder CssClass(string cssClass, bool condition = true)
+        {
+            return(this.AddCssClass<MvcCoreBootstrapAlertBuilder>(_config.CssClasses, cssClass, condition));
+        }
     }
 }
