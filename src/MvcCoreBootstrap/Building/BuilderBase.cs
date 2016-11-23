@@ -5,6 +5,12 @@ namespace MvcCoreBootstrap.Building
 {
     public class BuilderBase
     {
+        protected T SetConfigProp<T>(Action configAction) where T : BuilderBase
+        {
+            configAction();
+            return(this as T);
+        }
+
         protected T AddCssClass<T>(IList<string> cssClasses, string cssClass, bool condition) where T : BuilderBase
         {
             if(condition)
