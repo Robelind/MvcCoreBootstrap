@@ -39,6 +39,7 @@ namespace MvcCoreBootstrapButton.Rendering
             {
                 _button.InnerHtml.Append(config.Text);
             }
+            this.AddElement(new TagBuilder("span"), new[] {"badge"}, _config.Badge);
             this.AddContextualState(_button, config.State, "btn-");
             this.SetSize();
             this.AddClassIf("btn-block", _config.Block);

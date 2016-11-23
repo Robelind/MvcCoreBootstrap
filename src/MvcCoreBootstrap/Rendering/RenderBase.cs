@@ -24,6 +24,17 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
+        protected void AddElement(TagBuilder element, string content, TagBuilder parentElement = null)
+        {
+            if(!string.IsNullOrEmpty(content))
+            {
+                TagBuilder parent = parentElement ?? Element;
+            
+                element.InnerHtml.AppendHtml(content);
+                parent.InnerHtml.AppendHtml(element);
+            }
+        }
+
         protected void AddElement(TagBuilder element, IEnumerable<string> cssClasses, string content,
             TagBuilder parentElement = null)
         {
