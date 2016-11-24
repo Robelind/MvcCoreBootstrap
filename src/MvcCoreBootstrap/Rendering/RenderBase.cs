@@ -11,7 +11,7 @@ namespace MvcCoreBootstrap.Rendering
     {
         protected TagBuilder Element;
 
-        protected void BaseConfig(ConfigBase config, string cssClass, string statePrefix = null)
+        protected void BaseConfig(ConfigBase config, string cssClass = null, string statePrefix = null)
         {
             Debug.Assert(Element != null);
             this.AddAttribute(Element, "id", config.Id);
