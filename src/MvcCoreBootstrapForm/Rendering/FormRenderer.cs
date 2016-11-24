@@ -16,6 +16,10 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             Element = new TagBuilder("form");
             this.BaseConfig(config);
+            Element.Attributes.Add("action", config.Url);
+            Element.Attributes.Add("method", "post");
+
+            this.AddElement(new TagBuilder("button"), new [] {"btn", "btn-success"}, "Submit");
 
             return(Element);
         }
