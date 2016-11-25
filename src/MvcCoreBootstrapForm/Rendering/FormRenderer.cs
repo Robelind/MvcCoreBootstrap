@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
@@ -12,6 +16,13 @@ namespace MvcCoreBootstrapForm.Rendering
 
     internal class FormRenderer : RenderBase, IFormRenderer
     {
+        private readonly IHtmlHelper _htmlHelper;
+
+        public FormRenderer(IHtmlHelper htmlHelper)
+        {
+            _htmlHelper = htmlHelper;
+        }
+
         public IHtmlContent Render(FormConfig config)
         {
             Element = new TagBuilder("form");
@@ -19,6 +30,15 @@ namespace MvcCoreBootstrapForm.Rendering
             Element.Attributes.Add("action", config.Url);
             Element.Attributes.Add("method", "post");
 
+            PropertyInfo prop = config.Model.GetType().GetProperties().First();
+
+            foreach(var property in config.Model.GetType().GetProperties())
+            {
+                IHtmlContent html = _htmlHelper.TextBox(property.Name, property.GetValue(config.Model), null,
+                    new {@class = "form-control"});
+
+                Element.InnerHtml.AppendHtml(html);
+            }
             this.AddElement(new TagBuilder("button"), new [] {"btn", "btn-success"}, "Submit");
 
             return(Element);

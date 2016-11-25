@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapForm.Builders;
@@ -15,14 +16,25 @@ namespace MvcCoreBootstrapForm
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements form configuration.</param>
         /// <returns>Form html markup.</returns>
-        public static IHtmlContent MvcCoreBootstrapForm(this IHtmlHelper htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapForm(this IHtmlHelper htmlHelper, object model,
             Action<MvcCoreBootstrapFormBuilder> configAction = null)
         {
-            FormConfig config = new FormConfig();
+            FormConfig config = new FormConfig {Model = model};
 
             configAction?.Invoke(new MvcCoreBootstrapFormBuilder(config));
 
-            return(new FormRenderer().Render(config));
+            return(new FormRenderer(htmlHelper).Render(config));
+        }
+
+        public static IHtmlContent BootstrapTextBoxFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        {
+            if (htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            return(new TextBoxRenderer<TModel, TResult>().Render(htmlHelper, expression));
         }
     }
 }
