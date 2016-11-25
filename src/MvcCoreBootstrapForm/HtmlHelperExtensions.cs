@@ -40,5 +40,20 @@ namespace MvcCoreBootstrapForm
 
             return (new TextBoxRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
+
+        public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, bool>> expression, Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
+        {
+            ControlConfig config = new ControlConfig();
+
+            if (htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            configAction?.Invoke(new MvcCoreBootstrapCheckBoxBuilder(config));
+
+            return (new CheckBoxRenderer<TModel>().Render(config, htmlHelper, expression));
+        }
     }
 }

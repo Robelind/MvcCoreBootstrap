@@ -22,6 +22,7 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             this.AddAttribute(textInput, "placeholder", config.PlaceHolder);
+            this.AddCssClasses(textInput, config.CssClasses);
 
             return(this.RenderInGroup(label != null ? new [] {label, textInput} : new [] {textInput}));
         }
