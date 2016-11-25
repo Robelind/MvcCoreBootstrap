@@ -27,14 +27,18 @@ namespace MvcCoreBootstrapForm
         }
 
         public static IHtmlContent BootstrapTextBoxFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+            Expression<Func<TModel, TResult>> expression, Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
+            TextInputConfig config = new TextInputConfig();
+
             if (htmlHelper == null)
                 throw new ArgumentNullException(nameof(htmlHelper));
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            return(new TextBoxRenderer<TModel, TResult>().Render(htmlHelper, expression));
+            configAction?.Invoke(new MvcCoreBootstrapTextInputBuilder(config));
+
+            return (new TextBoxRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
     }
 }

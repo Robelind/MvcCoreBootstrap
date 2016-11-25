@@ -21,7 +21,7 @@ namespace MvcCoreBootstrapForm.Rendering
             return(tag);
         }
 
-        protected static TagBuilder TagBuilderFromHtmlContent(IHtmlContent htmlContent)
+        protected TagBuilder TagBuilderFromHtmlContent(IHtmlContent htmlContent)
         {
             TextWriter textWriter = new StringWriter();
 
@@ -35,6 +35,7 @@ namespace MvcCoreBootstrapForm.Rendering
 
                 tag.Attributes.Add(attrParts[0], attrParts[1].Replace("\"", ""));
             }
+            tag.AddCssClass("form-control");
 
             return(tag);
         }
