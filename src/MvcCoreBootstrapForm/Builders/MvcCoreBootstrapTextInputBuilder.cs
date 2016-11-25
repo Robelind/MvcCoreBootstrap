@@ -23,6 +23,25 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Do not generate a label automatically for the text input.
+        /// </summary>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder NoLabel()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.AutoLabel = false));
+        }
+
+        /// <summary>
+        /// Sets the label for the text input.
+        /// </summary>
+        /// <param name="label">Text input label.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Label(string label)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Label = label));
+        }
+
+        /// <summary>
         /// Sets a css class for the text input element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
