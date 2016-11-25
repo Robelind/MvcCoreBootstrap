@@ -53,11 +53,14 @@ namespace MvcCoreBootstrapForm.Rendering
                 element = element.Substring(0, index);
             }
 
-            foreach(string attribute in element.Split(new[] {' '}))
+            // Parse out the individual attributes.
+            while(element.Length > 0)
             {
-                string[] attrParts = attribute.Split(new[] {'='});
+                int index2 = element.IndexOf('"', element.IndexOf('"') + 1);
 
-                tag.Attributes.Add(attrParts[0], attrParts[1].Replace("\"", ""));
+                index = element.IndexOf('=');
+                tag.Attributes.Add(element.Substring(0, index), element.Substring(index + 2, index2 - (index + 2)));
+                element = element.Substring(index2 + 1);
             }
 
             if(formControl)

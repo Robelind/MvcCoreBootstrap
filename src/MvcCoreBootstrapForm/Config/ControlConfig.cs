@@ -11,5 +11,6 @@ namespace MvcCoreBootstrapForm.Config
 
         public bool AutoLabel { get; set; }
         public string Label { get; set; }
+        public bool Disabled { get; set; }
     }
 }

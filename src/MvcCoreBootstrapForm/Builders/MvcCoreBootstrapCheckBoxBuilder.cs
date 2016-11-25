@@ -13,30 +13,40 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Do not generate a label automatically for the text input.
+        /// Sets the disabled state for the check box.
         /// </summary>
-        /// <returns>The text input builder instance.</returns>
+        /// <param name="disabled">If true, the check box is disabled</param>
+        /// <returns>The check box builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+        }
+
+        /// <summary>
+        /// Do not generate a label automatically for the check box.
+        /// </summary>
+        /// <returns>The check box builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder NoLabel()
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.AutoLabel = false));
         }
 
         /// <summary>
-        /// Sets the label for the text input.
+        /// Sets the label for the check box.
         /// </summary>
-        /// <param name="label">Text input label.</param>
-        /// <returns>The text input builder instance.</returns>
+        /// <param name="label">check box label.</param>
+        /// <returns>The check box builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder Label(string label)
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Label = label));
         }
 
         /// <summary>
-        /// Sets a css class for the text input element.
+        /// Sets a css class for the check box element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
-        /// <param name="condition">If true, the css class will be set for the text input element.</param>
-        /// <returns>The text input builder instance.</returns>
+        /// <param name="condition">If true, the css class will be set for the check box element.</param>
+        /// <returns>The check box builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder CssClass(string cssClass, bool condition = true)
         {
             return(this.AddCssClass<MvcCoreBootstrapTextInputBuilder>(_config.CssClasses, cssClass, condition));

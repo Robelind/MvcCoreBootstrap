@@ -14,6 +14,11 @@ namespace MvcCoreBootstrapForm.Rendering
             TagBuilder label = new TagBuilder("label");
             TagBuilder checkBox = this.TagBuilderFromHtmlContent(htmlHelper.CheckBoxFor(expression, null), false);
 
+            if(config.Disabled)
+            {
+                container.AddCssClass("disabled");
+                checkBox.Attributes.Add("disabled", null);
+            }
             container.AddCssClass("checkbox");
             container.InnerHtml.AppendHtml(label);
             label.InnerHtml.AppendHtml(checkBox);
