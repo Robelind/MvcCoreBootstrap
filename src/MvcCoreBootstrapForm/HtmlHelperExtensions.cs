@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap;
 using MvcCoreBootstrapForm.Builders;
 using MvcCoreBootstrapForm.Config;
 using MvcCoreBootstrapForm.Rendering;
@@ -165,6 +166,30 @@ namespace MvcCoreBootstrapForm
             configAction(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
             return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper));
+        }
+
+        /// <summary>
+        /// Renders an Mvc Core Bootstrap dropdown.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="text">Alert text.</param>
+        /// <param name="state">Alert contextual state.</param>
+        /// <param name="configAction">Action that implements alert configuration.</param>
+        /// <returns>Alert html markup.</returns>
+        public static IHtmlContent BootstrapDropdownFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression, IEnumerable<SelectListItem> selectList,
+            Action<MvcCoreBootstrapDropdownBuilder> configAction = null)
+        {
+            DropdownConfig config = new DropdownConfig {Items = selectList};
+
+            if(htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            configAction?.Invoke(new MvcCoreBootstrapDropdownBuilder(config));
+
+            return(new DropdownRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
     }
 }
