@@ -33,6 +33,15 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Configures the dropdown for multi select.
+        /// </summary>
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder Multiple()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Multiple = true));
+        }
+
+        /// <summary>
         /// Sets a css class for the dropdown element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>

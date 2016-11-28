@@ -24,6 +24,7 @@ namespace MvcCoreBootstrapForm.Rendering
             {
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\">{item.Text}</option>");
             }
+            this.AddAttribute("multiple", config.Multiple);
             this.AddCssClasses(Element, config.CssClasses);
 
             return(Element);
