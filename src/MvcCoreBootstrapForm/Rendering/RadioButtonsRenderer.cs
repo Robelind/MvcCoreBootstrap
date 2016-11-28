@@ -6,18 +6,24 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class RadioButtonsRenderer<TModel> : ControlRenderer<TModel, bool>
+    internal class RadioButtonsRenderer<TModel, TResult> : ControlRenderer<TModel, bool>
     {
-        public IHtmlContent Render(RadioButtonsConfig<TModel> config, IHtmlHelper<TModel> htmlHelper)
+        public IHtmlContent Render(RadioButtonsConfig<TModel, TResult> config, IHtmlHelper<TModel> htmlHelper)
         {
             TextWriter markup = new StringWriter();
 
-            foreach(RadioButtonConfig<TModel> radioButtonConfig in config.RadioButtons)
+            foreach(RadioButtonConfig<TModel, TResult> radioButtonConfig in config.RadioButtons)
             {
                 TagBuilder container = config.Horizontal ? null : new TagBuilder("div");
                 TagBuilder label = new TagBuilder("label");
                 TagBuilder radioButton = this.TagBuilderFromHtmlContent(htmlHelper
-                    .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
+                        .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
+                    
+
+                /*if(radioButtonConfig.Expression.ReturnType == typeof(Enum))
+                {
+                    object values = Enum.GetValues(radioButtonConfig.Expression.ReturnType);
+                }*/
 
                 if(container != null)
                 {

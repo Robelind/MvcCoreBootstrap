@@ -23,15 +23,6 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Do not generate a label automatically for the radio button.
-        /// </summary>
-        /// <returns>The radio button builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonBuilder NoLabel()
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonBuilder>(() => _config.AutoLabel = false));
-        }
-
-        /// <summary>
         /// Sets the label for the radio button.
         /// </summary>
         /// <param name="label">radio button label.</param>
