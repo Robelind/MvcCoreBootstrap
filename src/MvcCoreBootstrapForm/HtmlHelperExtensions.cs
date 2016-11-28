@@ -44,7 +44,7 @@ namespace MvcCoreBootstrapForm
         public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, bool>> expression, Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
         {
-            ControlConfig config = new ControlConfig();
+            CheckBoxConfig config = new CheckBoxConfig();
 
             if (htmlHelper == null)
                 throw new ArgumentNullException(nameof(htmlHelper));

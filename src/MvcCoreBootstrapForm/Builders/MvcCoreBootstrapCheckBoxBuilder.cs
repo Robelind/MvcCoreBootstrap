@@ -5,9 +5,9 @@ namespace MvcCoreBootstrapForm.Builders
 {
     public class MvcCoreBootstrapCheckBoxBuilder : BuilderBase
     {
-        private readonly ControlConfig _config;
+        private readonly CheckBoxConfig _config;
 
-        internal MvcCoreBootstrapCheckBoxBuilder(ControlConfig config)
+        internal MvcCoreBootstrapCheckBoxBuilder(CheckBoxConfig config)
         {
             _config = config;
         }
@@ -20,6 +20,15 @@ namespace MvcCoreBootstrapForm.Builders
         public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+        }
+
+        /// <summary>
+        /// Renders the check box inline, i.e. next to other check boxes.
+        /// </summary>
+        /// <returns>The check box builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Inline()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Inline = true));
         }
 
         /// <summary>

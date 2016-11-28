@@ -8,20 +8,28 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal class CheckBoxRenderer<TModel> : ControlRenderer<TModel, bool>
     {
-        public IHtmlContent Render(ControlConfig config, IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, bool>> expression)
+        public IHtmlContent Render(CheckBoxConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, bool>> expression)
         {
-            TagBuilder container = new TagBuilder("div");
+            TagBuilder container = config.Inline ? null : new TagBuilder("div");
             TagBuilder label = new TagBuilder("label");
             TagBuilder checkBox = this.TagBuilderFromHtmlContent(htmlHelper.CheckBoxFor(expression, null), false);
 
-            if(config.Disabled)
+            if(container != null)
             {
-                container.AddCssClass("disabled");
-                checkBox.Attributes.Add("disabled", null);
+                if(config.Disabled)
+                {
+                    container.AddCssClass("disabled");
+                    checkBox.Attributes.Add("disabled", null);
+                }
+                container.AddCssClass("checkbox");
+                container.InnerHtml.AppendHtml(label);
             }
-            container.AddCssClass("checkbox");
-            container.InnerHtml.AppendHtml(label);
             label.InnerHtml.AppendHtml(checkBox);
+            if(config.Inline)
+            {
+                label.AddCssClass("checkbox-inline");
+            }
             if(!string.IsNullOrEmpty(config.Label))
             {
                 label.InnerHtml.Append(config.Label);
@@ -34,7 +42,7 @@ namespace MvcCoreBootstrapForm.Rendering
             }
             this.AddCssClasses(container, config.CssClasses);
 
-            return(container);
+            return(container ?? label);
         }
     }
 }
