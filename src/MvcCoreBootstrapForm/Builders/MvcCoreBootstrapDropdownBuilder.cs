@@ -42,6 +42,15 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Configures whether no item will be initially selected in the dropdown.
+        /// </summary>
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder NoInitialSelection(bool condition)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.NoInitialSelection = condition));
+        }
+
+        /// <summary>
         /// Sets a css class for the dropdown element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>

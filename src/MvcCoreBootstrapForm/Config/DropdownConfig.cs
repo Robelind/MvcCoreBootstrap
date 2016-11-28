@@ -8,5 +8,6 @@ namespace MvcCoreBootstrapForm.Config
     {
         public IEnumerable<SelectListItem> Items { get; set; }
         public bool Multiple { get; set; }
+        public bool NoInitialSelection { get; set; }
     }
 }

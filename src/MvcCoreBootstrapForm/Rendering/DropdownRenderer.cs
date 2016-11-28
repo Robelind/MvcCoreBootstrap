@@ -18,11 +18,19 @@ namespace MvcCoreBootstrapForm.Rendering
         public IHtmlContent Render(DropdownConfig config, IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
         {
+            TResult propValue = expression.Compile().Invoke(htmlHelper.ViewData.Model);
+
             Element = this.TagBuilderFromHtmlContent(htmlHelper.DropDownListFor(expression, Enumerable.Empty<SelectListItem>()));
             this.BaseConfig(config);
+            if(config.NoInitialSelection && !config.Multiple)
+            {
+                Element.InnerHtml.AppendHtml("<option></option>");
+            }
             foreach(var item in config.Items)
             {
-                Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\">{item.Text}</option>");
+                string selected = item.Value.ToString() == propValue.ToString() ? "selected" : null;
+
+                Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
             this.AddAttribute("multiple", config.Multiple);
             this.AddCssClasses(Element, config.CssClasses);
