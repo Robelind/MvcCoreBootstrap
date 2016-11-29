@@ -23,12 +23,6 @@ namespace MvcCoreBootstrapForm.Rendering
             ViewBufferTextWriter a = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
             string formTag = null;
             TagBuilder formBuilder = null;
-            object x = htmlHelper.ViewBag.xxx;
-
-            if(x == null)
-            {
-                htmlHelper.ViewBag.xxx = "xxx";
-            }
 
             foreach(ViewBufferValue viewBufferValue in a.Buffer.Pages[0].Buffer.Where(b => b.Value != null))
             {
@@ -64,20 +58,30 @@ namespace MvcCoreBootstrapForm.Rendering
                 a.WriteLine(s);
             }
 
+            if(htmlHelper.ViewBag.MvcBootStrapFormValJs == null)
+            {
+                a.WriteLine(ValidationJs);
+                htmlHelper.ViewBag.MvcBootStrapFormValJs = "MvcBootStrapFormValJs";
+            }
+
             return(form);
         }
 
         private string ValidationJs { get; } =
-        @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
-            $('#{0}').show();
-            if ($('#{0} ul').children().length > 1) {{
-                $('#{0} ul').show();
-                $('#{0} span').hide();
-            }} else {{
-                $('#{0} span').html($('#{0} ul li').first().text());
-                $('#{0} span').show();
-                $('#{0} ul').hide();
-            }}
-        }});";
+    @"<script type=""text/javascript"">
+        $(document).ready(function() {
+            $('form').bind('invalid-form.validate', function (a, b) {
+                $('.has-error').removeClass('has-error');
+                $.each(b.errorList, function () {
+                    if ($(this.element).is('input[type=radio]')) {
+                        $('[id=' + this.element.id + ']').closest('.radio').addClass('has-error');
+                        $('[id=' + this.element.id + ']').closest('.radio-inline').addClass('has-error');
+                    } else {
+                        $(this.element).closest('.form-group').addClass('has-error');
+                    }
+                });
+            });
+        });
+    </script>";
     }
 }
