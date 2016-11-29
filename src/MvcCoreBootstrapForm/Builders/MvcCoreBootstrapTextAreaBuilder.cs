@@ -33,32 +33,42 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Do not generate a label automatically for the text input.
+        /// Do not generate a label automatically for the text area.
         /// </summary>
-        /// <returns>The text input builder instance.</returns>
+        /// <returns>The text area builder instance.</returns>
         public MvcCoreBootstrapTextAreaBuilder NoLabel()
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextAreaBuilder>(() => _config.AutoLabel = false));
         }
 
         /// <summary>
-        /// Sets the label for the text input.
+        /// Sets the label for the text area.
         /// </summary>
-        /// <param name="label">Text input label.</param>
-        /// <returns>The text input builder instance.</returns>
+        /// <param name="label">text area label.</param>
+        /// <returns>The text area builder instance.</returns>
         public MvcCoreBootstrapTextAreaBuilder Label(string label)
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextAreaBuilder>(() => _config.Label = label));
         }
 
         /// <summary>
-        /// Sets the disabled state for the text input.
+        /// Sets the disabled state for the text area.
         /// </summary>
-        /// <param name="disabled">If true, the text input is disabled</param>
-        /// <returns>The text input builder instance.</returns>
+        /// <param name="disabled">If true, the text area is disabled</param>
+        /// <returns>The text area builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+        }
+
+        /// <summary>
+        /// Sets the read only state for the text area.
+        /// </summary>
+        /// <param name="conditon">If true, the text area is read only.</param>
+        /// <returns>The text area builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder ReadOnly(bool conditon = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.ReadOnly = conditon));
         }
 
         /// <summary>

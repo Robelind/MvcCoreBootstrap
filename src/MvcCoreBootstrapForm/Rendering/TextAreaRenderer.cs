@@ -30,6 +30,7 @@ namespace MvcCoreBootstrapForm.Rendering
 
             this.AddAttribute(Element, "rows", config.Rows.ToString());
             this.AddAttribute("disabled", config.Disabled);
+            this.AddAttribute("readonly", config.ReadOnly);
             this.AddCssClasses(Element, config.CssClasses);
 
             return(this.RenderInGroup(label != null ? new [] {label, Element} : new [] {Element}));

@@ -52,6 +52,16 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Sets the read only state for the text input.
+        /// </summary>
+        /// <param name="disabled">If true, the text input is read only.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder ReadOnly(bool conditon = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.ReadOnly = conditon));
+        }
+
+        /// <summary>
         /// Sets a css class for the text input element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
