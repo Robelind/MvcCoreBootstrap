@@ -42,7 +42,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapTextInputBuilder(config));
 
-            return(new TextBoxRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new TextInputRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
 
         public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,

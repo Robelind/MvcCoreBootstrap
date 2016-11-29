@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
+using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
@@ -32,6 +33,31 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             return(group);
+        }
+
+        protected IHtmlContent RenderWithLabel(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        {
+            TagBuilder element = Element;
+
+            if(!string.IsNullOrEmpty(config.Label) || config.AutoLabel)
+            {
+                TagBuilder label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false);
+                TagBuilder group = new TagBuilder("div");
+            
+                if(!string.IsNullOrEmpty(config.Label))
+                {
+                    label.InnerHtml.Clear();
+                    label.InnerHtml.Append(config.Label);
+                }
+                label.AddCssClass("control-label");
+                group.AddCssClass("form-group");
+                group.InnerHtml.AppendHtml(label);
+                group.InnerHtml.AppendHtml(element);
+                element = group;
+            }
+
+            return(element);
         }
 
         protected TagBuilder TagBuilderFromHtmlContent(IHtmlContent htmlContent, bool formControl = true)
@@ -70,5 +96,18 @@ namespace MvcCoreBootstrapForm.Rendering
 
             return(tag);
         }
+
+        protected string ValidationJs { get; } =
+        @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
+            $('#{0}').show();
+            if ($('#{0} ul').children().length > 1) {{
+                $('#{0} ul').show();
+                $('#{0} span').hide();
+            }} else {{
+                $('#{0} span').html($('#{0} ul li').first().text());
+                $('#{0} span').show();
+                $('#{0} ul').hide();
+            }}
+        }});";
     }
 }
