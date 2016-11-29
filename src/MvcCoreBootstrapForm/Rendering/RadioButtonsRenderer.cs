@@ -14,46 +14,27 @@ namespace MvcCoreBootstrapForm.Rendering
 
             foreach(RadioButtonConfig<TModel, TResult> radioButtonConfig in config.RadioButtons)
             {
-                TagBuilder container = config.Horizontal ? null : new TagBuilder("div");
+                TagBuilder container = new TagBuilder("div");
                 TagBuilder label = new TagBuilder("label");
                 TagBuilder radioButton = this.TagBuilderFromHtmlContent(htmlHelper
                         .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
-                    
 
-                /*if(radioButtonConfig.Expression.ReturnType == typeof(Enum))
+                if(radioButtonConfig.Disabled)
                 {
-                    object values = Enum.GetValues(radioButtonConfig.Expression.ReturnType);
-                }*/
-
-                if(container != null)
-                {
-                    if(radioButtonConfig.Disabled)
-                    {
-                        container.AddCssClass("disabled");
-                        radioButton.Attributes.Add("disabled", null);
-                    }
-                    container.AddCssClass("radio");
-                    container.InnerHtml.AppendHtml(label);
-                    this.AddCssClasses(container, config.CssClasses);
+                    container.AddCssClass("disabled");
+                    radioButton.Attributes.Add("disabled", null);
                 }
+                container.AddCssClass(config.Horizontal ? "radio-inline" : "radio");
+                container.InnerHtml.AppendHtml(label);
+                this.AddCssClasses(container, config.CssClasses);
                 label.InnerHtml.AppendHtml(radioButton);
-                if(config.Horizontal)
-                {
-                    label.AddCssClass("radio-inline");
-                }
+                label.AddCssClass("control-label");
                 if(!string.IsNullOrEmpty(radioButtonConfig.Label))
                 {
                     label.InnerHtml.Append(radioButtonConfig.Label);
                 }
 
-                if(container != null)
-                {
-                    container.WriteTo(markup, HtmlEncoder.Default);
-                }
-                else
-                {
-                    label.WriteTo(markup, HtmlEncoder.Default);
-                }
+                container.WriteTo(markup, HtmlEncoder.Default);
             }
 
             return(new HtmlString(markup.ToString()));
