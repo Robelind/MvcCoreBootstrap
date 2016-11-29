@@ -1,47 +1,70 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MvcCoreBootstrap.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
     internal interface IFormRenderer
     {
-        IHtmlContent Render(FormConfig config);
+        MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser);
     }
 
-    internal class FormRenderer : RenderBase, IFormRenderer
+    internal class FormRenderer : IFormRenderer
     {
-        private readonly IHtmlHelper _htmlHelper;
-
-        public FormRenderer(IHtmlHelper htmlHelper)
+        public MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser)
         {
-            _htmlHelper = htmlHelper;
-        }
+            IList<string> content = new List<string>();
+            MvcForm form = htmlHelper.BeginForm();
+            ViewBufferTextWriter a = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
+            string formTag = null;
+            TagBuilder formBuilder = null;
+            object x = htmlHelper.ViewBag.xxx;
 
-        public IHtmlContent Render(FormConfig config)
-        {
-            Element = new TagBuilder("form");
-            this.BaseConfig(config);
-            Element.Attributes.Add("action", config.Url);
-            Element.Attributes.Add("method", "post");
-
-            PropertyInfo prop = config.Model.GetType().GetProperties().First();
-
-            foreach(var property in config.Model.GetType().GetProperties())
+            if(x == null)
             {
-                IHtmlContent html = _htmlHelper.TextBox(property.Name, property.GetValue(config.Model), null,
-                    new {@class = "form-control"});
-
-                Element.InnerHtml.AppendHtml(html);
+                htmlHelper.ViewBag.xxx = "xxx";
             }
-            this.AddElement(new TagBuilder("button"), new [] {"btn", "btn-success"}, "Submit");
 
-            return(Element);
+            foreach(ViewBufferValue viewBufferValue in a.Buffer.Pages[0].Buffer.Where(b => b.Value != null))
+            {
+                string s = viewBufferValue.Value.ToString();
+
+                if(formTag != null)
+                {
+                    formTag += s;
+                    if(s == ">")
+                    {
+                        StringWriter writers = new StringWriter();
+
+                        formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag.Replace(@"\", "")), false);
+                        formBuilder.TagRenderMode = TagRenderMode.StartTag;
+                        formBuilder.AddCssClass("test");
+                        formBuilder.WriteTo(writers, HtmlEncoder.Default);
+                        content.Add(writers.ToString());
+                        formTag = null;
+                    }
+                }
+                else if(s != "<")
+                {
+                    content.Add(s);
+                }
+                else
+                {
+                    formTag = "<";
+                }
+            }
+            a.Buffer.Clear();
+            foreach(var s in content)
+            {
+                a.WriteLine(s);
+            }
+
+            return(form);
         }
 
         private string ValidationJs { get; } =
