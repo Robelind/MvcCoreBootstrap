@@ -33,6 +33,25 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Do not generate a label automatically for the dropdown.
+        /// </summary>
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder NoLabel()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.AutoLabel = false));
+        }
+
+        /// <summary>
+        /// Sets the label for the dropdown.
+        /// </summary>
+        /// <param name="label">Text input label.</param>
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder Label(string label)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Label = label));
+        }
+
+        /// <summary>
         /// Configures the dropdown for multi select.
         /// </summary>
         /// <returns>The dropdown builder instance.</returns>

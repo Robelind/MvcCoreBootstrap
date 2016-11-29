@@ -18,17 +18,25 @@ namespace MvcCoreBootstrapForm.Rendering
         public IHtmlContent Render(DropdownConfig config, IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
         {
+            TagBuilder label = !string.IsNullOrEmpty(config.Label) || config.AutoLabel
+                ? this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false)
+                : null;
             TResult propValue = expression.Compile().Invoke(htmlHelper.ViewData.Model);
 
             Element = this.TagBuilderFromHtmlContent(htmlHelper.DropDownListFor(expression, Enumerable.Empty<SelectListItem>()));
             this.BaseConfig(config);
+            if(!string.IsNullOrEmpty(config.Label))
+            {
+                label.InnerHtml.Clear();
+                label.InnerHtml.Append(config.Label);
+            }
             if(config.NoInitialSelection && !config.Multiple)
             {
                 Element.InnerHtml.AppendHtml("<option></option>");
             }
             foreach(var item in config.Items)
             {
-                string selected = item.Value.ToString() == propValue.ToString() ? "selected" : null;
+                string selected = item.Value == propValue.ToString() ? "selected" : null;
 
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
@@ -36,8 +44,7 @@ namespace MvcCoreBootstrapForm.Rendering
             this.AddAttribute("disabled", config.Disabled);
             this.AddCssClasses(Element, config.CssClasses);
 
-            return(Element);
+            return(this.RenderInGroup(label != null ? new [] {label, Element} : new [] {Element}));
         }
-
    }
 }
