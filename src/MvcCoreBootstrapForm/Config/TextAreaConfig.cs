@@ -2,7 +2,7 @@
 
 namespace MvcCoreBootstrapForm.Config
 {
-    internal class TextAreaConfig : ConfigBase
+    internal class TextAreaConfig : ControlConfig
     {
         public int Rows { get; set; }
     }

@@ -193,14 +193,16 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders an Mvc Core Bootstrap dropdown.
+        /// Renders an Mvc Core Bootstrap text area.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
         /// <param name="rows">Number of rows in the text area.</param>
-        /// <returns>Alert html markup.</returns>
+        /// <param name="configAction">Action that implements text area configuration.</param>
+        /// <returns>Text area html markup.</returns>
         public static IHtmlContent BootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression, int rows = 3)
+            Expression<Func<TModel, TResult>> expression, int rows = 3,
+            Action<MvcCoreBootstrapTextAreaBuilder> configAction = null)
         {
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
@@ -208,6 +210,8 @@ namespace MvcCoreBootstrapForm
                 throw new ArgumentNullException(nameof(htmlHelper));
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
+
+            configAction?.Invoke(new MvcCoreBootstrapTextAreaBuilder(config));
 
             return(new TextAreaRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }

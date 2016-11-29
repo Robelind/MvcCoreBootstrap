@@ -51,6 +51,16 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Sets the disabled state for the text input.
+        /// </summary>
+        /// <param name="disabled">If true, the text input is disabled</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+        }
+
+        /// <summary>
         /// Sets a css class for the dropdown element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>

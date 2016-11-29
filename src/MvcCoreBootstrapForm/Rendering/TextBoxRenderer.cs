@@ -10,21 +10,22 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         public IHtmlContent Render(TextInputConfig config, IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TResult>> expression)
         {
-            TagBuilder textInput = this.TagBuilderFromHtmlContent(htmlHelper.TextBoxFor(expression, null, null));
             TagBuilder label = !string.IsNullOrEmpty(config.Label) || config.AutoLabel
                 ? this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false)
                 : null;
 
+            Element = this.TagBuilderFromHtmlContent(htmlHelper.TextBoxFor(expression, null, null));
             if(!string.IsNullOrEmpty(config.Label))
             {
                 label.InnerHtml.Clear();
                 label.InnerHtml.Append(config.Label);
             }
 
-            this.AddAttribute(textInput, "placeholder", config.PlaceHolder);
-            this.AddCssClasses(textInput, config.CssClasses);
+            this.AddAttribute(Element, "placeholder", config.PlaceHolder);
+            this.AddAttribute("disabled", config.Disabled);
+            this.AddCssClasses(Element, config.CssClasses);
 
-            return(this.RenderInGroup(label != null ? new [] {label, textInput} : new [] {textInput}));
+            return(this.RenderInGroup(label != null ? new [] {label, Element} : new [] {Element}));
         }
     }
 }
