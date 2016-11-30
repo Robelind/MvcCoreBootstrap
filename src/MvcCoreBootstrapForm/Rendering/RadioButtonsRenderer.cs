@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapForm.Config;
 
@@ -10,7 +8,6 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         public IHtmlContent Render(RadioButtonsConfig<TModel, TResult> config, IHtmlHelper<TModel> htmlHelper)
         {
-            TextWriter markup = new StringWriter();
             TagBuilder group = new TagBuilder("div");
             TagBuilder groupLabel = new TagBuilder("label");
             ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
@@ -34,8 +31,6 @@ namespace MvcCoreBootstrapForm.Rendering
                         .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
                 TagBuilder container = new TagBuilder("div");
 
-                //group.InnerHtml.AppendHtml(container);
-
                 if(radioButtonConfig.Disabled)
                 {
                     container.AddCssClass("disabled");
@@ -51,11 +46,9 @@ namespace MvcCoreBootstrapForm.Rendering
                     label.InnerHtml.Append(radioButtonConfig.Label);
                 }
 
-                //container.WriteTo(markup, HtmlEncoder.Default);
                 (widthContainer ?? group).InnerHtml.AppendHtml(container);
             }
 
-             //return(new HtmlString(markup.ToString()));
             return(group);
         }
     }

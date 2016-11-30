@@ -53,10 +53,7 @@ namespace MvcCoreBootstrapForm.Rendering
                     label.InnerHtml.Append(config.Label);
                 }
                 label.AddCssClass("control-label");
-                if(columnWidths != null)
-                {
-                    label.AddCssClass("col-sm-2"); // TODO
-                }
+                this.AddCssClass("col-sm-2", columnWidths != null, label); // TODO
                 group.AddCssClass("form-group");
                 group.InnerHtml.AppendHtml(label);
                 element = group;
