@@ -55,7 +55,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 label.AddCssClass("control-label");
                 if(columnWidths != null)
                 {
-                    label.AddCssClass("col-sm-2");
+                    label.AddCssClass("col-sm-2"); // TODO
                 }
                 group.AddCssClass("form-group");
                 group.InnerHtml.AppendHtml(label);
@@ -66,7 +66,7 @@ namespace MvcCoreBootstrapForm.Rendering
             {
                 TagBuilder widthContainer = new TagBuilder("div");
 
-                widthContainer.AddCssClass("col-sm-10");
+                widthContainer.AddCssClass("col-sm-10"); // TODO
                 widthContainer.InnerHtml.AppendHtml(Element);
                 group?.InnerHtml.AppendHtml(widthContainer);
             }
