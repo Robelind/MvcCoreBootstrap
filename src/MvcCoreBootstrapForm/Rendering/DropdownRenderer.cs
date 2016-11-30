@@ -7,36 +7,43 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal interface IDropdownRenderer<TModel, TResult>
+    internal interface IDropdownRenderer
     {
-        IHtmlContent Render(DropdownConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression);
+        IHtmlContent Render();
     }
 
-    internal class DropdownRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>, IDropdownRenderer<TModel, TResult>
+    internal class DropdownRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>, IDropdownRenderer
     {
-        public IHtmlContent Render(DropdownConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
-        {
-            TResult propValue = expression.Compile().Invoke(htmlHelper.ViewData.Model);
+        private readonly DropdownConfig _config;
 
-            Element = this.TagBuilderFromHtmlContent(htmlHelper.DropDownListFor(expression, Enumerable.Empty<SelectListItem>()));
-            this.BaseConfig(config);
-            if(config.NoInitialSelection && !config.Multiple)
+        public DropdownRenderer(DropdownConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        : base(config, htmlHelper, expression)
+        {
+            _config = config;
+        }
+
+        public IHtmlContent Render()
+        {
+            TResult propValue = Expression.Compile().Invoke(HtmlHelper.ViewData.Model);
+
+            Element = this.TagBuilderFromHtmlContent(HtmlHelper.DropDownListFor(Expression, Enumerable.Empty<SelectListItem>()));
+            this.BaseConfig(_config);
+            if(_config.NoInitialSelection && !_config.Multiple)
             {
                 Element.InnerHtml.AppendHtml("<option></option>");
             }
-            foreach(var item in config.Items)
+            foreach(var item in _config.Items)
             {
                 string selected = item.Value == propValue.ToString() ? "selected" : null;
 
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
-            this.AddAttribute("multiple", config.Multiple);
-            this.AddAttribute("disabled", config.Disabled);
-            this.AddCssClasses(Element, config.CssClasses);
+            this.AddAttribute("multiple", _config.Multiple);
+            this.AddAttribute("disabled", _config.Disabled);
+            this.AddCssClasses(Element, _config.CssClasses);
 
-            return(this.RenderWithLabel(config, htmlHelper, expression));
+            return(this.RenderWithLabel());
         }
-   }
+    }
 }

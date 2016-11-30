@@ -12,6 +12,18 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal abstract class ControlRenderer<TModel, TResult> : RenderBase
     {
+        protected readonly ControlConfig Config;
+        protected readonly IHtmlHelper<TModel> HtmlHelper;
+        protected readonly Expression<Func<TModel, TResult>> Expression;
+
+        protected ControlRenderer(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        {
+            Config = config;
+            HtmlHelper = htmlHelper;
+            Expression = expression;
+        }
+
         protected IHtmlContent Render(IHtmlContent htmlContent, IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
         {
@@ -35,12 +47,11 @@ namespace MvcCoreBootstrapForm.Rendering
             return(group);
         }
 
-        protected IHtmlContent RenderWithLabel(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+        protected IHtmlContent RenderWithLabel()
         {
             TagBuilder element = Element;
-            ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
-            TagBuilder label = this.Label(config, htmlHelper, expression);
+            ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            TagBuilder label = this.Label();
             TagBuilder group = null;
 
             if(label != null)
@@ -97,26 +108,22 @@ namespace MvcCoreBootstrapForm.Rendering
                 element = element.Substring(index2 + 1);
             }
 
-            if(formControl)
-            {
-                tag.AddCssClass("form-control");
-            }
+            this.AddCssClass("form-control", formControl, tag);
 
-            return (tag);
+            return(tag);
         }
 
-        protected TagBuilder Label(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+        protected TagBuilder Label()
         {
             TagBuilder label = null;
 
-            if(config.AutoLabel || !string.IsNullOrEmpty(config.Label))
+            if(Config.AutoLabel || !string.IsNullOrEmpty(Config.Label))
             {
-                label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false);
-                if(!string.IsNullOrEmpty(config.Label))
+                label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, null, null), false);
+                if(!string.IsNullOrEmpty(Config.Label))
                 {
                     label.InnerHtml.Clear();
-                    label.InnerHtml.Append(config.Label);
+                    label.InnerHtml.Append(Config.Label);
                 }
                 label.AddCssClass("control-label");
             }

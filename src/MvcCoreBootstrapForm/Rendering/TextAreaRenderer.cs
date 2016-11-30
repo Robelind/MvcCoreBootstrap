@@ -6,24 +6,31 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal interface ITextAreaRenderer<TModel, TResult>
+    internal interface ITextAreaRenderer
     {
-        IHtmlContent Render(TextAreaConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression);
+        IHtmlContent Render();
     }
 
-    internal class TextAreaRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>, ITextAreaRenderer<TModel, TResult>
+    internal class TextAreaRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>, ITextAreaRenderer
     {
-        public IHtmlContent Render(TextAreaConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
-        {
-            Element = this.TagBuilderFromHtmlContent(htmlHelper.TextAreaFor(expression, config.Rows));
-            this.AddAttribute(Element, "rows", config.Rows.ToString());
-            this.AddAttribute("disabled", config.Disabled);
-            this.AddAttribute("readonly", config.ReadOnly);
-            this.AddCssClasses(Element, config.CssClasses);
+        private readonly TextAreaConfig _config;
 
-             return(this.RenderWithLabel(config, htmlHelper, expression));
+        public TextAreaRenderer(TextAreaConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        : base(config, htmlHelper, expression)
+        {
+            _config = config;
+        }
+
+        public IHtmlContent Render()
+        {
+            Element = this.TagBuilderFromHtmlContent(HtmlHelper.TextAreaFor(Expression, _config.Rows));
+            this.AddAttribute(Element, "rows", _config.Rows.ToString());
+            this.AddAttribute("disabled", _config.Disabled);
+            this.AddAttribute("readonly", _config.ReadOnly);
+            this.AddCssClasses(Element, _config.CssClasses);
+
+            return(this.RenderWithLabel());
        }
-   }
+    }
 }

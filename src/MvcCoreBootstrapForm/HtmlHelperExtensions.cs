@@ -29,7 +29,7 @@ namespace MvcCoreBootstrapForm
             return(new FormRenderer().Render(config, htmlHelper, new HtmlParser()));
         }
 
-        public static IHtmlContent BootstrapTextBoxFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent BootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
             TextInputConfig config = new TextInputConfig();
@@ -41,7 +41,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapTextInputBuilder(config));
 
-            return(new TextInputRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new TextInputRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
         public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
@@ -56,7 +56,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapCheckBoxBuilder(config));
 
-            return(new CheckBoxRenderer<TModel>().Render(config, htmlHelper, expression));
+            return(new CheckBoxRenderer<TModel>(config, htmlHelper, expression).Render());
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace MvcCoreBootstrapForm
             }
             configAction?.Invoke(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new RadioButtonsRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace MvcCoreBootstrapForm
             }
             configAction?.Invoke(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new RadioButtonsRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace MvcCoreBootstrapForm
 
             configAction(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new RadioButtonsRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapDropdownBuilder(config));
 
-            return(new DropdownRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new DropdownRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapTextAreaBuilder(config));
 
-            return(new TextAreaRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
+            return(new TextAreaRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
     }
 }

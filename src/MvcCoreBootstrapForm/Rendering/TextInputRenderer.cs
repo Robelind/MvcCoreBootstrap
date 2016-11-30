@@ -8,15 +8,24 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal class TextInputRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>
     {
-        public IHtmlContent Render(TextInputConfig config, IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TResult>> expression)
-        {
-            Element = this.TagBuilderFromHtmlContent(htmlHelper.TextBoxFor(expression, null, null));
-            this.AddAttribute(Element, "placeholder", config.PlaceHolder);
-            this.AddAttribute("disabled", config.Disabled);
-            this.AddAttribute("readonly", config.ReadOnly);
-            this.AddCssClasses(Element, config.CssClasses);
+        private readonly TextInputConfig _config;
 
-            return(this.RenderWithLabel(config, htmlHelper, expression));
+        public TextInputRenderer(TextInputConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        : base(config, htmlHelper, expression)
+        {
+            _config = config;
+        }
+
+        public IHtmlContent Render()
+        {
+            Element = this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, null, null));
+            this.AddAttribute(Element, "placeholder", _config.PlaceHolder);
+            this.AddAttribute("disabled", _config.Disabled);
+            this.AddAttribute("readonly", _config.ReadOnly);
+            this.AddCssClasses(Element, _config.CssClasses);
+
+            return(this.RenderWithLabel());
         }
     }
 }

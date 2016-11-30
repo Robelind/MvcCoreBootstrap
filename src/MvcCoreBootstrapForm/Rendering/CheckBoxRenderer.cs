@@ -8,19 +8,27 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal class CheckBoxRenderer<TModel> : ControlRenderer<TModel, bool>
     {
-        public IHtmlContent Render(CheckBoxConfig config, IHtmlHelper<TModel> htmlHelper,
+        private readonly CheckBoxConfig _config;
+
+        public CheckBoxRenderer(CheckBoxConfig config, IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, bool>> expression)
+        : base(config, htmlHelper, expression)
         {
-            TagBuilder container = config.Inline ? null : new TagBuilder("div");
+            _config = config;
+        }
+
+        public IHtmlContent Render()
+        {
+            TagBuilder container = _config.Inline ? null : new TagBuilder("div");
             TagBuilder label = new TagBuilder("label");
-            TagBuilder checkBox = this.TagBuilderFromHtmlContent(htmlHelper.CheckBoxFor(expression, null), false);
-            TagBuilder propLabel = this.Label(config, htmlHelper, expression);
-            ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            TagBuilder checkBox = this.TagBuilderFromHtmlContent(HtmlHelper.CheckBoxFor(Expression, null), false);
+            TagBuilder propLabel = this.Label();
+            ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
             TagBuilder element = container ?? label;
 
             if(container != null)
             {
-                if(config.Disabled)
+                if(_config.Disabled)
                 {
                     container.AddCssClass("disabled");
                     checkBox.Attributes.Add("disabled", null);
@@ -31,8 +39,8 @@ namespace MvcCoreBootstrapForm.Rendering
             //label.AddCssClass("control-label");
             label.InnerHtml.AppendHtml(checkBox);
             label.InnerHtml.AppendHtml(propLabel?.InnerHtml);
-            this.AddCssClass("checkbox-inline", config.Inline, label);
-            this.AddCssClasses(container, config.CssClasses);
+            this.AddCssClass("checkbox-inline", _config.Inline, label);
+            this.AddCssClasses(container, _config.CssClasses);
 
             if(columnWidths != null)
             {
