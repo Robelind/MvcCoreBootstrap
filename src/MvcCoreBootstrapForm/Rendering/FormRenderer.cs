@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -20,47 +21,49 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             IList<string> content = new List<string>();
             MvcForm form = htmlHelper.BeginForm();
-            ViewBufferTextWriter a = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
+            ViewBufferTextWriter viewWriter = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
             string formTag = null;
-            TagBuilder formBuilder = null;
 
-            foreach(ViewBufferValue viewBufferValue in a.Buffer.Pages[0].Buffer.Where(b => b.Value != null))
+            Debug.Assert(viewWriter != null);
+            foreach(ViewBufferValue viewBufferValue in viewWriter.Buffer.Pages[0].Buffer.Where(b => b.Value != null))
             {
-                string s = viewBufferValue.Value.ToString();
+                string value = viewBufferValue.Value.ToString();
 
                 if(formTag != null)
                 {
-                    formTag += s;
-                    if(s == ">")
+                    formTag += value;
+                    if(value == ">")
                     {
-                        StringWriter writers = new StringWriter();
+                        StringWriter formWriter = new StringWriter();
+                        TagBuilder formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag), false);
 
-                        formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag.Replace(@"\", "")), false);
                         formBuilder.TagRenderMode = TagRenderMode.StartTag;
-                        formBuilder.AddCssClass("test");
-                        formBuilder.WriteTo(writers, HtmlEncoder.Default);
-                        content.Add(writers.ToString());
+                        formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
+                        content.Add(formWriter.ToString());
                         formTag = null;
                     }
                 }
-                else if(s != "<")
+                else if(value != "<")
                 {
-                    content.Add(s);
+                    content.Add(value);
                 }
                 else
                 {
                     formTag = "<";
                 }
             }
-            a.Buffer.Clear();
+
+            // Replace view writer content.
+            viewWriter.Buffer.Clear();
             foreach(var s in content)
             {
-                a.WriteLine(s);
+                viewWriter.WriteLine(s);
             }
 
+            // Add validation handling java script, if not already added.
             if(htmlHelper.ViewBag.MvcBootStrapFormValJs == null)
             {
-                a.WriteLine(ValidationJs);
+                viewWriter.WriteLine(ValidationJs);
                 htmlHelper.ViewBag.MvcBootStrapFormValJs = "MvcBootStrapFormValJs";
             }
 
