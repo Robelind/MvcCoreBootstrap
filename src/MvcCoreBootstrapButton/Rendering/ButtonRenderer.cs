@@ -55,7 +55,7 @@ namespace MvcCoreBootstrapButton.Rendering
                     _button.AddCssClass("disabled");
                 }
             }
-            this.AddCssClasses(_button, config.CssClasses);
+            this.AddCssClasses(config.CssClasses, _button);
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
                         

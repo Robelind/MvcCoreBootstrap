@@ -47,7 +47,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 }
                 container.AddCssClass(_config.Horizontal ? "radio-inline" : "radio");
                 container.InnerHtml.AppendHtml(label);
-                this.AddCssClasses(container, _config.CssClasses);
+                this.AddCssClasses(_config.CssClasses, container);
                 label.InnerHtml.AppendHtml(radioButton);
                 //label.AddCssClass("control-label");
                 if(!string.IsNullOrEmpty(radioButtonConfig.Label))

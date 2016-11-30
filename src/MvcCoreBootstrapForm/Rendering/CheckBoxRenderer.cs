@@ -40,7 +40,7 @@ namespace MvcCoreBootstrapForm.Rendering
             label.InnerHtml.AppendHtml(checkBox);
             label.InnerHtml.AppendHtml(propLabel?.InnerHtml);
             this.AddCssClass("checkbox-inline", _config.Inline, label);
-            this.AddCssClasses(container, _config.CssClasses);
+            this.AddCssClasses(_config.CssClasses, container);
 
             if(columnWidths != null)
             {

@@ -17,7 +17,7 @@ namespace MvcCoreBootstrap.Rendering
             this.AddAttribute(Element, "id", config.Id);
             this.AddAttribute(Element, "name", config.Name);
             Element.AddCssClass(cssClass);
-            this.AddCssClasses(Element, config.CssClasses);
+            this.AddCssClasses(config.CssClasses);
             if(statePrefix != null)
             {
                 this.AddContextualState(Element, config.State, statePrefix);
@@ -43,7 +43,7 @@ namespace MvcCoreBootstrap.Rendering
                 TagBuilder parent = parentElement ?? Element;
             
                 element.InnerHtml.AppendHtml(content);
-                this.AddCssClasses(element, cssClasses);
+                this.AddCssClasses(cssClasses, element);
                 parent.InnerHtml.AppendHtml(element);
             }
         }
@@ -72,11 +72,11 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
-        protected void AddCssClasses(TagBuilder element, IEnumerable<string> cssClasses)
+        protected void AddCssClasses(IEnumerable<string> cssClasses, TagBuilder element = null)
         {
             foreach(var cssClass in cssClasses)
             {
-                element.AddCssClass(cssClass);
+                (element ?? Element).AddCssClass(cssClass);
             }
         }
 
