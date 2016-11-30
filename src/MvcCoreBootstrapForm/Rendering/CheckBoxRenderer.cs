@@ -49,10 +49,12 @@ namespace MvcCoreBootstrapForm.Rendering
             {
                 TagBuilder group = new TagBuilder("div");
                 TagBuilder widthContainer = new TagBuilder("div");
+                string[] colClassParts = columnWidths.LeftColumn.CssClass().Split(new[] {'-'});
 
-                group.AddCssClass("form-group");
-                widthContainer.AddCssClass("col-sm-offset-2"); // TODO
+                //  Set an offset column class, since check boxes doesn't have labels to the left.
+                widthContainer.AddCssClass($"col-{colClassParts[1]}-offset-{colClassParts[2]}");
                 widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
+                group.AddCssClass("form-group");
                 widthContainer.InnerHtml.AppendHtml(container ?? label);
                 group.InnerHtml.AppendHtml(widthContainer);
                 element = group;
