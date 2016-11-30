@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class RadioButtonsRenderer<TModel, TResult> : ControlRenderer<TModel, bool>
+    internal class RadioButtonsRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>
     {
-        public IHtmlContent Render(RadioButtonsConfig<TModel, TResult> config, IHtmlHelper<TModel> htmlHelper)
+        public IHtmlContent Render(RadioButtonsConfig<TModel, TResult> config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
         {
             TagBuilder group = new TagBuilder("div");
-            TagBuilder groupLabel = new TagBuilder("label");
+            TagBuilder groupLabel = this.Label(config, htmlHelper, expression);
             ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
             TagBuilder widthContainer = null;
 
@@ -21,9 +24,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
                 group.InnerHtml.AppendHtml(widthContainer);
             }
-            groupLabel.AddCssClass("control-label");
-            this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null, groupLabel);
-            groupLabel.InnerHtml.Append("Label"); // TODO
+            this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null && groupLabel != null, groupLabel);
             foreach(RadioButtonConfig<TModel, TResult> radioButtonConfig in config.RadioButtons)
             {
                 TagBuilder label = new TagBuilder("label");

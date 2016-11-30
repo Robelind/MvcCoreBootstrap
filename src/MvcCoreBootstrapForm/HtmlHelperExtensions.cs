@@ -68,13 +68,13 @@ namespace MvcCoreBootstrapForm
         /// <param name="expression">Model property expression.</param>
         /// <param name="values">Possible values for the property.</param>
         /// <param name="labels">Labels for each radio button (value).</param>
-        /// <param name="vertical">If true renders the radio buttons vertically, otherwise horizontally</param>
+        /// <param name="configAction">Action that implements radio buttons configuration.</param>
         /// <returns>Radio buttons html markup.</returns>
         public static IHtmlContent BootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, IEnumerable<object> values, IEnumerable<string> labels,
-            bool vertical = true)
+            Action<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>> configAction = null)
         {
-            RadioButtonsConfig<TModel, TResult> config = new RadioButtonsConfig<TModel, TResult> {Horizontal = !vertical};
+            RadioButtonsConfig<TModel, TResult> config = new RadioButtonsConfig<TModel, TResult>();
 
             if(htmlHelper == null)
                 throw new ArgumentNullException(nameof(htmlHelper));
@@ -92,8 +92,9 @@ namespace MvcCoreBootstrapForm
                     Label = labels.ElementAt(i),
                 });
             }
+            configAction?.Invoke(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper));
+            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
 
         /// <summary>
@@ -105,12 +106,13 @@ namespace MvcCoreBootstrapForm
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
         /// <param name="labels">Labels for each radio button (value).</param>
-        /// <param name="vertical">If true renders the radio buttons vertically, otherwise horizontally</param>
+        /// <param name="configAction">Action that implements radio buttons configuration.</param>
         /// <returns>Radio buttons html markup.</returns>
         public static IHtmlContent BootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression, IEnumerable<string> labels, bool vertical = true) where TModel : class
+            Expression<Func<TModel, TResult>> expression, IEnumerable<string> labels,
+            Action<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>> configAction = null) where TModel : class
         {
-            RadioButtonsConfig<TModel, TResult> config = new RadioButtonsConfig<TModel, TResult> {Horizontal = !vertical};
+            RadioButtonsConfig<TModel, TResult> config = new RadioButtonsConfig<TModel, TResult>();
 
             if(htmlHelper == null)
                 throw new ArgumentNullException(nameof(htmlHelper));
@@ -138,8 +140,9 @@ namespace MvcCoreBootstrapForm
             {
                 throw new ArgumentException("Model property is not an enum");
             }
+            configAction?.Invoke(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper));
+            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
 
         /// <summary>
@@ -164,7 +167,7 @@ namespace MvcCoreBootstrapForm
 
             configAction(new MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>(config, expression));
 
-            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper));
+            return(new RadioButtonsRenderer<TModel, TResult>().Render(config, htmlHelper, expression));
         }
 
         /// <summary>

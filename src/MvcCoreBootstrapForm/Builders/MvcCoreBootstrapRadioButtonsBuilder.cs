@@ -18,12 +18,31 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Renders the radio buttons horizontally instead of vertically.
+        /// Places the radio buttons horizontally instead of vertically.
         /// </summary>
         /// <returns>The radion buttons builder instance.</returns>
         public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Horizontal()
         {
             return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Horizontal = true));
+        }
+
+        /// <summary>
+        /// Do not generate a label automatically for the radio buttons.
+        /// </summary>
+        /// <returns>The radio buttons builder instance.</returns>
+        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> NoLabel()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.AutoLabel = false));
+        }
+
+        /// <summary>
+        /// Sets the label for the radio buttons.
+        /// </summary>
+        /// <param name="label">radio buttons label.</param>
+        /// <returns>The radio buttons builder instance.</returns>
+        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Label(string label)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Label = label));
         }
 
         /// <summary>

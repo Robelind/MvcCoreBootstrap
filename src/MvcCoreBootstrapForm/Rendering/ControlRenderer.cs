@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
@@ -41,19 +40,12 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             TagBuilder element = Element;
             ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            TagBuilder label = this.Label(config, htmlHelper, expression);
             TagBuilder group = null;
 
-            if(!string.IsNullOrEmpty(config.Label) || config.AutoLabel)
+            if(label != null)
             {
-                TagBuilder label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false);
-
                 group = new TagBuilder("div");
-                if(!string.IsNullOrEmpty(config.Label))
-                {
-                    label.InnerHtml.Clear();
-                    label.InnerHtml.Append(config.Label);
-                }
-                label.AddCssClass("control-label");
                 this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null, label); // TODO
                 group.AddCssClass("form-group");
                 group.InnerHtml.AppendHtml(label);
@@ -113,11 +105,23 @@ namespace MvcCoreBootstrapForm.Rendering
             return (tag);
         }
 
-        protected string ColumnWidthToCssClass(ColumnWidth columnWidth)
+        protected TagBuilder Label(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
         {
-            string width = Enum.GetName(typeof(ColumnWidth), columnWidth);
+            TagBuilder label = null;
 
-            return($"col-{width.Substring(0, 2)}-{width.Last()}");
+            if(config.AutoLabel || !string.IsNullOrEmpty(config.Label))
+            {
+                label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false);
+                if(!string.IsNullOrEmpty(config.Label))
+                {
+                    label.InnerHtml.Clear();
+                    label.InnerHtml.Append(config.Label);
+                }
+                label.AddCssClass("control-label");
+            }
+
+            return(label);
         }
 
         protected string ValidationJs { get; } =
