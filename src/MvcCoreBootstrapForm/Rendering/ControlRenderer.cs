@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
@@ -53,7 +54,7 @@ namespace MvcCoreBootstrapForm.Rendering
                     label.InnerHtml.Append(config.Label);
                 }
                 label.AddCssClass("control-label");
-                this.AddCssClass("col-sm-2", columnWidths != null, label); // TODO
+                this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null, label); // TODO
                 group.AddCssClass("form-group");
                 group.InnerHtml.AppendHtml(label);
                 element = group;
@@ -63,7 +64,7 @@ namespace MvcCoreBootstrapForm.Rendering
             {
                 TagBuilder widthContainer = new TagBuilder("div");
 
-                widthContainer.AddCssClass("col-sm-10"); // TODO
+                widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
                 widthContainer.InnerHtml.AppendHtml(Element);
                 group?.InnerHtml.AppendHtml(widthContainer);
             }
@@ -110,6 +111,13 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             return (tag);
+        }
+
+        protected string ColumnWidthToCssClass(ColumnWidth columnWidth)
+        {
+            string width = Enum.GetName(typeof(ColumnWidth), columnWidth);
+
+            return($"col-{width.Substring(0, 2)}-{width.Last()}");
         }
 
         protected string ValidationJs { get; } =

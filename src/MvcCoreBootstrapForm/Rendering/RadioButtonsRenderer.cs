@@ -18,11 +18,11 @@ namespace MvcCoreBootstrapForm.Rendering
             if(columnWidths != null)
             {
                 widthContainer = new TagBuilder("div");
-                widthContainer.AddCssClass("col-sm-10"); // TODO
+                widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
                 group.InnerHtml.AppendHtml(widthContainer);
             }
             groupLabel.AddCssClass("control-label");
-            this.AddCssClass("col-sm-2", columnWidths != null, groupLabel); // TODO
+            this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null, groupLabel);
             groupLabel.InnerHtml.Append("Label"); // TODO
             foreach(RadioButtonConfig<TModel, TResult> radioButtonConfig in config.RadioButtons)
             {

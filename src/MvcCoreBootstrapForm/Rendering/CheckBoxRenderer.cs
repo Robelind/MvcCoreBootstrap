@@ -51,7 +51,8 @@ namespace MvcCoreBootstrapForm.Rendering
                 TagBuilder widthContainer = new TagBuilder("div");
 
                 group.AddCssClass("form-group");
-                widthContainer.AddCssClass("col-sm-offset-2 col-sm-10");
+                widthContainer.AddCssClass("col-sm-offset-2"); // TODO
+                widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
                 widthContainer.InnerHtml.AppendHtml(container ?? label);
                 group.InnerHtml.AppendHtml(widthContainer);
                 element = group;
