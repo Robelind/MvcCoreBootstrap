@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
@@ -15,7 +16,7 @@ namespace MvcCoreBootstrapForm.Rendering
         MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser);
     }
 
-    internal class FormRenderer : IFormRenderer
+    internal class FormRenderer : RenderBase, IFormRenderer
     {
         public MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser)
         {
@@ -23,6 +24,8 @@ namespace MvcCoreBootstrapForm.Rendering
             MvcForm form = htmlHelper.BeginForm();
             ViewBufferTextWriter viewWriter = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
             string formTag = null;
+            StringWriter formWriter = new StringWriter();
+            TagBuilder formBuilder = null;
 
             Debug.Assert(viewWriter != null);
             foreach(ViewBufferValue viewBufferValue in viewWriter.Buffer.Pages[0].Buffer.Where(b => b.Value != null))
@@ -34,12 +37,7 @@ namespace MvcCoreBootstrapForm.Rendering
                     formTag += value;
                     if(value == ">")
                     {
-                        StringWriter formWriter = new StringWriter();
-                        TagBuilder formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag), false);
-
-                        formBuilder.TagRenderMode = TagRenderMode.StartTag;
-                        formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
-                        content.Add(formWriter.ToString());
+                        formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag), false);
                         formTag = null;
                     }
                 }
@@ -53,6 +51,13 @@ namespace MvcCoreBootstrapForm.Rendering
                 }
             }
 
+            Debug.Assert(formBuilder != null);
+            this.AddCssClass("form-horizontal", config.Type == FormType.Horizontal, formBuilder);
+            this.AddCssClass("form-inline", config.Type == FormType.Inline, formBuilder);
+            formBuilder.TagRenderMode = TagRenderMode.StartTag;
+            formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
+            content.Add(formWriter.ToString());
+            
             // Replace view writer content.
             viewWriter.Buffer.Clear();
             foreach(var s in content)

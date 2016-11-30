@@ -19,12 +19,12 @@ namespace MvcCoreBootstrapForm
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements form configuration.</param>
         /// <returns>Form html markup.</returns>
-        public static MvcForm MvcCoreBootstrapForm(this IHtmlHelper htmlHelper)
-            //Action<MvcCoreBootstrapFormBuilder> configAction = null)
+        public static MvcForm MvcCoreBootstrapForm(this IHtmlHelper htmlHelper,
+            Action<MvcCoreBootstrapFormBuilder> configAction = null)
         {
             FormConfig config = new FormConfig();
 
-            //configAction?.Invoke(new MvcCoreBootstrapFormBuilder(config));
+            configAction?.Invoke(new MvcCoreBootstrapFormBuilder(config));
 
             return(new FormRenderer().Render(config, htmlHelper, new HtmlParser()));
         }

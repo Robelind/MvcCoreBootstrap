@@ -33,17 +33,17 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Sets the url to use for form data posts.
+        /// Configures the form type.
         /// </summary>
-        /// <param name="url">Url</param>
+        /// <param name="type">Form type.</param>
         /// <returns>The form builder instance.</returns>
-        public MvcCoreBootstrapFormBuilder Url(string url)
+        public MvcCoreBootstrapFormBuilder Type(FormType type)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Url = url));
+            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Type = type));
         }
 
         /// <summary>
-        /// Sets a css class for the form element.
+        /// Sets a css class for the form.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
         /// <param name="condition">If true, the css class will be set for the form element.</param>
