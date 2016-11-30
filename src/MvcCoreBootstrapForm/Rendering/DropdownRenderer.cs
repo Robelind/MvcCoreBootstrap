@@ -41,9 +41,8 @@ namespace MvcCoreBootstrapForm.Rendering
             }
             this.AddAttribute("multiple", _config.Multiple);
             this.AddAttribute("disabled", _config.Disabled);
-            this.AddCssClasses(Element, _config.CssClasses);
 
-            return(this.RenderWithLabel());
+            return(this.DoRender());
         }
     }
 }

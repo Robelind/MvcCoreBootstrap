@@ -24,14 +24,12 @@ namespace MvcCoreBootstrapForm.Rendering
             Expression = expression;
         }
 
-        protected IHtmlContent Render(IHtmlContent htmlContent, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+        protected IHtmlContent DoRender()
         {
-            TagBuilder tag = TagBuilderFromHtmlContent(htmlContent);
+            Element.AddCssClass("form-control");
+            this.AddCssClasses(Element, Config.CssClasses);
 
-            tag.AddCssClass("form-control");
-
-            return (tag);
+            return(this.RenderWithLabel());
         }
 
         protected IHtmlContent RenderInGroup(IEnumerable<TagBuilder> elements)
@@ -108,7 +106,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 element = element.Substring(index2 + 1);
             }
 
-            this.AddCssClass("form-control", formControl, tag);
+            //this.AddCssClass("form-control", formControl, tag);
 
             return(tag);
         }

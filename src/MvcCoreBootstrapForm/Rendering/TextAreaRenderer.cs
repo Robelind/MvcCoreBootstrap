@@ -28,9 +28,8 @@ namespace MvcCoreBootstrapForm.Rendering
             this.AddAttribute(Element, "rows", _config.Rows.ToString());
             this.AddAttribute("disabled", _config.Disabled);
             this.AddAttribute("readonly", _config.ReadOnly);
-            this.AddCssClasses(Element, _config.CssClasses);
 
-            return(this.RenderWithLabel());
+            return(this.DoRender());
        }
     }
 }
