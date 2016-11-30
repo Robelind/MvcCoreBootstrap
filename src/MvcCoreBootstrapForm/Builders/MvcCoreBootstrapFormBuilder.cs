@@ -43,6 +43,17 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Configures the form for horizontal layout.
+        /// </summary>
+        /// <param name="type">Form type.</param>
+        /// <returns>The form builder instance.</returns>
+        public MvcCoreBootstrapFormBuilder Horizontal(ColumnWidth left, ColumnWidth right)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() =>
+                _config.ColumnWidths = new ColumnWidths {LeftColumn = left, RightColumn = right}));
+        }
+
+        /// <summary>
         /// Sets a css class for the form.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>

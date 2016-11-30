@@ -16,16 +16,16 @@ namespace MvcCoreBootstrapForm.Rendering
             Expression<Func<TModel, TResult>> expression)
         {
             TagBuilder tag = TagBuilderFromHtmlContent(htmlContent);
-            
+
             tag.AddCssClass("form-control");
 
-            return(tag);
+            return (tag);
         }
 
         protected IHtmlContent RenderInGroup(IEnumerable<TagBuilder> elements)
         {
             TagBuilder group = new TagBuilder("div");
-            
+
             group.AddCssClass("form-group");
             foreach(TagBuilder element in elements)
             {
@@ -39,22 +39,40 @@ namespace MvcCoreBootstrapForm.Rendering
             Expression<Func<TModel, TResult>> expression)
         {
             TagBuilder element = Element;
+            ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            TagBuilder group = null;
 
             if(!string.IsNullOrEmpty(config.Label) || config.AutoLabel)
             {
                 TagBuilder label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, null, null), false);
-                TagBuilder group = new TagBuilder("div");
-            
+
+                group = new TagBuilder("div");
                 if(!string.IsNullOrEmpty(config.Label))
                 {
                     label.InnerHtml.Clear();
                     label.InnerHtml.Append(config.Label);
                 }
                 label.AddCssClass("control-label");
+                if(columnWidths != null)
+                {
+                    label.AddCssClass("col-sm-2");
+                }
                 group.AddCssClass("form-group");
                 group.InnerHtml.AppendHtml(label);
-                group.InnerHtml.AppendHtml(element);
                 element = group;
+            }
+
+            if(columnWidths != null)
+            {
+                TagBuilder widthContainer = new TagBuilder("div");
+
+                widthContainer.AddCssClass("col-sm-10");
+                widthContainer.InnerHtml.AppendHtml(Element);
+                group?.InnerHtml.AppendHtml(widthContainer);
+            }
+            else
+            {
+                group?.InnerHtml.AppendHtml(Element);
             }
 
             return(element);
@@ -94,11 +112,11 @@ namespace MvcCoreBootstrapForm.Rendering
                 tag.AddCssClass("form-control");
             }
 
-            return(tag);
+            return (tag);
         }
 
         protected string ValidationJs { get; } =
-        @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
+            @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
             $('#{0}').show();
             if ($('#{0} ul').children().length > 1) {{
                 $('#{0} ul').show();

@@ -14,6 +14,8 @@ namespace MvcCoreBootstrapForm.Rendering
             TagBuilder container = config.Inline ? null : new TagBuilder("div");
             TagBuilder label = new TagBuilder("label");
             TagBuilder checkBox = this.TagBuilderFromHtmlContent(htmlHelper.CheckBoxFor(expression, null), false);
+            ColumnWidths columnWidths = htmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            TagBuilder element = container ?? label;
 
             if(container != null)
             {
@@ -25,6 +27,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 container.AddCssClass("checkbox");
                 container.InnerHtml.AppendHtml(label);
             }
+            //label.AddCssClass("control-label");
             label.InnerHtml.AppendHtml(checkBox);
             if(config.Inline)
             {
@@ -42,7 +45,19 @@ namespace MvcCoreBootstrapForm.Rendering
             }
             this.AddCssClasses(container, config.CssClasses);
 
-            return(container ?? label);
+            if(columnWidths != null)
+            {
+                TagBuilder group = new TagBuilder("div");
+                TagBuilder widthContainer = new TagBuilder("div");
+
+                group.AddCssClass("form-group");
+                widthContainer.AddCssClass("col-sm-offset-2 col-sm-10");
+                widthContainer.InnerHtml.AppendHtml(container ?? label);
+                group.InnerHtml.AppendHtml(widthContainer);
+                element = group;
+            }
+
+            return(element);
         }
     }
 }

@@ -52,12 +52,12 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             Debug.Assert(formBuilder != null);
-            this.AddCssClass("form-horizontal", config.Type == FormType.Horizontal, formBuilder);
+            this.AddCssClass("form-horizontal", config.ColumnWidths != null, formBuilder);
             this.AddCssClass("form-inline", config.Type == FormType.Inline, formBuilder);
             formBuilder.TagRenderMode = TagRenderMode.StartTag;
             formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
             content.Add(formWriter.ToString());
-            
+
             // Replace view writer content.
             viewWriter.Buffer.Clear();
             foreach(var s in content)
@@ -72,7 +72,9 @@ namespace MvcCoreBootstrapForm.Rendering
                 htmlHelper.ViewBag.MvcBootStrapFormValJs = "MvcBootStrapFormValJs";
             }
 
-            return(form);
+            htmlHelper.ViewBag.MvcBootStrapFormColumnWidths = config.ColumnWidths;
+
+            return (form);
         }
 
         private string ValidationJs { get; } =
