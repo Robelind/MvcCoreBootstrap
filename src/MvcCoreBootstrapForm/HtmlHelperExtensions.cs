@@ -217,5 +217,14 @@ namespace MvcCoreBootstrapForm
 
             return(new TextAreaRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
+
+        public static void FormRow(this IHtmlHelper htmlHelper, Action<MvcCoreBootstrapFormRowBuilder> configAction)
+        {
+            RowConfig config = new RowConfig();
+            MvcCoreBootstrapFormRowBuilder builder = new MvcCoreBootstrapFormRowBuilder(config);
+
+            configAction(builder);
+            new RowRenderer(config, htmlHelper).Render();
+        }
     }
 }
