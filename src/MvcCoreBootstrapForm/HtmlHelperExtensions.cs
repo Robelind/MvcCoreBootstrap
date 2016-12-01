@@ -14,7 +14,7 @@ namespace MvcCoreBootstrapForm
     public static class HtmlHelperExtensions
     {
         /// <summary>
-        /// Renders an Mvc Core Bootstrap form.
+        /// Renders a Bootstrap form.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements form configuration.</param>
@@ -29,6 +29,13 @@ namespace MvcCoreBootstrapForm
             return(new FormRenderer().Render(config, htmlHelper, new HtmlParser()));
         }
 
+        /// <summary>
+        /// Renders a Bootstrap text input.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="expression">Model property expression.</param>
+        /// <param name="configAction">Action that implements text input configuration.</param>
+        /// <returns>Text input html markup.</returns>
         public static IHtmlContent BootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
@@ -44,6 +51,13 @@ namespace MvcCoreBootstrapForm
             return(new TextInputRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
+        /// <summary>
+        /// Renders a Bootstrap checkbox.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="expression">Model property expression.</param>
+        /// <param name="configAction">Action that implements checkbox configuration.</param>
+        /// <returns>Checkbox html markup.</returns>
         public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, bool>> expression, Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
         {
@@ -60,10 +74,8 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders MVC Bootstrap core radio buttons for a model property.
+        /// Renders Bootstrap buttons for a model property.
         /// </summary>
-        /// <typeparam name="TModel">Model type.</typeparam>
-        /// <typeparam name="TResult">Model property type.</typeparam>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
         /// <param name="values">Possible values for the property.</param>
@@ -98,11 +110,9 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders MVC Bootstrap core radio buttons for a (nullable) enum model property.
+        /// Renders Bootstrap radio buttons for an enum model property.
         /// The possible values for the property is extracted from the enum type.
         /// </summary>
-        /// <typeparam name="TModel">Model type.</typeparam>
-        /// <typeparam name="TResult">Model property type.</typeparam>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
         /// <param name="labels">Labels for each radio button (value).</param>
@@ -146,10 +156,8 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders MVC Bootstrap core radio buttons. Each radio button is configrued individually.
+        /// Renders Bootstrap radio buttons. Each radio button is configrued individually.
         /// </summary>
-        /// <typeparam name="TModel">Model type.</typeparam>
-        /// <typeparam name="TResult">Model property type.</typeparam>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
         /// <param name="configAction">Action that implements radio buttons configuration.</param>
@@ -171,13 +179,13 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders an Mvc Core Bootstrap dropdown.
+        /// Renders a Bootstrap dropdown.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
-        /// <param name="text">Alert text.</param>
-        /// <param name="state">Alert contextual state.</param>
+        /// <param name="expression">Model property expression.</param>
+        /// <param name="selectList">List containing the possible choices.</param>
         /// <param name="configAction">Action that implements alert configuration.</param>
-        /// <returns>Alert html markup.</returns>
+        /// <returns>Dropdown html markup.</returns>
         public static IHtmlContent BootstrapDropdownFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, IEnumerable<SelectListItem> selectList,
             Action<MvcCoreBootstrapDropdownBuilder> configAction = null)
@@ -195,7 +203,7 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
-        /// Renders an Mvc Core Bootstrap text area.
+        /// Renders a Bootstrap text area.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="expression">Model property expression.</param>
@@ -218,6 +226,11 @@ namespace MvcCoreBootstrapForm
             return(new TextAreaRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
 
+        /// <summary>
+        /// Renders a Bootstrap form row.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="configAction">Action that implements form row configuration.</param>
         public static void FormRow(this IHtmlHelper htmlHelper, Action<MvcCoreBootstrapFormRowBuilder> configAction)
         {
             RowConfig config = new RowConfig();
@@ -227,6 +240,11 @@ namespace MvcCoreBootstrapForm
             new RowRenderer(config, htmlHelper.ViewContext.Writer).Render();
         }
 
+        /// <summary>
+        /// Renders a Bootstrap form group.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="contents">Contents of the form group.</param>
         public static void FormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
         {
             new GroupRenderer(contents, htmlHelper.ViewContext.Writer).Render();

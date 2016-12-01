@@ -15,11 +15,11 @@ namespace MvcCoreBootstrapForm.Builders
         /// <summary>
         /// Sets a place holder text for the text input.
         /// </summary>
-        /// <param name="placeHolder">Place holder text.</param>
+        /// <param name="text">Place holder text.</param>
         /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder PlaceHolder(string placeHolder)
+        public MvcCoreBootstrapTextInputBuilder PlaceHolder(string text)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.PlaceHolder = placeHolder));
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.PlaceHolder = text));
         }
 
         /// <summary>
@@ -34,11 +34,11 @@ namespace MvcCoreBootstrapForm.Builders
         /// <summary>
         /// Sets the label for the text input.
         /// </summary>
-        /// <param name="label">Text input label.</param>
+        /// <param name="text">Text input label.</param>
         /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Label(string label)
+        public MvcCoreBootstrapTextInputBuilder Label(string text)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Label = label));
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Label = text));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MvcCoreBootstrapForm.Builders
         /// <summary>
         /// Sets the read only state for the text input.
         /// </summary>
-        /// <param name="disabled">If true, the text input is read only.</param>
+        /// <param name="conditon">If true, the text input is read only.</param>
         /// <returns>The text input builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder ReadOnly(bool conditon = true)
         {
@@ -73,17 +73,18 @@ namespace MvcCoreBootstrapForm.Builders
         /// <summary>
         /// Prepends a text for the text input, making it an input group.
         /// </summary>
-        /// <param name="prepend">String to prepend.</param>
+        /// <param name="text">Text to prepend.</param>
         /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Prepend(string prepend)
+        public MvcCoreBootstrapTextInputBuilder Prepend(string text)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Prepend = prepend));
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Prepend = text));
         }
 
         /// <summary>
-        /// Prepends a text for the text input, making it an input group.
+        /// Prepends an icon for the text input, making it an input group.
         /// </summary>
-        /// <param name="prepend">String to prepend.</param>
+        /// <param name="icon">Name of the icon.</param>
+        /// <param name="prefix">Icon prefix.</param>
         /// <returns>The text input builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder PrependIcon(string icon, string prefix = "glyphicon")
         {
@@ -95,9 +96,20 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Prepends a text for the text input, making it an input group.
+        /// Appends a text for the text input, making it an input group.
         /// </summary>
-        /// <param name="prepend">String to prepend.</param>
+        /// <param name="text">Text to append.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Append(string text)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Append = text));
+        }
+
+        /// <summary>
+        /// Appends an icon for the text input, making it an input group.
+        /// </summary>
+        /// <param name="icon">Name of the icon.</param>
+        /// <param name="prefix">Icon prefix.</param>
         /// <returns>The text input builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder AppendIcon(string icon, string prefix = "glyphicon")
         {
@@ -109,20 +121,10 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Appends a text for the text input, making it an input group.
-        /// </summary>
-        /// <param name="append">String to append.</param>
-        /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Append(string append)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Append = append));
-        }
-
-        /// <summary>
         /// Sets a css class for the text input element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
-        /// <param name="condition">If true, the css class will be set for the text input element.</param>
+        /// <param name="condition">If true, the css class will be applied to the text input.</param>
         /// <returns>The text input builder instance.</returns>
         public MvcCoreBootstrapTextInputBuilder CssClass(string cssClass, bool condition = true)
         {
