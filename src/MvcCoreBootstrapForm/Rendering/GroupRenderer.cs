@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System.IO;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
     internal class GroupRenderer
     {
-        private readonly GroupConfig _config;
-        private readonly IHtmlHelper _htmlHelper;
+        private readonly IHtmlContent[] _contents;
+        private readonly TextWriter _contentWriter;
 
-        public GroupRenderer(GroupConfig config, IHtmlHelper htmlHelper)
+        public GroupRenderer(IHtmlContent[] contents, TextWriter contentWriter)
         {
-            _config = config;
-            _htmlHelper = htmlHelper;
+            _contents = contents;
+            _contentWriter = contentWriter;
         }
 
         public void Render()
@@ -20,13 +20,13 @@ namespace MvcCoreBootstrapForm.Rendering
             TagBuilder group = new TagBuilder("div") {TagRenderMode = TagRenderMode.StartTag};
 
             group.AddCssClass("form-group");
-            _htmlHelper.ViewContext.Writer.WriteLine(group.AsString());
-            foreach(IHtmlContent content in _config.Contents)
+            _contentWriter.WriteLine(group.AsString());
+            foreach(IHtmlContent content in _contents)
             {
-                _htmlHelper.ViewContext.Writer.WriteLine(content.AsString());
+                _contentWriter.WriteLine(content.AsString());
             }
             group.TagRenderMode = TagRenderMode.EndTag;
-            _htmlHelper.ViewContext.Writer.WriteLine(group.AsString());
+            _contentWriter.WriteLine(group.AsString());
         }
     }
 }

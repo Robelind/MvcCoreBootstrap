@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapForm.Config;
@@ -8,12 +9,12 @@ namespace MvcCoreBootstrapForm.Rendering
     internal class RowRenderer
     {
         private readonly RowConfig _config;
-        private readonly IHtmlHelper _htmlHelper;
+        private readonly TextWriter _contentWriter;
 
-        public RowRenderer(RowConfig config, IHtmlHelper htmlHelper)
+        public RowRenderer(RowConfig config, TextWriter contentWriter)
         {
             _config = config;
-            _htmlHelper = htmlHelper;
+            _contentWriter = contentWriter;
         }
 
         public void Render()
@@ -30,18 +31,18 @@ namespace MvcCoreBootstrapForm.Rendering
                 columns.Add(column);
             }
 
-            _htmlHelper.ViewContext.Writer.WriteLine(row.AsString());
+            _contentWriter.WriteLine(row.AsString());
             for(var i = 0; i < columns.Count; i++)
             {
                 TagBuilder column = columns.ElementAt(i);
 
-                _htmlHelper.ViewContext.Writer.WriteLine(column.AsString());
-                _htmlHelper.ViewContext.Writer.WriteLine(_config.Columns.ElementAt(i).Content.AsString());
+                _contentWriter.WriteLine(column.AsString());
+                _contentWriter.WriteLine(_config.Columns.ElementAt(i).Content.AsString());
                 column.TagRenderMode = TagRenderMode.EndTag;
-                _htmlHelper.ViewContext.Writer.WriteLine(column.AsString());
+                _contentWriter.WriteLine(column.AsString());
             }
             row.TagRenderMode = TagRenderMode.EndTag;
-            _htmlHelper.ViewContext.Writer.WriteLine(row.AsString());
+            _contentWriter.WriteLine(row.AsString());
         }
     }
 }
