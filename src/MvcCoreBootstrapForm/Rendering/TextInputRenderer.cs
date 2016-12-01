@@ -21,7 +21,6 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             Element = this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, null, null));
             this.AddAttribute("placeholder", _config.PlaceHolder);
-            this.AddAttribute("disabled", _config.Disabled);
             this.AddAttribute("readonly", _config.ReadOnly);
 
             return(this.DoRender());

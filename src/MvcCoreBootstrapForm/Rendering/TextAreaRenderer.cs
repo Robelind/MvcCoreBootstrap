@@ -26,7 +26,6 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             Element = this.TagBuilderFromHtmlContent(HtmlHelper.TextAreaFor(Expression, _config.Rows));
             this.AddAttribute("rows", _config.Rows.ToString());
-            this.AddAttribute("disabled", _config.Disabled);
             this.AddAttribute("readonly", _config.ReadOnly);
 
             return(this.DoRender());

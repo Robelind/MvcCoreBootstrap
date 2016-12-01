@@ -28,15 +28,12 @@ namespace MvcCoreBootstrapForm.Rendering
 
             if(container != null)
             {
-                if(_config.Disabled)
-                {
-                    container.AddCssClass("disabled");
-                    checkBox.Attributes.Add("disabled", null);
-                }
                 container.AddCssClass("checkbox");
+                this.AddCssClass("disabled", _config.Disabled, container);
                 container.InnerHtml.AppendHtml(label);
             }
             //label.AddCssClass("control-label");
+            this.AddCssClass("disabled", _config.Disabled, checkBox);
             label.InnerHtml.AppendHtml(checkBox);
             label.InnerHtml.AppendHtml(propLabel?.InnerHtml);
             this.AddCssClass("checkbox-inline", _config.Inline, label);

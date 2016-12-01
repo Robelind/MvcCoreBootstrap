@@ -27,6 +27,7 @@ namespace MvcCoreBootstrapForm.Rendering
         protected IHtmlContent DoRender()
         {
             Element.AddCssClass("form-control");
+            this.AddAttribute("disabled", Config.Disabled);
             this.AddCssClasses(Config.CssClasses);
 
             return(this.RenderWithLabel());

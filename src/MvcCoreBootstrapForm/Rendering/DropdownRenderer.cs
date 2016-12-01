@@ -39,7 +39,6 @@ namespace MvcCoreBootstrapForm.Rendering
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
             this.AddAttribute("multiple", _config.Multiple);
-            this.AddAttribute("disabled", _config.Disabled);
 
             return(this.DoRender());
         }

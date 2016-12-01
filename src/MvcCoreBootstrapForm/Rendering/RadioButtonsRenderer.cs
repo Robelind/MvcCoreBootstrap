@@ -40,7 +40,7 @@ namespace MvcCoreBootstrapForm.Rendering
                         .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
                 TagBuilder container = new TagBuilder("div");
 
-                if(radioButtonConfig.Disabled)
+                if(radioButtonConfig.Disabled || _config.Disabled)
                 {
                     container.AddCssClass("disabled");
                     radioButton.Attributes.Add("disabled", null);

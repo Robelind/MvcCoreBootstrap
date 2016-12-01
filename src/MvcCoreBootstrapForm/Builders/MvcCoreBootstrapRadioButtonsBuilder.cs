@@ -46,6 +46,16 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Sets the disabled state for the radio buttons.
+        /// </summary>
+        /// <param name="disabled">If true, the radio buttons are disabled</param>
+        /// <returns>The radio buttons builder instance.</returns>
+        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Disabled(bool disabled = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Disabled = disabled));
+        }
+
+        /// <summary>
         /// Configures a radio button.
         /// </summary>
         /// <param name="value">Radio button value.</param>
