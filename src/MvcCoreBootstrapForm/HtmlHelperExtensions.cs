@@ -226,5 +226,12 @@ namespace MvcCoreBootstrapForm
             configAction(builder);
             new RowRenderer(config, htmlHelper).Render();
         }
+
+        public static void FormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
+        {
+            GroupConfig config = new GroupConfig(contents);
+
+            new GroupRenderer(config, htmlHelper).Render();
+        }
     }
 }
