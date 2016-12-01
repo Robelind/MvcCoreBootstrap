@@ -19,13 +19,35 @@ namespace MvcCoreBootstrapForm.Rendering
 
         public IHtmlContent Render()
         {
+            TagBuilder prepend = this.AddOn(_config.Prepend);
+            TagBuilder append = this.AddOn(_config.Append);
+            TagBuilder inputGroup = prepend != null || append != null ? new TagBuilder("div") : null;
+
             Element = _config.Password
                 ? this.TagBuilderFromHtmlContent(HtmlHelper.PasswordFor(Expression, null))
                 : this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, null, null));
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
 
-            return(this.DoRender());
+            if(inputGroup != null)
+            {
+                inputGroup.AddCssClass("input-group");
+                this.AddInner(prepend, inputGroup);
+                inputGroup.InnerHtml.AppendHtml(Element);
+                this.AddInner(append, inputGroup);
+            }
+
+            return(this.DoRender(inputGroup));
+        }
+
+        private TagBuilder AddOn(string text)
+        {
+            TagBuilder addOn = !string.IsNullOrEmpty(text) ? new TagBuilder("span") : null;
+
+            addOn?.AddCssClass("input-group-addon");
+            addOn?.InnerHtml.Append(text);
+
+            return(addOn);
         }
     }
 }

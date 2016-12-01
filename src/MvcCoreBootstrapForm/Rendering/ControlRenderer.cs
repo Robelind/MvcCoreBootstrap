@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Text.Encodings.Web;
@@ -25,45 +24,37 @@ namespace MvcCoreBootstrapForm.Rendering
             Expression = expression;
         }
 
-        protected IHtmlContent DoRender()
+        protected IHtmlContent DoRender(TagBuilder element = null)
         {
+            TagBuilder group = new TagBuilder("div");
+            TagBuilder label = this.Label();
+            TagBuilder widthContainer = this.ColumnWidths(label);
+            TagBuilder elementContainer = widthContainer ?? group;
+
             Element.AddCssClass("form-control");
             this.AddAttribute("disabled", Config.Disabled);
             this.AddCssClasses(Config.CssClasses);
+            group.AddCssClass("form-group");
+            this.AddInner(label, group);
+            this.AddInner(widthContainer, group);
+            elementContainer.InnerHtml.AppendHtml(element ?? Element);
 
-            return(this.RenderWithLabel());
+            return(group);
         }
 
-        protected IHtmlContent RenderWithLabel()
+        protected TagBuilder ColumnWidths(TagBuilder label)
         {
-            TagBuilder element = Element;
+            TagBuilder widthContainer = null;
             ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
-            TagBuilder label = this.Label();
-            TagBuilder group = null;
-
-            if(label != null)
-            {
-                group = new TagBuilder("div");
-                this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null, label); // TODO
-                group.AddCssClass("form-group");
-                group.InnerHtml.AppendHtml(label);
-                element = group;
-            }
 
             if(columnWidths != null)
             {
-                TagBuilder widthContainer = new TagBuilder("div");
-
+                widthContainer = new TagBuilder("div");
                 widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
-                widthContainer.InnerHtml.AppendHtml(Element);
-                group?.InnerHtml.AppendHtml(widthContainer);
-            }
-            else
-            {
-                group?.InnerHtml.AppendHtml(Element);
+                this.AddCssClass(columnWidths.LeftColumn.CssClass(), label != null, label);
             }
 
-            return(element);
+            return(widthContainer);
         }
 
         protected TagBuilder TagBuilderFromHtmlContent(IHtmlContent htmlContent, bool formControl = true)
@@ -116,6 +107,14 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             return(label);
+        }
+
+         protected void AddInner(TagBuilder inner, TagBuilder element = null)
+        {
+            if(inner != null)
+            {
+                (element ?? Element).InnerHtml.AppendHtml(inner);
+            }
         }
 
         protected string ValidationJs { get; } =
