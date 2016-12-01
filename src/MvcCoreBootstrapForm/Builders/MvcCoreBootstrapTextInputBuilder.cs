@@ -81,6 +81,34 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Prepends a text for the text input, making it an input group.
+        /// </summary>
+        /// <param name="prepend">String to prepend.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder PrependIcon(string icon, string prefix = "glyphicon")
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() =>
+            {
+                _config.PrependIcon = icon;
+                _config.PrependIconPrefix = prefix;
+            }));
+        }
+
+        /// <summary>
+        /// Prepends a text for the text input, making it an input group.
+        /// </summary>
+        /// <param name="prepend">String to prepend.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder AppendIcon(string icon, string prefix = "glyphicon")
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() =>
+            {
+                _config.AppendIcon = icon;
+                _config.AppendIconPrefix = prefix;
+            }));
+        }
+
+        /// <summary>
         /// Appends a text for the text input, making it an input group.
         /// </summary>
         /// <param name="append">String to append.</param>

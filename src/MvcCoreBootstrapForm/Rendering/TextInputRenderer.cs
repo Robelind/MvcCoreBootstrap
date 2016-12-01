@@ -19,33 +19,57 @@ namespace MvcCoreBootstrapForm.Rendering
 
         public IHtmlContent Render()
         {
-            TagBuilder prepend = this.AddOn(_config.Prepend);
-            TagBuilder append = this.AddOn(_config.Append);
-            TagBuilder inputGroup = prepend != null || append != null ? new TagBuilder("div") : null;
-
             Element = _config.Password
                 ? this.TagBuilderFromHtmlContent(HtmlHelper.PasswordFor(Expression, null))
                 : this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, null, null));
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
 
-            if(inputGroup != null)
-            {
-                inputGroup.AddCssClass("input-group");
-                this.AddInner(prepend, inputGroup);
-                inputGroup.InnerHtml.AppendHtml(Element);
-                this.AddInner(append, inputGroup);
-            }
+            TagBuilder inputGroup = this.InputGroup(ig => ig.InnerHtml.AppendHtml(Element));
 
             return(this.DoRender(inputGroup));
         }
 
-        private TagBuilder AddOn(string text)
+        private TagBuilder InputGroup(Action<TagBuilder> elementAction)
+        {
+            TagBuilder prependIcon = this.AddOn(_config.PrependIcon, _config.PrependIconPrefix);
+            TagBuilder prepend = prependIcon == null ? this.AddOn(_config.Prepend) : null;
+            TagBuilder appendIcon = this.AddOn(_config.AppendIcon, _config.AppendIconPrefix);
+            TagBuilder append = appendIcon == null ? this.AddOn(_config.Append) : null;
+            TagBuilder inputGroup = prepend != null || append != null || prependIcon != null || appendIcon != null
+                ? new TagBuilder("div")
+                : null;
+
+            if(inputGroup != null)
+            {
+                inputGroup.AddCssClass("input-group");
+                this.AddInner(prependIcon, inputGroup);
+                this.AddInner(prepend, inputGroup);
+                elementAction(inputGroup);
+                this.AddInner(appendIcon, inputGroup);
+                this.AddInner(append, inputGroup);
+            }
+
+            return(inputGroup);
+        }
+
+        private TagBuilder AddOn(string text, string iconPrefix = null)
         {
             TagBuilder addOn = !string.IsNullOrEmpty(text) ? new TagBuilder("span") : null;
 
             addOn?.AddCssClass("input-group-addon");
-            addOn?.InnerHtml.Append(text);
+            if(iconPrefix != null)
+            {
+                TagBuilder iconTag = new TagBuilder("span");
+
+                iconTag.AddCssClass(iconPrefix);
+                iconTag.AddCssClass($"{iconPrefix}-{text}");
+                addOn?.InnerHtml.AppendHtml(iconTag);
+            }
+            else
+            {
+                addOn?.InnerHtml.Append(text);
+            }
 
             return(addOn);
         }
