@@ -2,7 +2,7 @@
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace MvcCoreBootstrapForm.Rendering
+namespace MvcCoreBootstrapForm.Extensions
 {
     internal static class TagBuilderExtensions
     {

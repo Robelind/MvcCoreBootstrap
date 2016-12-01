@@ -1,7 +1,7 @@
 ﻿using System;
 using MvcCoreBootstrapForm.Config;
 
-namespace MvcCoreBootstrapForm.Rendering
+namespace MvcCoreBootstrapForm.Extensions
 {
     internal static class ColumnWidthExtensions
     {

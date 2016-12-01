@@ -62,6 +62,15 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
+        /// Configures the text input for password input.
+        /// </summary>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Password()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Password = true));
+        }
+
+        /// <summary>
         /// Sets a css class for the text input element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>

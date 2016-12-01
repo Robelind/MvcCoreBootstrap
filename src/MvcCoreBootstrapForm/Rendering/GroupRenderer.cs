@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {

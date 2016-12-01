@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapForm.Config;
+using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {

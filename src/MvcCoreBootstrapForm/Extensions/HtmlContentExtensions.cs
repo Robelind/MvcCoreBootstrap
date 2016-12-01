@@ -2,7 +2,7 @@
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 
-namespace MvcCoreBootstrapForm.Rendering
+namespace MvcCoreBootstrapForm.Extensions
 {
     internal static class HtmlContentExtensions
     {

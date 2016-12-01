@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
+using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
