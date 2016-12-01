@@ -14,8 +14,8 @@ namespace MvcCoreBootstrap.Rendering
         protected void BaseConfig(ConfigBase config, string cssClass = null, string statePrefix = null)
         {
             Debug.Assert(Element != null);
-            this.AddAttribute(Element, "id", config.Id);
-            this.AddAttribute(Element, "name", config.Name);
+            this.AddAttribute("id", config.Id);
+            this.AddAttribute("name", config.Name);
             Element.AddCssClass(cssClass);
             this.AddCssClasses(config.CssClasses);
             if(statePrefix != null)
@@ -48,11 +48,11 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
-        protected void AddAttribute(TagBuilder element, string attribute, string value)
+        protected void AddAttribute(string attribute, string value, TagBuilder element = null)
         {
             if(!string.IsNullOrEmpty(value))
             {
-                element.Attributes.Add(attribute, value);
+                (element ?? Element).Attributes.Add(attribute, value);
             }
         }
 

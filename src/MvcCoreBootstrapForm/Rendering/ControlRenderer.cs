@@ -32,19 +32,6 @@ namespace MvcCoreBootstrapForm.Rendering
             return(this.RenderWithLabel());
         }
 
-        protected IHtmlContent RenderInGroup(IEnumerable<TagBuilder> elements)
-        {
-            TagBuilder group = new TagBuilder("div");
-
-            group.AddCssClass("form-group");
-            foreach(TagBuilder element in elements)
-            {
-                group.InnerHtml.AppendHtml(element);
-            }
-
-            return(group);
-        }
-
         protected IHtmlContent RenderWithLabel()
         {
             TagBuilder element = Element;

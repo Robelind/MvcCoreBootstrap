@@ -28,7 +28,6 @@ namespace MvcCoreBootstrapForm.Rendering
             TResult propValue = Expression.Compile().Invoke(HtmlHelper.ViewData.Model);
 
             Element = this.TagBuilderFromHtmlContent(HtmlHelper.DropDownListFor(Expression, Enumerable.Empty<SelectListItem>()));
-            this.BaseConfig(_config);
             if(_config.NoInitialSelection && !_config.Multiple)
             {
                 Element.InnerHtml.AppendHtml("<option></option>");

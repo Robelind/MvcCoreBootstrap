@@ -221,8 +221,8 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             TableNode table = new TableNode("table");
 
-            this.AddAttribute(table.Element, "id", _config.Id);
-            this.AddAttribute(table.Element, "name", _config.Name);
+            this.AddAttribute("id", _config.Id, table.Element);
+            this.AddAttribute("name", _config.Name, table.Element);
             table.Element.AddCssClass("table");
             table.Element.AddCssClass(_config.Striped ? "table-striped" : null);
             table.Element.AddCssClass(_config.Bordered ? "table-bordered" : null);
