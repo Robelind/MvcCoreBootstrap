@@ -26,7 +26,7 @@ namespace MvcCoreBootstrapForm
 
             configAction?.Invoke(new MvcCoreBootstrapFormBuilder(config));
 
-            return(new FormRenderer().Render(config, htmlHelper, new HtmlParser()));
+            return(new FormRenderer(config, htmlHelper, new HtmlParser()).Render());
         }
 
         /// <summary>

@@ -13,16 +13,27 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal interface IFormRenderer
     {
-        MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser);
+        MvcForm Render();
     }
 
     internal class FormRenderer : RenderBase, IFormRenderer
     {
-        public MvcForm Render(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser)
+        private readonly FormConfig _config;
+        private readonly IHtmlHelper _htmlHelper;
+        private readonly IHtmlParser _htmlParser;
+
+        internal FormRenderer(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser)
+        {
+            _config = config;
+            _htmlHelper = htmlHelper;
+            _htmlParser = htmlParser;
+        }
+
+        public MvcForm Render()
         {
             IList<string> content = new List<string>();
-            MvcForm form = htmlHelper.BeginForm();
-            ViewBufferTextWriter viewWriter = htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
+            MvcForm form = _htmlHelper.BeginForm();
+            ViewBufferTextWriter viewWriter = _htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
             string formTag = null;
             StringWriter formWriter = new StringWriter();
             TagBuilder formBuilder = null;
@@ -37,7 +48,7 @@ namespace MvcCoreBootstrapForm.Rendering
                     formTag += value;
                     if(value == ">")
                     {
-                        formBuilder = htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag), false);
+                        formBuilder = _htmlParser.TagBuilderFromHtmlContent(new HtmlString(formTag), false);
                         formTag = null;
                     }
                 }
@@ -52,8 +63,8 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             Debug.Assert(formBuilder != null);
-            this.AddCssClass("form-horizontal", config.ColumnWidths != null, formBuilder);
-            this.AddCssClass("form-inline", config.Type == FormType.Inline, formBuilder);
+            this.AddCssClass("form-horizontal", _config.ColumnWidths != null, formBuilder);
+            this.AddCssClass("form-inline", _config.Type == FormType.Inline, formBuilder);
             formBuilder.TagRenderMode = TagRenderMode.StartTag;
             formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
             content.Add(formWriter.ToString());
@@ -66,13 +77,13 @@ namespace MvcCoreBootstrapForm.Rendering
             }
 
             // Add validation handling java script, if not already added.
-            if(htmlHelper.ViewBag.MvcBootStrapFormValJs == null)
+            if(_htmlHelper.ViewBag.MvcBootStrapFormValJs == null)
             {
                 viewWriter.WriteLine(ValidationJs);
-                htmlHelper.ViewBag.MvcBootStrapFormValJs = "MvcBootStrapFormValJs";
+                _htmlHelper.ViewBag.MvcBootStrapFormValJs = "MvcBootStrapFormValJs";
             }
 
-            htmlHelper.ViewBag.MvcBootStrapFormColumnWidths = config.ColumnWidths;
+            _htmlHelper.ViewBag.MvcBootStrapFormColumnWidths = _config.ColumnWidths;
 
             return (form);
         }
