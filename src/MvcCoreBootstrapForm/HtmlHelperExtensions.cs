@@ -14,22 +14,6 @@ namespace MvcCoreBootstrapForm
     public static class HtmlHelperExtensions
     {
         /// <summary>
-        /// Renders a Bootstrap form.
-        /// </summary>
-        /// <param name="htmlHelper">Html helper instance.</param>
-        /// <param name="configAction">Action that implements form configuration.</param>
-        /// <returns>Form html markup.</returns>
-        public static MvcForm MvcCoreBootstrapForm(this IHtmlHelper htmlHelper,
-            Action<MvcCoreBootstrapFormBuilder> configAction = null)
-        {
-            FormConfig config = new FormConfig();
-
-            configAction?.Invoke(new MvcCoreBootstrapFormBuilder(config));
-
-            return(new FormRenderer(config, htmlHelper, new HtmlParser()).Render());
-        }
-
-        /// <summary>
         /// Renders a Bootstrap text input.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>

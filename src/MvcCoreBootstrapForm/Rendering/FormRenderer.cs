@@ -18,9 +18,18 @@ namespace MvcCoreBootstrapForm.Rendering
 
     internal class FormRenderer : RenderBase, IFormRenderer
     {
+        private readonly FormParameters _parameters;
         private readonly FormConfig _config;
         private readonly IHtmlHelper _htmlHelper;
         private readonly IHtmlParser _htmlParser;
+
+        public FormRenderer(FormParameters parameters)
+        {
+            _parameters = parameters;
+            _config = _parameters.Config;
+            _htmlHelper = parameters.HtmlHelper;
+            _htmlParser = parameters.Parser;
+        }
 
         internal FormRenderer(FormConfig config, IHtmlHelper htmlHelper, IHtmlParser htmlParser)
         {
@@ -32,7 +41,7 @@ namespace MvcCoreBootstrapForm.Rendering
         public MvcForm Render()
         {
             IList<string> content = new List<string>();
-            MvcForm form = _htmlHelper.BeginForm();
+            MvcForm form = this.CreateForm();
             ViewBufferTextWriter viewWriter = _htmlHelper.ViewContext.Writer as ViewBufferTextWriter;
             string formTag = null;
             StringWriter formWriter = new StringWriter();
@@ -85,7 +94,34 @@ namespace MvcCoreBootstrapForm.Rendering
 
             _htmlHelper.ViewBag.MvcBootStrapFormColumnWidths = _config.ColumnWidths;
 
-            return (form);
+            return(form);
+        }
+
+         private MvcForm CreateForm()
+        {
+            MvcForm form;
+
+            if(_parameters.AntiForgery.HasValue)
+            {
+                form = _htmlHelper.BeginForm(_parameters.Method, _parameters.AntiForgery,
+                    _parameters.HtmlAttributes);
+            }
+            else if(_parameters.HtmlAttributes != null)
+            {
+                form = _htmlHelper.BeginForm(_parameters.ActionName, _parameters.ControllerName, _parameters.Method,
+                    _parameters.HtmlAttributes);
+            }
+            else if(_parameters.RouteValues != null)
+            {
+                form = _htmlHelper.BeginForm(_parameters.ActionName, _parameters.ControllerName, _parameters.Method,
+                    _parameters.RouteValues);
+            }
+            else
+            {
+                form = _htmlHelper.BeginForm(_parameters.Method);
+            }
+
+            return(form);
         }
 
         private string ValidationJs { get; } =
