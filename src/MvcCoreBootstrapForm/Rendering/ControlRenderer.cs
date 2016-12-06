@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
 using System.Text.Encodings.Web;
@@ -97,13 +98,16 @@ namespace MvcCoreBootstrapForm.Rendering
 
             if(Config.AutoLabel || !string.IsNullOrEmpty(Config.Label))
             {
-                label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, null, null), false);
-                if(!string.IsNullOrEmpty(Config.Label))
+                FormSetup formSetup = HtmlHelper.ViewBag.FormSetup as FormSetup;
+
+                Debug.Assert(formSetup != null);
+                label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, Config.Label, null), false);
+                /*if(!string.IsNullOrEmpty(Config.Label))
                 {
                     label.InnerHtml.Clear();
                     label.InnerHtml.Append(Config.Label);
-                }
-                label.AddCssClass("control-label");
+                }*/
+                this.AddCssClass("control-label", formSetup.Horizontal, label);
             }
 
             return(label);

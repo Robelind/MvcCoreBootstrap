@@ -73,7 +73,7 @@ namespace MvcCoreBootstrapForm.Rendering
 
             Debug.Assert(formBuilder != null);
             this.AddCssClass("form-horizontal", _config.ColumnWidths != null, formBuilder);
-            this.AddCssClass("form-inline", _config.Type == FormType.Inline, formBuilder);
+            this.AddCssClass("form-inline", _config.Inline, formBuilder);
             formBuilder.TagRenderMode = TagRenderMode.StartTag;
             formBuilder.WriteTo(formWriter, HtmlEncoder.Default);
             content.Add(formWriter.ToString());

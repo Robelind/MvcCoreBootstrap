@@ -13,44 +13,24 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Sets the id attribute for the form.
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <returns>The form builder instance.</returns>
-        public MvcCoreBootstrapFormBuilder Id(string id)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Id = id));
-        }
-
-        /// <summary>
-        /// Sets the name attribute for the form.
-        /// </summary>
-        /// <param name="name">Name</param>
-        /// <returns>The form builder instance.</returns>
-        public MvcCoreBootstrapFormBuilder Name(string name)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Name = name));
-        }
-
-        /// <summary>
-        /// Configures the form type.
-        /// </summary>
-        /// <param name="type">Form type.</param>
-        /// <returns>The form builder instance.</returns>
-        public MvcCoreBootstrapFormBuilder Type(FormType type)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Type = type));
-        }
-
-        /// <summary>
         /// Configures the form for horizontal layout.
         /// </summary>
-        /// <param name="type">Form type.</param>
+        /// <param name="left">Width of the left (label) column.</param>
+        /// <param name="right">Width of the right (control) column.</param>
         /// <returns>The form builder instance.</returns>
         public MvcCoreBootstrapFormBuilder Horizontal(ColumnWidth left, ColumnWidth right)
         {
             return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() =>
                 _config.ColumnWidths = new ColumnWidths {LeftColumn = left, RightColumn = right}));
+        }
+
+        /// <summary>
+        /// Configures the form for inline layout.
+        /// </summary>
+        /// <returns>The form builder instance.</returns>
+        public MvcCoreBootstrapFormBuilder Inline()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Inline = true));
         }
 
         /// <summary>
