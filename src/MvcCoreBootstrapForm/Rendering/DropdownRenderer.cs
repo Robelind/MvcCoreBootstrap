@@ -27,10 +27,11 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             TResult propValue = Expression.Compile().Invoke(HtmlHelper.ViewData.Model);
 
-            Element = this.TagBuilderFromHtmlContent(HtmlHelper.DropDownListFor(Expression, Enumerable.Empty<SelectListItem>()));
-            if(_config.NoInitialSelection && !_config.Multiple)
+            Element = this.TagBuilderFromHtmlContent(HtmlHelper.DropDownListFor(Expression, Enumerable.Empty<SelectListItem>(),
+                null, _config.HtmlAttributes));
+            if(_config.Default != null && !_config.Multiple)
             {
-                Element.InnerHtml.AppendHtml("<option></option>");
+                Element.InnerHtml.AppendHtml($"<option>{_config.Default}</option>");
             }
             foreach(var item in _config.Items)
             {
