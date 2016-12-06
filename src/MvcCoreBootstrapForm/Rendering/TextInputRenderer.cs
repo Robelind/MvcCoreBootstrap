@@ -21,7 +21,7 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             Element = _config.Password
                 ? this.TagBuilderFromHtmlContent(HtmlHelper.PasswordFor(Expression, null))
-                : this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, null, null));
+                : this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, _config.Format, _config.HtmlAttributes));
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
 
