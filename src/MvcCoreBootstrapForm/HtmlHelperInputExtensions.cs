@@ -290,5 +290,34 @@ namespace MvcCoreBootstrapForm
 
             return(new TextAreaRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
         }
+
+        /// <summary>
+        /// Renders a Bootstrap text area.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="expression">Model property expression.</param>
+        /// <param name="htmlAttributes">
+        /// An <see cref="T:System.Object" /> that contains the HTML attributes for the element. Alternatively, an
+        /// <see cref="T:System.Collections.Generic.IDictionary`2" /> instance containing the HTML
+        /// attributes.
+        /// </param>
+        /// <param name="rows">Number of rows in the text area.</param>
+        /// <param name="configAction">Action that implements text area configuration.</param>
+        /// <returns>Text area html markup.</returns>
+        public static IHtmlContent BootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression, object htmlAttributes, int rows = 3,
+            Action<MvcCoreBootstrapTextAreaBuilder> configAction = null)
+        {
+            TextAreaConfig config = new TextAreaConfig {HtmlAttributes = htmlAttributes, Rows = rows};
+
+            if(htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            configAction?.Invoke(new MvcCoreBootstrapTextAreaBuilder(config));
+
+            return(new TextAreaRenderer<TModel, TResult>(config, htmlHelper, expression).Render());
+        }
     }
 }
