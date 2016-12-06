@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MvcCoreBootstrap.Config;
+﻿using MvcCoreBootstrap.Config;
 
 namespace MvcCoreBootstrapAlert.Config
 {
@@ -7,6 +6,5 @@ namespace MvcCoreBootstrapAlert.Config
     {
         public string Text { get; set; }
         public bool Dismissable { get; set; }
-        public ModelStateDictionary ModelState { get; set; }
     }
 }

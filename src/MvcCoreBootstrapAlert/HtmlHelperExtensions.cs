@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap;
 using MvcCoreBootstrapAlert.Builders;
@@ -29,30 +28,6 @@ namespace MvcCoreBootstrapAlert
                 throw new ArgumentException(@"""Default"" is not a valid state for the alert.");
             }
             configAction?.Invoke(new MvcCoreBootstrapAlertBuilder(config));
-
-            return(new AlertRenderer().Render(config));
-        }
-
-        /// <summary>
-        /// Renders an Mvc Core Bootstrap alert as a form validation summary.
-        /// </summary>
-        /// <param name="htmlHelper">Html helper instance.</param>
-        /// <param name="modelState">Model state.</param>
-        /// <param name="state">Alert contextual state.</param>
-        /// <returns>Alert html markup.</returns>
-        public static IHtmlContent MvcCoreBootstrapAlert(this IHtmlHelper htmlHelper, ModelStateDictionary modelState,
-            ContextualState state)
-        {
-            AlertConfig config = new AlertConfig {State = state, ModelState = modelState};
-
-            if(modelState == null)
-            {
-                throw new ArgumentNullException(nameof(modelState));
-            }
-            if(state == ContextualState.Default)
-            {
-                throw new ArgumentException(@"""Default"" is not a valid state for the alert.");
-            }
 
             return(new AlertRenderer().Render(config));
         }
