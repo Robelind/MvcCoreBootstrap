@@ -22,7 +22,7 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             TagBuilder container = _config.Inline ? null : new TagBuilder("div");
             TagBuilder label = new TagBuilder("label");
-            TagBuilder checkBox = this.TagBuilderFromHtmlContent(HtmlHelper.CheckBoxFor(Expression, null), false);
+            TagBuilder checkBox = this.TagBuilderFromHtmlContent(HtmlHelper.CheckBoxFor(Expression, _config.HtmlAttributes), false);
             TagBuilder propLabel = this.Label();
             ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
             TagBuilder element = container ?? label;

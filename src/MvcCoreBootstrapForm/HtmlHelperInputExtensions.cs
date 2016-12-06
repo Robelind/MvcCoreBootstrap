@@ -111,6 +111,34 @@ namespace MvcCoreBootstrapForm
         }
 
         /// <summary>
+        /// Renders a Bootstrap checkbox.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="expression">Model property expression.</param>
+        /// <param name="htmlAttributes">
+        /// An <see cref="T:System.Object" /> that contains the HTML attributes for the checkbox element. Alternatively, an
+        /// <see cref="T:System.Collections.Generic.IDictionary`2" /> instance containing the HTML
+        /// attributes.
+        /// </param>
+        /// <param name="configAction">Action that implements checkbox configuration.</param>
+        /// <returns>Checkbox html markup.</returns>
+        public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, bool>> expression, object htmlAttributes,
+            Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
+        {
+            CheckBoxConfig config = new CheckBoxConfig {HtmlAttributes = htmlAttributes};
+
+            if (htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            configAction?.Invoke(new MvcCoreBootstrapCheckBoxBuilder(config));
+
+            return(new CheckBoxRenderer<TModel>(config, htmlHelper, expression).Render());
+        }
+
+        /// <summary>
         /// Renders Bootstrap buttons for a model property.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
