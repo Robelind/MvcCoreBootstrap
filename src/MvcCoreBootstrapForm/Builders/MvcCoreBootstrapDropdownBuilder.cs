@@ -52,24 +52,6 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Configures the dropdown for multi select.
-        /// </summary>
-        /// <returns>The dropdown builder instance.</returns>
-        public MvcCoreBootstrapDropdownBuilder Multiple()
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Multiple = true));
-        }
-
-        /// <summary>
-        /// Configures whether no item will be initially selected in the dropdown.
-        /// </summary>
-        /// <returns>The dropdown builder instance.</returns>
-        public MvcCoreBootstrapDropdownBuilder NoInitialSelection(bool condition)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.NoInitialSelection = condition));
-        }
-
-        /// <summary>
         /// Sets the disabled state for the text input.
         /// </summary>
         /// <param name="disabled">If true, the text input is disabled</param>
