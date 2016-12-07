@@ -39,24 +39,28 @@ namespace MvcCoreBootstrapForm.Rendering
                 TagBuilder label = new TagBuilder("label");
                 TagBuilder radioButton = this.TagBuilderFromHtmlContent(HtmlHelper
                         .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
-                TagBuilder container = new TagBuilder("div");
+                TagBuilder container = !_config.Horizontal ? new TagBuilder("div") : null;
 
                 if(radioButtonConfig.Disabled || _config.Disabled)
                 {
-                    container.AddCssClass("disabled");
+                    container?.AddCssClass("disabled");
+                    label.AddCssClass("disabled");
                     radioButton.Attributes.Add("disabled", null);
                 }
-                container.AddCssClass(_config.Horizontal ? "radio-inline" : "radio");
-                container.InnerHtml.AppendHtml(label);
-                this.AddCssClasses(_config.CssClasses, container);
+                if(container != null)
+                {
+                    container.AddCssClass("radio");
+                    container.InnerHtml.AppendHtml(label);
+                    this.AddCssClasses(radioButtonConfig.CssClasses, container);
+                }
+                this.AddCssClass("radio-inline", _config.Horizontal, label);
                 label.InnerHtml.AppendHtml(radioButton);
-                //label.AddCssClass("control-label");
                 if(!string.IsNullOrEmpty(radioButtonConfig.Label))
                 {
                     label.InnerHtml.Append(radioButtonConfig.Label);
                 }
 
-                (widthContainer ?? group).InnerHtml.AppendHtml(container);
+                (widthContainer ?? group).InnerHtml.AppendHtml(container ?? label);
             }
 
             return(group);
