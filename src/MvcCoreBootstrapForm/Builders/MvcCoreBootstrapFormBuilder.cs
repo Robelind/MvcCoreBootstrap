@@ -32,16 +32,5 @@ namespace MvcCoreBootstrapForm.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Inline = true));
         }
-
-        /// <summary>
-        /// Sets a css class for the form.
-        /// </summary>
-        /// <param name="cssClass">Name of css class.</param>
-        /// <param name="condition">If true, the css class will be set for the form element.</param>
-        /// <returns>The form builder instance.</returns>
-        public MvcCoreBootstrapFormBuilder CssClass(string cssClass, bool condition = true)
-        {
-            return(this.AddCssClass<MvcCoreBootstrapFormBuilder>(_config.CssClasses, cssClass, condition));
-        }
     }
 }

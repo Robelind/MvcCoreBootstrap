@@ -102,36 +102,18 @@ namespace MvcCoreBootstrapForm.Rendering
 
                 Debug.Assert(formSetup != null);
                 label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, Config.Label, null), false);
-                /*if(!string.IsNullOrEmpty(Config.Label))
-                {
-                    label.InnerHtml.Clear();
-                    label.InnerHtml.Append(Config.Label);
-                }*/
                 this.AddCssClass("control-label", formSetup.Horizontal, label);
             }
 
             return(label);
         }
 
-         protected void AddInner(TagBuilder inner, TagBuilder element = null)
+        protected void AddInner(TagBuilder inner, TagBuilder element = null)
         {
             if(inner != null)
             {
                 (element ?? Element).InnerHtml.AppendHtml(inner);
             }
         }
-
-        protected string ValidationJs { get; } =
-            @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
-            $('#{0}').show();
-            if ($('#{0} ul').children().length > 1) {{
-                $('#{0} ul').show();
-                $('#{0} span').hide();
-            }} else {{
-                $('#{0} span').html($('#{0} ul li').first().text());
-                $('#{0} span').show();
-                $('#{0} ul').hide();
-            }}
-        }});";
     }
 }
