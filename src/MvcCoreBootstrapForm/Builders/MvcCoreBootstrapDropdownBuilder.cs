@@ -13,26 +13,6 @@ namespace MvcCoreBootstrapForm.Builders
         }
 
         /// <summary>
-        /// Sets the id attribute for the dropdown.
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <returns>The dropdown builder instance.</returns>
-        public MvcCoreBootstrapDropdownBuilder Id(string id)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Id = id));
-        }
-
-        /// <summary>
-        /// Sets the name attribute for the dropdown.
-        /// </summary>
-        /// <param name="name">Name</param>
-        /// <returns>The dropdown builder instance.</returns>
-        public MvcCoreBootstrapDropdownBuilder Name(string name)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Name = name));
-        }
-
-        /// <summary>
         /// Do not generate a label automatically for the dropdown.
         /// </summary>
         /// <returns>The dropdown builder instance.</returns>
@@ -55,10 +35,10 @@ namespace MvcCoreBootstrapForm.Builders
         /// Sets the disabled state for the text input.
         /// </summary>
         /// <param name="disabled">If true, the text input is disabled</param>
-        /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder Disabled(bool disabled = true)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+            return(this.SetConfigProp<MvcCoreBootstrapDropdownBuilder>(() => _config.Disabled = disabled));
         }
 
         /// <summary>
