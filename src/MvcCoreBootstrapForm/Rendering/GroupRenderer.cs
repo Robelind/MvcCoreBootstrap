@@ -1,33 +1,51 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
     internal class GroupRenderer
     {
-        private readonly IHtmlContent[] _contents;
-        private readonly TextWriter _contentWriter;
+        private readonly IEnumerable<IHtmlContent> _contents;
+        private readonly string _label;
 
-        public GroupRenderer(IHtmlContent[] contents, TextWriter contentWriter)
+        public GroupRenderer(IEnumerable<IHtmlContent> contents, string label)
         {
             _contents = contents;
-            _contentWriter = contentWriter;
+            _label = label;
         }
 
-        public void Render()
+        public IHtmlContent Render()
         {
+            //IHtmlContentBuilder builder = new HtmlContentBuilder();
             TagBuilder group = new TagBuilder("div") {TagRenderMode = TagRenderMode.StartTag};
+            TextWriter writer = new StringWriter();
 
             group.AddCssClass("form-group");
-            _contentWriter.WriteLine(group.AsString());
+            group.WriteTo(writer, HtmlEncoder.Default);
+            if(_label != null)
+            {
+                TagBuilder label = new TagBuilder("label");
+
+                label.InnerHtml.Append(_label);
+                //group.InnerHtml.AppendHtml(label);
+                label.WriteTo(writer, HtmlEncoder.Default);
+            }
+            //builder.AppendHtml(group);
             foreach(IHtmlContent content in _contents)
             {
-                _contentWriter.WriteLine(content.AsString());
+                //builder.AppendHtml(content);
+                writer.Write(content);
             }
             group.TagRenderMode = TagRenderMode.EndTag;
-            _contentWriter.WriteLine(group.AsString());
+            group.WriteTo(writer, HtmlEncoder.Default);
+            //builder.AppendHtml(group);
+
+            return(new HtmlString(writer.ToString()));
         }
     }
 }

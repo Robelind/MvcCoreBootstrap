@@ -30,9 +30,20 @@ namespace MvcCoreBootstrapForm
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="contents">Contents of the form group.</param>
-        public static void BootstrapFormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
+        public static IHtmlContent BootstrapFormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
         {
-            new GroupRenderer(contents, htmlHelper.ViewContext.Writer).Render();
+            return(new GroupRenderer(contents, null).Render());
+        }
+
+        /// <summary>
+        /// Renders a Bootstrap form group.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="contents">Contents of the form group.</param>
+        /// <param name="label">Label for the form group.</param>
+        public static IHtmlContent BootstrapFormGroup(this IHtmlHelper htmlHelper, string label, params IHtmlContent[] contents)
+        {
+            return(new GroupRenderer(contents, label).Render());
         }
 
         /// <summary>
