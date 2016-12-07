@@ -39,7 +39,7 @@ namespace MvcCoreBootstrapForm.Rendering
             foreach(IHtmlContent content in _contents)
             {
                 //builder.AppendHtml(content);
-                writer.Write(content);
+                content.WriteTo(writer, HtmlEncoder.Default);
             }
             group.TagRenderMode = TagRenderMode.EndTag;
             group.WriteTo(writer, HtmlEncoder.Default);

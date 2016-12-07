@@ -16,13 +16,15 @@ namespace MvcCoreBootstrapForm
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements form row configuration.</param>
-        public static void BootstrapFormRow(this IHtmlHelper htmlHelper, Action<MvcCoreBootstrapFormRowBuilder> configAction)
+        public static IHtmlContent BootstrapFormRow(this IHtmlHelper htmlHelper,
+            Action<MvcCoreBootstrapFormRowBuilder> configAction)
         {
             RowConfig config = new RowConfig();
             MvcCoreBootstrapFormRowBuilder builder = new MvcCoreBootstrapFormRowBuilder(config);
 
             configAction(builder);
-            new RowRenderer(config, htmlHelper.ViewContext.Writer).Render();
+
+            return(new RowRenderer(config).Render());
         }
 
         /// <summary>
