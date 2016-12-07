@@ -17,27 +17,27 @@ namespace MvcCoreBootstrapForm.Builders
         /// </summary>
         /// <param name="disabled">If true, the check box is disabled</param>
         /// <returns>The check box builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Disabled(bool disabled = true)
+        public MvcCoreBootstrapCheckBoxBuilder Disabled(bool disabled = true)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Disabled = disabled));
+            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.Disabled = disabled));
         }
 
         /// <summary>
         /// Renders the check box inline, i.e. next to other check boxes.
         /// </summary>
         /// <returns>The check box builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Inline()
+        public MvcCoreBootstrapCheckBoxBuilder Inline()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Inline = true));
+            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.Inline = true));
         }
 
         /// <summary>
         /// Do not generate a label automatically for the check box.
         /// </summary>
         /// <returns>The check box builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder NoLabel()
+        public MvcCoreBootstrapCheckBoxBuilder NoLabel()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.AutoLabel = false));
+            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.AutoLabel = false));
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace MvcCoreBootstrapForm.Builders
         /// </summary>
         /// <param name="label">check box label.</param>
         /// <returns>The check box builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder Label(string label)
+        public MvcCoreBootstrapCheckBoxBuilder Label(string label)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() => _config.Label = label));
+            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.Label = label));
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace MvcCoreBootstrapForm.Builders
         /// <param name="cssClass">Name of css class.</param>
         /// <param name="condition">If true, the css class will be set for the check box element.</param>
         /// <returns>The check box builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder CssClass(string cssClass, bool condition = true)
+        public MvcCoreBootstrapCheckBoxBuilder CssClass(string cssClass, bool condition = true)
         {
-            return(this.AddCssClass<MvcCoreBootstrapTextInputBuilder>(_config.CssClasses, cssClass, condition));
+            return(this.AddCssClass<MvcCoreBootstrapCheckBoxBuilder>(_config.CssClasses, cssClass, condition));
         }
     }
 }
