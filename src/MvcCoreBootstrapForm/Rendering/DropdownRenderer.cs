@@ -35,7 +35,7 @@ namespace MvcCoreBootstrapForm.Rendering
             }
             foreach(var item in _config.Items)
             {
-                string selected = item.Value == propValue.ToString() ? "selected" : null;
+                string selected = propValue != null && item.Value == propValue.ToString() ? "selected" : null;
 
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
