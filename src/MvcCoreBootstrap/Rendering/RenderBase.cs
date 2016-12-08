@@ -56,6 +56,14 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
+        protected void AddAttribute(string attribute, string value, bool condition, TagBuilder element = null)
+        {
+            if(condition)
+            {
+                (element ?? Element).Attributes.Add(attribute, value);
+            }
+        }
+
         protected void AddAttribute(string attribute, bool condition, TagBuilder element = null)
         {
             if(condition)

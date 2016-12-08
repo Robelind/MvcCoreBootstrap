@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap;
 using MvcCoreBootstrapForm.Builders;
@@ -52,20 +51,40 @@ namespace MvcCoreBootstrapForm
         /// Renders an Mvc Core Bootstrap form validation summary.
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
-        /// <param name="modelState">Model state.</param>
         /// <param name="state">Validation summary contextual state. Defaults to "Danger"</param>
         /// <returns>Validation summary html markup.</returns>
-        public static IHtmlContent BootstrapValidationSummary(this IHtmlHelper htmlHelper, ModelStateDictionary modelState,
+        public static IHtmlContent BootstrapValidationSummary(this IHtmlHelper htmlHelper,
             ContextualState state = ContextualState.Danger)
         {
-            ValidationSummaryConfig config = new ValidationSummaryConfig {State = state, ModelState = modelState};
+            ValidationSummaryConfig config = new ValidationSummaryConfig {State = state};
 
             if(htmlHelper == null)
                 throw new ArgumentNullException(nameof(htmlHelper));
-            if(modelState == null)
+            if(state == ContextualState.Default)
             {
-                throw new ArgumentNullException(nameof(modelState));
+                throw new ArgumentException(@"""Default"" is not a valid state for the validation summary.");
             }
+
+            return(new ValidationSummaryRenderer(config, htmlHelper).Render());
+        }
+
+        /// <summary>
+        /// Renders an Mvc Core Bootstrap form validation summary.
+        /// </summary>
+        /// <param name="htmlHelper">Html helper instance.</param>
+        /// <param name="excludePropertyErrors">If <c>true</c>, display model-level errors only; otherwise display all errors.</param>
+        /// <param name="state">Validation summary contextual state. Defaults to "Danger"</param>
+        /// <returns>Validation summary html markup.</returns>
+        public static IHtmlContent BootstrapValidationSummary(this IHtmlHelper htmlHelper, bool excludePropertyErrors,
+            ContextualState state = ContextualState.Danger)
+        {
+            ValidationSummaryConfig config = new ValidationSummaryConfig
+            {
+                State = state, ExcludePropertyErrors = excludePropertyErrors
+            };
+
+            if(htmlHelper == null)
+                throw new ArgumentNullException(nameof(htmlHelper));
             if(state == ContextualState.Default)
             {
                 throw new ArgumentException(@"""Default"" is not a valid state for the validation summary.");

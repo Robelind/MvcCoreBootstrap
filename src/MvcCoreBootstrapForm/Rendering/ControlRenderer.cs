@@ -77,13 +77,18 @@ namespace MvcCoreBootstrapForm.Rendering
             int index = element.IndexOf(' ');
             TagBuilder tag = new TagBuilder(element.Substring(1, index - 1));
 
-            element = element.Substring(index + 1, element.IndexOf('/') - (index + 1)).Trim();
-            index = element.IndexOf('>');
-            if(index != -1)
+            element = element.Substring(index + 1);
+            if(element.Contains("/>"))
             {
-                // Element has a text value.
+                element = element.Substring(0, element.IndexOf("/>")).Trim();
+            }
+            else
+            {
+                // Element has a inner value.
+                index = element.IndexOf('>');
+                Debug.Assert(index != -1);
                 tag.InnerHtml.Append(element.Substring(index + 1, element.IndexOf('<') - (index + 1)));
-                element = element.Substring(0, index);
+                element = element.Substring(0, index).Trim();
             }
 
             // Parse out the individual attributes.
@@ -95,8 +100,6 @@ namespace MvcCoreBootstrapForm.Rendering
                 tag.Attributes.Add(element.Substring(0, index), element.Substring(index + 2, index2 - (index + 2)));
                 element = element.Substring(index2 + 1);
             }
-
-            //this.AddCssClass("form-control", formControl, tag);
 
             return(tag);
         }

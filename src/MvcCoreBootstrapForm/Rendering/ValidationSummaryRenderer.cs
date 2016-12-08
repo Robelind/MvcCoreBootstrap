@@ -26,56 +26,57 @@ namespace MvcCoreBootstrapForm.Rendering
 
         public IHtmlContent Render()
         {
-            IEnumerable<ModelError> errors = _config.ModelState.SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList();
-            TagBuilder msg = new TagBuilder("span");
-            TagBuilder msgs = new TagBuilder("ul");
+            IEnumerable<ModelError> errors = _config.ExcludePropertyErrors
+                ? _htmlHelper.ViewContext.ModelState.Where(keyValuePair => keyValuePair.Key == string.Empty)
+                    .SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList()
+                : _htmlHelper.ViewContext.ModelState.SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList();
 
-            Element = new TagBuilder("div");
-            this.BaseConfig(_config, "alert", "alert-");
-            Element.Attributes.Add("role", "alert");
+            if(errors.Any() || !_config.ExcludePropertyErrors)
+            {
+                TagBuilder msg = new TagBuilder("span");
+                TagBuilder msgs = new TagBuilder("ul");
 
-            Element.Attributes.Add("data-valmsg-summary", "true");
-            if(!errors.Any())
-            {
-                Element.Attributes.Add("style", "display:none;");
+                Element = new TagBuilder("div");
+                this.BaseConfig(_config, "alert", "alert-");
+                Element.Attributes.Add("role", "alert");
+
+                Element.Attributes.Add("data-valmsg-summary", "true");
+                this.AddAttribute("style", "display:none;", !errors.Any());
+                this.AddCssClass("NoPropErrors", _config.ExcludePropertyErrors);
+                this.AddAttribute("style", "display:none;", errors.Count() > 1, msg);
+                if(errors.Count() == 1)
+                {
+                    msg.InnerHtml.Append(errors.First().ErrorMessage);
+                }
+                Element.InnerHtml.AppendHtml(msg);
+
+                foreach(ModelError error in errors)
+                {
+                    msg = new TagBuilder("li");
+                    msg.InnerHtml.Append(error.ErrorMessage);
+                    msgs.InnerHtml.AppendHtml(msg);
+                }
+
+                this.AddAttribute("style", "display:none;", errors.Count() == 1, msgs);
+                Element.InnerHtml.AppendHtml(msgs);
+                this.AddJavaScript(sb => sb.Append(string.Format(ValidationJs, _config.Id)));
             }
 
-            if(errors.Count() > 1)
-            {
-                msg.Attributes.Add("style", "display:none;");
-            }
-            else if(errors.Count() == 1)
-            {
-                msg.InnerHtml.Append(errors.First().ErrorMessage);
-            }
-            Element.InnerHtml.AppendHtml(msg);
-
-            foreach(ModelError error in errors)
-            {
-                msg = new TagBuilder("li");
-                msg.InnerHtml.Append(error.ErrorMessage);
-                msgs.InnerHtml.AppendHtml(msg);
-            }
-            if(errors.Count() == 1)
-            {
-                msgs.Attributes.Add("style", "display:none;");
-            }
-            Element.InnerHtml.AppendHtml(msgs);
-            this.AddJavaScript(sb => sb.Append(string.Format(ValidationJs, _config.Id)));
-                        
             return(Element);
         }
 
         private string ValidationJs { get; } =
         @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
-            $('#{0}').show();
-            if ($('#{0} ul').children().length > 1) {{
-                $('#{0} ul').show();
-                $('#{0} span').hide();
-            }} else {{
-                $('#{0} span').html($('#{0} ul li').first().text());
-                $('#{0} span').show();
-                $('#{0} ul').hide();
+            if(!$('#{0}').hasClass('NoPropErrors')) {{
+                $('#{0}').show();
+                if ($('#{0} ul').children().length > 1) {{
+                    $('#{0} ul').show();
+                    $('#{0} span').hide();
+                }} else {{
+                    $('#{0} span').html($('#{0} ul li').first().text());
+                    $('#{0} span').show();
+                    $('#{0} ul').hide();
+                }}
             }}
         }});";
     }
