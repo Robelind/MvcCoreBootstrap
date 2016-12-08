@@ -39,7 +39,7 @@ namespace MvcCoreBootstrapForm.Builders
         /// <returns>The form builder instance.</returns>
         public MvcCoreBootstrapFormBuilder NoPropertyValidationMessages()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.PropertyValidationMessages = true));
+            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.PropertyValidationMessages = false));
         }
     }
 }
