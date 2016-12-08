@@ -223,7 +223,11 @@ namespace MvcCoreBootstrapForm
                 RouteValues = routeValues,
             };
             
-            htmlHelper.ViewBag.FormSetup = new FormSetup {Horizontal = config.ColumnWidths != null};
+            htmlHelper.ViewBag.FormSetup = new FormSetup
+            {
+                Horizontal = config.ColumnWidths != null,
+                PropertyValidationMessages = config.PropertyValidationMessages,
+            };
 
             return(new FormRenderer(parameters).Render());
         }

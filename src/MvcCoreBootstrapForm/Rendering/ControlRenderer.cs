@@ -16,6 +16,7 @@ namespace MvcCoreBootstrapForm.Rendering
         protected readonly ControlConfig Config;
         protected readonly IHtmlHelper<TModel> HtmlHelper;
         protected readonly Expression<Func<TModel, TResult>> Expression;
+        private FormSetup _formSetup;
 
         protected ControlRenderer(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
@@ -23,6 +24,8 @@ namespace MvcCoreBootstrapForm.Rendering
             Config = config;
             HtmlHelper = htmlHelper;
             Expression = expression;
+            _formSetup = HtmlHelper.ViewBag.FormSetup as FormSetup;
+            Debug.Assert(_formSetup != null);
         }
 
         protected IHtmlContent DoRender(TagBuilder element = null)
@@ -39,6 +42,12 @@ namespace MvcCoreBootstrapForm.Rendering
             this.AddInner(label, group);
             this.AddInner(widthContainer, group);
             elementContainer.InnerHtml.AppendHtml(element ?? Element);
+
+            if(_formSetup.PropertyValidationMessages)
+            {
+                // Add a validation message element, in case failed property validations are to be displayed.
+                group.InnerHtml.AppendHtml(HtmlHelper.ValidationMessageFor(Expression));
+            }
 
             return(group);
         }
@@ -98,11 +107,8 @@ namespace MvcCoreBootstrapForm.Rendering
 
             if(Config.AutoLabel || !string.IsNullOrEmpty(Config.Label))
             {
-                FormSetup formSetup = HtmlHelper.ViewBag.FormSetup as FormSetup;
-
-                Debug.Assert(formSetup != null);
                 label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, Config.Label, null), false);
-                this.AddCssClass("control-label", formSetup.Horizontal, label);
+                this.AddCssClass("control-label", _formSetup.Horizontal, label);
             }
 
             return(label);

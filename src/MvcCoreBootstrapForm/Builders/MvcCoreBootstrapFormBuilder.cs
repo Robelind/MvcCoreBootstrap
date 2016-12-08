@@ -32,5 +32,14 @@ namespace MvcCoreBootstrapForm.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.Inline = true));
         }
+
+        /// <summary>
+        /// Configures the form to not display messages for failed property validations.
+        /// </summary>
+        /// <returns>The form builder instance.</returns>
+        public MvcCoreBootstrapFormBuilder NoPropertyValidationMessages()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapFormBuilder>(() => _config.PropertyValidationMessages = true));
+        }
     }
 }
