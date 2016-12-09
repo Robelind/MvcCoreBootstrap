@@ -20,7 +20,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="expression">Model property expression.</param>
         /// <param name="configAction">Action that implements text input configuration.</param>
         /// <returns>Text input html markup.</returns>
-        public static IHtmlContent BootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
             TextInputConfig config = new TextInputConfig();
@@ -45,7 +45,7 @@ namespace MvcCoreBootstrapForm
         /// </param>
         /// <param name="configAction">Action that implements text input configuration.</param>
         /// <returns>Text input html markup.</returns>
-        public static IHtmlContent BootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, string format, Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
             TextInputConfig config = new TextInputConfig {Format = format};
@@ -72,7 +72,7 @@ namespace MvcCoreBootstrapForm
         /// </param>
         /// <param name="configAction">Action that implements text input configuration.</param>
         /// <returns>Text input html markup.</returns>
-        public static IHtmlContent BootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapTextInputFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, object htmlAttributes,
             Action<MvcCoreBootstrapTextInputBuilder> configAction = null)
         {
@@ -95,7 +95,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="expression">Model property expression.</param>
         /// <param name="configAction">Action that implements checkbox configuration.</param>
         /// <returns>Checkbox html markup.</returns>
-        public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, bool>> expression, Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
         {
             CheckBoxConfig config = new CheckBoxConfig();
@@ -122,7 +122,7 @@ namespace MvcCoreBootstrapForm
         /// </param>
         /// <param name="configAction">Action that implements checkbox configuration.</param>
         /// <returns>Checkbox html markup.</returns>
-        public static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, bool>> expression, object htmlAttributes,
             Action<MvcCoreBootstrapCheckBoxBuilder> configAction = null)
         {
@@ -147,7 +147,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="labels">Labels for each radio button (value).</param>
         /// <param name="configAction">Action that implements radio buttons configuration.</param>
         /// <returns>Radio buttons html markup.</returns>
-        public static IHtmlContent BootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, IEnumerable<object> values, IEnumerable<string> labels,
             Action<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>> configAction = null)
         {
@@ -183,7 +183,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="labels">Labels for each radio button (value).</param>
         /// <param name="configAction">Action that implements radio buttons configuration.</param>
         /// <returns>Radio buttons html markup.</returns>
-        public static IHtmlContent BootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, IEnumerable<string> labels,
             Action<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>> configAction = null) where TModel : class
         {
@@ -227,7 +227,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="expression">Model property expression.</param>
         /// <param name="configAction">Action that implements radio buttons configuration.</param>
         /// <returns>Radio buttons html markup.</returns>
-        public static IHtmlContent BootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapRadioButtonsFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression,
             Action<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>> configAction)
         {
@@ -251,7 +251,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="rows">Number of rows in the text area.</param>
         /// <param name="configAction">Action that implements text area configuration.</param>
         /// <returns>Text area html markup.</returns>
-        public static IHtmlContent BootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, int rows = 3,
             Action<MvcCoreBootstrapTextAreaBuilder> configAction = null)
         {
@@ -280,7 +280,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="rows">Number of rows in the text area.</param>
         /// <param name="configAction">Action that implements text area configuration.</param>
         /// <returns>Text area html markup.</returns>
-        public static IHtmlContent BootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapTextAreaFor<TModel, TResult>(this IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, object htmlAttributes, int rows = 3,
             Action<MvcCoreBootstrapTextAreaBuilder> configAction = null)
         {

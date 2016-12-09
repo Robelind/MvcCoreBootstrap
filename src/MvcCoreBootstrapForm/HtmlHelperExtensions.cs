@@ -15,7 +15,7 @@ namespace MvcCoreBootstrapForm
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements form row configuration.</param>
-        public static IHtmlContent BootstrapFormRow(this IHtmlHelper htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapFormRow(this IHtmlHelper htmlHelper,
             Action<MvcCoreBootstrapFormRowBuilder> configAction)
         {
             RowConfig config = new RowConfig();
@@ -31,7 +31,7 @@ namespace MvcCoreBootstrapForm
         /// </summary>
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="contents">Contents of the form group.</param>
-        public static IHtmlContent BootstrapFormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
+        public static IHtmlContent MvcCoreBootstrapFormGroup(this IHtmlHelper htmlHelper, params IHtmlContent[] contents)
         {
             return(new GroupRenderer(contents, null).Render());
         }
@@ -42,7 +42,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="contents">Contents of the form group.</param>
         /// <param name="label">Label for the form group.</param>
-        public static IHtmlContent BootstrapFormGroup(this IHtmlHelper htmlHelper, string label, params IHtmlContent[] contents)
+        public static IHtmlContent MvcCoreBootstrapFormGroup(this IHtmlHelper htmlHelper, string label, params IHtmlContent[] contents)
         {
             return(new GroupRenderer(contents, label).Render());
         }
@@ -53,7 +53,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="state">Validation summary contextual state. Defaults to "Danger"</param>
         /// <returns>Validation summary html markup.</returns>
-        public static IHtmlContent BootstrapValidationSummary(this IHtmlHelper htmlHelper,
+        public static IHtmlContent MvcCoreBootstrapValidationSummary(this IHtmlHelper htmlHelper,
             ContextualState state = ContextualState.Danger)
         {
             ValidationSummaryConfig config = new ValidationSummaryConfig {State = state};
@@ -75,7 +75,7 @@ namespace MvcCoreBootstrapForm
         /// <param name="excludePropertyErrors">If <c>true</c>, display model-level errors only; otherwise display all errors.</param>
         /// <param name="state">Validation summary contextual state. Defaults to "Danger"</param>
         /// <returns>Validation summary html markup.</returns>
-        public static IHtmlContent BootstrapValidationSummary(this IHtmlHelper htmlHelper, bool excludePropertyErrors,
+        public static IHtmlContent MvcCoreBootstrapValidationSummary(this IHtmlHelper htmlHelper, bool excludePropertyErrors,
             ContextualState state = ContextualState.Danger)
         {
             ValidationSummaryConfig config = new ValidationSummaryConfig
