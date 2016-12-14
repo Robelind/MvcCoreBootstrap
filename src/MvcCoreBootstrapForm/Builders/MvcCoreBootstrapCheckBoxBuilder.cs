@@ -28,7 +28,7 @@ namespace MvcCoreBootstrapForm.Builders
         /// <returns>The check box builder instance.</returns>
         public MvcCoreBootstrapCheckBoxBuilder Inline()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.Inline = true));
+            return(this.SetConfigProp<MvcCoreBootstrapCheckBoxBuilder>(() => _config.Horizontal = true));
         }
 
         /// <summary>

@@ -2,14 +2,14 @@
 
 namespace MvcCoreBootstrapForm.Config
 {
-    public class RadioButtonsConfig<TModel, TResult> : ControlConfig
+    internal class RadioButtonsConfig : ControlConfig
     {
         public RadioButtonsConfig()
         {
-            RadioButtons = new List<RadioButtonConfig<TModel, TResult>>();
+            RadioButtons = new List<RadioButtonConfig>();
         }
 
         public bool Horizontal { get; set; }
-        public IList<RadioButtonConfig<TModel, TResult>> RadioButtons { get; set; }
+        public IList<RadioButtonConfig> RadioButtons { get; set; }
     }
 }

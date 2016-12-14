@@ -7,22 +7,37 @@ using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class RadioButtonsRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>
+    internal class RadioButtonsRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
     {
-        private readonly RadioButtonsConfig<TModel, TResult> _config;
+        private readonly RadioButtonsConfig _config;
 
-        public RadioButtonsRenderer(RadioButtonsConfig<TModel, TResult> config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
-        : base(config, htmlHelper, expression)
+        public RadioButtonsRenderer(RadioButtonsConfig config)
+        : base(config)
         {
             _config = config;
         }
 
-        public IHtmlContent Render()
+        public IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        {
+            TagBuilder label = this.Label(htmlHelper, expression);
+            
+            return(this.CommonRender(label, value => this.TagBuilderFromHtmlContent(htmlHelper
+                        .RadioButtonFor(expression, value), false)));
+        }
+
+        public IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
+        {
+            TagBuilder radioBtnBase = this.TagBuilderFromHtmlContent(element, false);
+            TagBuilder label = this.Label();
+            
+            return(this.CommonRender(label, value => htmlHelper.RadioButton(radioBtnBase.Attributes["id"], value)));
+        }
+
+        private IHtmlContent CommonRender(TagBuilder groupLabel, Func<object, IHtmlContent> radioBtnFunc)
         {
             TagBuilder group = new TagBuilder("div");
-            TagBuilder groupLabel = this.Label();
-            ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            ColumnWidths columnWidths = _config.ColumnWidths;
             TagBuilder widthContainer = null;
 
             group.AddCssClass("form-group");
@@ -34,11 +49,10 @@ namespace MvcCoreBootstrapForm.Rendering
                 group.InnerHtml.AppendHtml(widthContainer);
             }
             this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null && groupLabel != null, groupLabel);
-            foreach(RadioButtonConfig<TModel, TResult> radioButtonConfig in _config.RadioButtons)
+            foreach(RadioButtonConfig radioButtonConfig in _config.RadioButtons)
             {
                 TagBuilder label = new TagBuilder("label");
-                TagBuilder radioButton = this.TagBuilderFromHtmlContent(HtmlHelper
-                        .RadioButtonFor(radioButtonConfig.Expression, radioButtonConfig.Value), false);
+                TagBuilder radioButton = this.TagBuilderFromHtmlContent(radioBtnFunc(radioButtonConfig.Value), false);
                 TagBuilder container = !_config.Horizontal ? new TagBuilder("div") : null;
 
                 if(radioButtonConfig.Disabled || _config.Disabled)

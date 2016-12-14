@@ -1,38 +1,34 @@
 ﻿using System;
-using System.Linq.Expressions;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Builders
 {
-    public class MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> : BuilderBase
+    public class MvcCoreBootstrapRadioButtonsBuilder : BuilderBase
     {
-        private readonly RadioButtonsConfig<TModel, TResult> _config;
-        private readonly Expression<Func<TModel, TResult>> _expression;
+        private readonly RadioButtonsConfig _config;
 
-        internal MvcCoreBootstrapRadioButtonsBuilder(RadioButtonsConfig<TModel, TResult> config,
-            Expression<Func<TModel, TResult>> expression)
+        internal MvcCoreBootstrapRadioButtonsBuilder(RadioButtonsConfig config)
         {
             _config = config;
-            _expression = expression;
         }
 
         /// <summary>
         /// Places the radio buttons horizontally instead of vertically.
         /// </summary>
         /// <returns>The radion buttons builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Horizontal()
+        public MvcCoreBootstrapRadioButtonsBuilder Horizontal()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Horizontal = true));
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder>(() => _config.Horizontal = true));
         }
 
         /// <summary>
         /// Do not generate a label automatically for the radio buttons.
         /// </summary>
         /// <returns>The radio buttons builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> NoLabel()
+        public MvcCoreBootstrapRadioButtonsBuilder NoLabel()
         {
-            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.AutoLabel = false));
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder>(() => _config.AutoLabel = false));
         }
 
         /// <summary>
@@ -40,9 +36,9 @@ namespace MvcCoreBootstrapForm.Builders
         /// </summary>
         /// <param name="label">radio buttons label.</param>
         /// <returns>The radio buttons builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Label(string label)
+        public MvcCoreBootstrapRadioButtonsBuilder Label(string label)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Label = label));
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder>(() => _config.Label = label));
         }
 
         /// <summary>
@@ -50,9 +46,9 @@ namespace MvcCoreBootstrapForm.Builders
         /// </summary>
         /// <param name="disabled">If true, the radio buttons are disabled</param>
         /// <returns>The radio buttons builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> Disabled(bool disabled = true)
+        public MvcCoreBootstrapRadioButtonsBuilder Disabled(bool disabled = true)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult>>(() => _config.Disabled = disabled));
+            return(this.SetConfigProp<MvcCoreBootstrapRadioButtonsBuilder>(() => _config.Disabled = disabled));
         }
 
         /// <summary>
@@ -61,13 +57,10 @@ namespace MvcCoreBootstrapForm.Builders
         /// <param name="value">Radio button value.</param>
         /// <param name="configAction">Action that implements radio button configuration.</param>
         /// <returns>The radion buttons builder instance.</returns>
-        public MvcCoreBootstrapRadioButtonsBuilder<TModel, TResult> RadioButton(object value,
+        public MvcCoreBootstrapRadioButtonsBuilder RadioButton(object value,
             Action<MvcCoreBootstrapRadioButtonBuilder> configAction = null)
         {
-            RadioButtonConfig<TModel, TResult> config = new RadioButtonConfig<TModel, TResult>
-            {
-                Value = value, Expression = _expression
-            };
+            RadioButtonConfig config = new RadioButtonConfig { Value = value };
             MvcCoreBootstrapRadioButtonBuilder builder = new MvcCoreBootstrapRadioButtonBuilder(config);
 
             configAction?.Invoke(builder);

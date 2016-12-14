@@ -6,28 +6,52 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class TextInputRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>
+    internal interface IControlRenderer
+    {
+        IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression);
+    }
+
+    internal interface IControlRenderer2
+    {
+        IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper = null);
+    }
+
+    internal class TextInputRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
     {
         private readonly TextInputConfig _config;
 
-        public TextInputRenderer(TextInputConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
-        : base(config, htmlHelper, expression)
+        public TextInputRenderer(TextInputConfig config)
+        : base(config)
         {
             _config = config;
         }
 
-        public IHtmlContent Render()
+        public IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
         {
             Element = _config.Password
-                ? this.TagBuilderFromHtmlContent(HtmlHelper.PasswordFor(Expression, null))
-                : this.TagBuilderFromHtmlContent(HtmlHelper.TextBoxFor(Expression, _config.Format, _config.HtmlAttributes));
+                ? this.TagBuilderFromHtmlContent(htmlHelper.PasswordFor(expression, null))
+                : this.TagBuilderFromHtmlContent(htmlHelper.TextBoxFor(expression, _config.Format, _config.HtmlAttributes));
+
+            return(this.DoRender(htmlHelper, expression, this.CommonRender()));
+        }
+
+        public IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
+        {
+            Element = this.TagBuilderFromHtmlContent(element);
+
+            return(this.DoRender(this.CommonRender()));
+        }
+
+        private TagBuilder CommonRender()
+        {
+            TagBuilder inputGroup = this.InputGroup(ig => ig.InnerHtml.AppendHtml(Element));
+
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
 
-            TagBuilder inputGroup = this.InputGroup(ig => ig.InnerHtml.AppendHtml(Element));
-
-            return(this.DoRender(inputGroup));
+            return(inputGroup);
         }
 
         private TagBuilder InputGroup(Action<TagBuilder> elementAction)

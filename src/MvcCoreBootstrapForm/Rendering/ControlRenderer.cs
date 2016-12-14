@@ -11,27 +11,35 @@ using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal abstract class ControlRenderer<TModel, TResult> : RenderBase
+    internal abstract class ControlRenderer : RenderBase
     {
         protected readonly ControlConfig Config;
-        protected readonly IHtmlHelper<TModel> HtmlHelper;
-        protected readonly Expression<Func<TModel, TResult>> Expression;
-        private FormSetup _formSetup;
 
-        protected ControlRenderer(ControlConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+        protected ControlRenderer(ControlConfig config)
         {
             Config = config;
-            HtmlHelper = htmlHelper;
-            Expression = expression;
-            _formSetup = HtmlHelper.ViewBag.FormSetup as FormSetup;
-            Debug.Assert(_formSetup != null);
+        }
+
+        protected IHtmlContent DoRender<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression, TagBuilder element = null)
+        {
+            TagBuilder label = this.Label(htmlHelper, expression);
+            IHtmlContent validationElement = Config.PropertyValidationMessages
+                ? htmlHelper.ValidationMessageFor(expression)
+                : null;
+
+            return(this.CommonRender(element, label, validationElement));
         }
 
         protected IHtmlContent DoRender(TagBuilder element = null)
         {
+            return(this.CommonRender(element, this.Label()));
+        }
+
+        private IHtmlContent CommonRender(TagBuilder element, TagBuilder label,
+            IHtmlContent validationElement = null)
+        {
             TagBuilder group = new TagBuilder("div");
-            TagBuilder label = this.Label();
             TagBuilder widthContainer = this.ColumnWidths(label);
             TagBuilder elementContainer = widthContainer ?? group;
 
@@ -43,11 +51,8 @@ namespace MvcCoreBootstrapForm.Rendering
             this.AddInner(widthContainer, group);
             elementContainer.InnerHtml.AppendHtml(element ?? Element);
 
-            if(_formSetup.PropertyValidationMessages)
-            {
-                // Add a validation message element, in case failed property validations are to be displayed.
-                group.InnerHtml.AppendHtml(HtmlHelper.ValidationMessageFor(Expression));
-            }
+            // Add a validation message element, in case failed property validations are to be displayed.
+            group.InnerHtml.AppendHtml(validationElement);
 
             return(group);
         }
@@ -55,9 +60,9 @@ namespace MvcCoreBootstrapForm.Rendering
         protected TagBuilder ColumnWidths(TagBuilder label)
         {
             TagBuilder widthContainer = null;
-            ColumnWidths columnWidths = HtmlHelper.ViewBag.MvcBootStrapFormColumnWidths as ColumnWidths;
+            ColumnWidths columnWidths = Config.ColumnWidths;
 
-            if(columnWidths != null)
+            if(Config.ColumnWidths != null)
             {
                 widthContainer = new TagBuilder("div");
                 widthContainer.AddCssClass(columnWidths.RightColumn.CssClass());
@@ -104,14 +109,29 @@ namespace MvcCoreBootstrapForm.Rendering
             return(tag);
         }
 
-        protected TagBuilder Label()
+        protected TagBuilder Label<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
         {
             TagBuilder label = null;
 
             if(Config.AutoLabel || !string.IsNullOrEmpty(Config.Label))
             {
-                label = this.TagBuilderFromHtmlContent(HtmlHelper.LabelFor(Expression, Config.Label, null), false);
-                this.AddCssClass("control-label", _formSetup.Horizontal, label);
+                label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, Config.Label, null), false);
+                this.AddCssClass("control-label", Config.ColumnWidths != null, label);
+            }
+
+            return(label);
+        }
+
+        protected TagBuilder Label()
+        {
+            TagBuilder label = null;
+
+            if(!string.IsNullOrEmpty(Config.Label))
+            {
+                label = new TagBuilder("label");
+                this.AddCssClass("control-label", Config.ColumnWidths != null, label);
+                label.InnerHtml.Append(Config.Label);
             }
 
             return(label);

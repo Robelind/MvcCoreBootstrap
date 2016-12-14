@@ -8,27 +8,41 @@ namespace MvcCoreBootstrapForm.Rendering
 {
     internal interface ITextAreaRenderer
     {
-        IHtmlContent Render();
+        IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression);
     }
 
-    internal class TextAreaRenderer<TModel, TResult> : ControlRenderer<TModel, TResult>, ITextAreaRenderer
+    internal class TextAreaRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
     {
         private readonly TextAreaConfig _config;
 
-        public TextAreaRenderer(TextAreaConfig config, IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
-        : base(config, htmlHelper, expression)
+        public TextAreaRenderer(TextAreaConfig config)
+        : base(config)
         {
             _config = config;
         }
 
-        public IHtmlContent Render()
+        public IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
         {
-            Element = this.TagBuilderFromHtmlContent(HtmlHelper.TextAreaFor(Expression, _config.Rows, 1, _config.HtmlAttributes));
-            this.AddAttribute("rows", _config.Rows.ToString());
-            this.AddAttribute("readonly", _config.ReadOnly);
+            Element = this.TagBuilderFromHtmlContent(htmlHelper.TextAreaFor(expression, _config.Rows, 1, _config.HtmlAttributes));
+            this.CommonRender();
+
+            return(this.DoRender(htmlHelper, expression));
+       }
+
+        public IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
+        {
+            Element = this.TagBuilderFromHtmlContent(element);
+            this.CommonRender();
 
             return(this.DoRender());
-       }
+        }
+
+        private void CommonRender()
+        {
+            this.AddAttribute("rows", _config.Rows.ToString());
+            this.AddAttribute("readonly", _config.ReadOnly);
+        }
     }
 }

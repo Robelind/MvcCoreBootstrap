@@ -1,6 +1,6 @@
 ﻿namespace MvcCoreBootstrapForm.Config
 {
-    public class TextInputConfig : ControlConfig
+    internal class TextInputConfig : ControlConfig
     {
         public string Format { get; set; }
         public object HtmlAttributes { get; set; }
