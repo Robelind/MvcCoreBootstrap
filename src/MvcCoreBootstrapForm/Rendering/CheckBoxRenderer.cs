@@ -7,7 +7,7 @@ using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class CheckBoxRenderer : ControlRenderer, IControlRenderer2
+    internal class CheckBoxRenderer : ControlRenderer, INonTypedControlRenderer
     {
         private readonly CheckBoxConfig _config;
 

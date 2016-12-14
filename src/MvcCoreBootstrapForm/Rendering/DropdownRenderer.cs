@@ -7,13 +7,7 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal interface IDropdownRenderer
-    {
-        IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression);
-    }
-
-    internal class DropdownRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
+    internal class DropdownRenderer : ControlRenderer, ITypedControlRenderer, INonTypedControlRenderer
     {
         private readonly DropdownConfig _config;
 

@@ -7,7 +7,7 @@ using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal class RadioButtonsRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
+    internal class RadioButtonsRenderer : ControlRenderer, ITypedControlRenderer, INonTypedControlRenderer
     {
         private readonly RadioButtonsConfig _config;
 

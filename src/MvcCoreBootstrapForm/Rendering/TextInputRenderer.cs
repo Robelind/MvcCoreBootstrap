@@ -6,18 +6,7 @@ using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
-    internal interface IControlRenderer
-    {
-        IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression);
-    }
-
-    internal interface IControlRenderer2
-    {
-        IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper = null);
-    }
-
-    internal class TextInputRenderer : ControlRenderer, IControlRenderer, IControlRenderer2
+    internal class TextInputRenderer : ControlRenderer, ITypedControlRenderer, INonTypedControlRenderer
     {
         private readonly TextInputConfig _config;
 
