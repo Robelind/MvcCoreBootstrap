@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("MvcCoreBootstrapTable")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.0.1")]
+[assembly: AssemblyVersion("1.1.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
