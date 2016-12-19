@@ -1,10 +1,11 @@
 ﻿using System;
 using MvcCoreBootstrap;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapButton.Config;
 
 namespace MvcCoreBootstrapButton.Builders
 {
-    public class MvcCoreBootstrapButtonBuilder
+    public class MvcCoreBootstrapButtonBuilder : BuilderBase
     {
         private readonly ButtonConfig _config;
 
@@ -101,6 +102,16 @@ namespace MvcCoreBootstrapButton.Builders
         {
             _config.Disabled = condition;
             return(this);
+        }
+
+        /// <summary>
+        /// Adds a badge to the button.
+        /// </summary>
+        /// <param name="text">Badge text.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder Badge(string text)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.Badge = text));
         }
 
         /// <summary>

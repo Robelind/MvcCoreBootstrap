@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("MvcCoreBootstrapTable")]
+[assembly: AssemblyProduct("MvcCoreBootstrapForm")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyVersion("1.1.0")]
 
@@ -17,8 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f6f223c8-aea1-4639-a22b-d93dd395781c")]
-
-[assembly: InternalsVisibleTo("Test")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly:InternalsVisibleTo("MvcCoreBootstrapPanel")]
+[assembly: Guid("47db1008-3596-4afe-b5f2-b4f8443ce5b3")]

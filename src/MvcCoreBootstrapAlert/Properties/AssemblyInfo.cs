@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -7,9 +6,8 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("MvcCoreBootstrapTable")]
+[assembly: AssemblyProduct("MvcCoreBootstrapAlert")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.1.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -17,8 +15,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f6f223c8-aea1-4639-a22b-d93dd395781c")]
-
-[assembly: InternalsVisibleTo("Test")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly:InternalsVisibleTo("MvcCoreBootstrapPanel")]
+[assembly: Guid("45eaa001-0abf-46db-a193-3214d4f02c59")]

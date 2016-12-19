@@ -108,7 +108,7 @@ namespace MvcCoreBootstrapTable.Rendering
                 TableNode row = this.CreateAndAppend("tr", body);
 
                 this.AddContextualState(row.Element, rowConfig.State);
-                this.AddCssClasses(row.Element, rowConfig.CssClasses);
+                this.AddCssClasses(rowConfig.CssClasses, row.Element);
                 if(rowConfig.NavigationUrl != null)
                 {
                     row.Element.Attributes.Add("style", "cursor: pointer");
@@ -137,7 +137,7 @@ namespace MvcCoreBootstrapTable.Rendering
                     if(cellConfig != null)
                     {
                         this.AddContextualState(cell.Element, cellConfig.State);
-                        this.AddCssClasses(cell.Element, cellConfig.CssClasses);
+                        this.AddCssClasses(cellConfig.CssClasses, cell.Element);
                     }
                 });
             }
@@ -162,7 +162,7 @@ namespace MvcCoreBootstrapTable.Rendering
                     if(config != null)
                     {
                         headerCol.Element.InnerHtml.Append(config.Header);
-                        this.AddCssClasses(headerCol.Element, config.CssClasses);
+                        this.AddCssClasses(config.CssClasses, headerCol.Element);
 
                         // Sorting.
                         if(config.SortState.HasValue)
@@ -201,7 +201,7 @@ namespace MvcCoreBootstrapTable.Rendering
                             input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
                             input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
                             input.Element.AddCssClass("form-control");
-                            this.AddCssClasses(input.Element, config.Filtering.CssClasses);
+                            this.AddCssClasses(config.Filtering.CssClasses, input.Element);
                             if(_tableState.Filter.ContainsKey(propInfo.Name))
                             {
                                 input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
@@ -221,14 +221,14 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             TableNode table = new TableNode("table");
 
-            this.AddAttribute(table.Element, "id", _config.Id);
-            this.AddAttribute(table.Element, "name", _config.Name);
+            this.AddAttribute("id", _config.Id, table.Element);
+            this.AddAttribute("name", _config.Name, table.Element);
             table.Element.AddCssClass("table");
             table.Element.AddCssClass(_config.Striped ? "table-striped" : null);
             table.Element.AddCssClass(_config.Bordered ? "table-bordered" : null);
             table.Element.AddCssClass(_config.HoverState ? "table-hover" : null);
             table.Element.AddCssClass(_config.Condensed ? "table-condensed" : null);
-            this.AddCssClasses(table.Element, _config.CssClasses);
+            this.AddCssClasses(_config.CssClasses, table.Element);
 
             return(table);
         }
@@ -329,7 +329,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
                     content.Element.Attributes.Add("colspan", colCount.ToString());
                     this.AddContextualState(content.Element, _config.Footer.State);
-                    this.AddCssClasses(content.Element, _config.Footer.CssClasses);
+                    this.AddCssClasses(_config.Footer.CssClasses, content.Element);
                     content.InnerContent.AddRange(footerContent);
                 }
             }
@@ -449,7 +449,7 @@ namespace MvcCoreBootstrapTable.Rendering
             parent.InnerContent.Add(node);
             if(cssClasses != null)
             {
-                this.AddCssClasses(node.Element, cssClasses);
+                this.AddCssClasses(cssClasses, node.Element);
             }
 
             return(node);

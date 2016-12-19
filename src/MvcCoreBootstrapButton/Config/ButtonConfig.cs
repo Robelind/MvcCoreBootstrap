@@ -19,5 +19,6 @@ namespace MvcCoreBootstrapButton.Config
         public string Url { get; set; }
         public AjaxConfig Ajax { get; set; }
         public DropdownConfig Dropdown { get; set; }
+        public string Badge { get; set; }
     }
 }

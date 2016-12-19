@@ -27,18 +27,19 @@ namespace MvcCoreBootstrapButton.Rendering
             _button.AddCssClass("btn");
             if(_config.Url == null)
             {
-                this.AddAttribute(_button, "type", _config.Submit ? "submit" : "button");
+                this.AddAttribute("type", _config.Submit ? "submit" : "button", _button);
             }
             else
             {
                 _button.Attributes.Add("role", "button");
             }
-            this.AddAttribute(_button, "href", config.Url);
-            this.AddAttribute(_button, "onclick", this.AddJavascriptFuncPars(config.Click, _config.Id, false));
+            this.AddAttribute("href", config.Url, _button);
+            this.AddAttribute("onclick", this.AddJavascriptFuncPars(config.Click, _config.Id, false), _button);
             if(!string.IsNullOrEmpty(config.Text))
             {
                 _button.InnerHtml.Append(config.Text);
             }
+            this.AddElement(new TagBuilder("span"), new[] {"badge"}, _config.Badge);
             this.AddContextualState(_button, config.State, "btn-");
             this.SetSize();
             this.AddClassIf("btn-block", _config.Block);
@@ -54,7 +55,7 @@ namespace MvcCoreBootstrapButton.Rendering
                     _button.AddCssClass("disabled");
                 }
             }
-            this.AddCssClasses(_button, config.CssClasses);
+            this.AddCssClasses(config.CssClasses, _button);
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
                         
@@ -74,7 +75,7 @@ namespace MvcCoreBootstrapButton.Rendering
 
                     element.Attributes.Remove("onclick");
                     js += $"$('#{config.UpdateId}').html('');";
-                    this.AddAttribute(_button, "onclick", js);
+                    this.AddAttribute("onclick", js, _button);
                 }
             }
         }

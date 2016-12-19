@@ -11,16 +11,27 @@ namespace MvcCoreBootstrap.Rendering
     {
         protected TagBuilder Element;
 
-        protected void BaseConfig(ConfigBase config, string cssClass, string statePrefix = null)
+        protected void BaseConfig(ConfigBase config, string cssClass = null, string statePrefix = null)
         {
             Debug.Assert(Element != null);
-            this.AddAttribute(Element, "id", config.Id);
-            this.AddAttribute(Element, "name", config.Name);
+            this.AddAttribute("id", config.Id);
+            this.AddAttribute("name", config.Name);
             Element.AddCssClass(cssClass);
-            this.AddCssClasses(Element, config.CssClasses);
+            this.AddCssClasses(config.CssClasses);
             if(statePrefix != null)
             {
                 this.AddContextualState(Element, config.State, statePrefix);
+            }
+        }
+
+        protected void AddElement(TagBuilder element, string content, TagBuilder parentElement = null)
+        {
+            if(!string.IsNullOrEmpty(content))
+            {
+                TagBuilder parent = parentElement ?? Element;
+            
+                element.InnerHtml.AppendHtml(content);
+                parent.InnerHtml.AppendHtml(element);
             }
         }
 
@@ -32,24 +43,48 @@ namespace MvcCoreBootstrap.Rendering
                 TagBuilder parent = parentElement ?? Element;
             
                 element.InnerHtml.AppendHtml(content);
-                this.AddCssClasses(element, cssClasses);
+                this.AddCssClasses(cssClasses, element);
                 parent.InnerHtml.AppendHtml(element);
             }
         }
 
-        protected void AddAttribute(TagBuilder element, string attribute, string value)
+        protected void AddAttribute(string attribute, string value, TagBuilder element = null)
         {
             if(!string.IsNullOrEmpty(value))
             {
-                element.Attributes.Add(attribute, value);
+                (element ?? Element).Attributes.Add(attribute, value);
             }
         }
 
-        protected void AddCssClasses(TagBuilder element, IEnumerable<string> cssClasses)
+        protected void AddAttribute(string attribute, string value, bool condition, TagBuilder element = null)
+        {
+            if(condition)
+            {
+                (element ?? Element).Attributes.Add(attribute, value);
+            }
+        }
+
+        protected void AddAttribute(string attribute, bool condition, TagBuilder element = null)
+        {
+            if(condition)
+            {
+                (element ?? Element).Attributes.Add(attribute, null);
+            }
+        }
+
+        protected void AddCssClass(string cssClass, bool condition, TagBuilder element = null)
+        {
+            if(condition)
+            {
+                (element ?? Element).AddCssClass(cssClass);
+            }
+        }
+
+        protected void AddCssClasses(IEnumerable<string> cssClasses, TagBuilder element = null)
         {
             foreach(var cssClass in cssClasses)
             {
-                element.AddCssClass(cssClass);
+                (element ?? Element).AddCssClass(cssClass);
             }
         }
 
