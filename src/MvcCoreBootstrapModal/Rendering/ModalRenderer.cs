@@ -53,6 +53,7 @@ namespace MvcCoreBootstrapModal.Rendering
             header.InnerHtml.AppendHtml(config.Title);
             
             body.AddCssClass("modal-body");
+            body.InnerHtml.AppendHtml(config.Body);
             
             footer.AddCssClass("modal-footer");
 

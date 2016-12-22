@@ -43,5 +43,15 @@ namespace MvcCoreBootstrapModal.Builders
             configAction(new MvcCoreBootstrapModalHeaderBuilder(_config));
             return(this);
         }
+
+        /// <summary>
+        /// Sets the body of the modal.
+        /// </summary>
+        /// <param name="body">Body content.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Body(string body)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Body = body));
+        }
     }
 }
