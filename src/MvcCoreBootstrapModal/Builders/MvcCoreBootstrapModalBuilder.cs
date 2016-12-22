@@ -43,6 +43,16 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Sets the size of the modal.
+        /// </summary>
+        /// <param name="size">Modal size</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Size(MvcCoreBootstrapModalSize size)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Size = size));
+        }
+
+        /// <summary>
         /// Configures the modal header.
         /// </summary>
         /// <param name="configAction">Action that implements modal header configuration.</param>

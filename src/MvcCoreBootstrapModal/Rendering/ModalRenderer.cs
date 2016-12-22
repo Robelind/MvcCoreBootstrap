@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapModal.Config;
@@ -26,6 +27,7 @@ namespace MvcCoreBootstrapModal.Rendering
             Element.Attributes.Add("tabindex", "-1");
             this.AddCssClass("fade", config.Animation);
             Element.InnerHtml.AppendHtml(dialog);
+            this.SetSize(config, dialog);
 
             dialog.AddCssClass("modal-dialog");
             dialog.Attributes.Add("role", "document");
@@ -69,6 +71,24 @@ namespace MvcCoreBootstrapModal.Rendering
             }
 
             return(Element);
+        }
+
+        private void SetSize(ModalConfig config, TagBuilder dialog)
+        {
+            switch(config.Size)
+            {
+                case MvcCoreBootstrapModalSize.Large:
+                    dialog.AddCssClass("modal-lg");
+                    break;
+                case MvcCoreBootstrapModalSize.Default:
+                    break;
+                case MvcCoreBootstrapModalSize.Small:
+                    dialog.AddCssClass("modal-sm");
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
     }
 }
