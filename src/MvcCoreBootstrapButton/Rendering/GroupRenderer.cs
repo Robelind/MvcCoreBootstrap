@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Rendering;
 
 namespace MvcCoreBootstrapButton.Rendering
 {
@@ -15,7 +16,7 @@ namespace MvcCoreBootstrapButton.Rendering
         private IHtmlContent Group(GroupConfig config)
         {
             TagBuilder group = new TagBuilder("div");
-            ButtonRenderer buttonRenderer = new ButtonRenderer();
+            ButtonRenderer buttonRenderer = new ButtonRenderer(null);
 
             group.AddCssClass(config.Vertical ? "btn-group-vertical" : "btn-group");
             group.Attributes.Add("role", "group");

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Config;
+using MvcCoreBootstrapModal.Rendering;
 
 namespace MvcCoreBootstrapButton.Rendering
 {
@@ -13,8 +15,15 @@ namespace MvcCoreBootstrapButton.Rendering
 
     internal class ButtonRenderer : RenderBase, IButtonRenderer
     {
+        private readonly IModalRenderer _modalRenderer;
         private ButtonConfig _config;
         private TagBuilder _button;
+        readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
+
+        public ButtonRenderer(IModalRenderer modalRenderer)
+        {
+            _modalRenderer = modalRenderer;
+        }
 
         public IHtmlContent Render(ButtonConfig config)
         {
@@ -23,6 +32,7 @@ namespace MvcCoreBootstrapButton.Rendering
                 ? new TagBuilder("a")
                 : new TagBuilder("button");
             Element = config.Dropdown != null ? new TagBuilder("div") : _button;
+            _builder.AppendHtml(Element);
             this.BaseConfig(config, config.Dropdown != null ? "btn-group" : "btn", "btn-");
             _button.AddCssClass("btn");
             if(_config.Url == null)
@@ -42,8 +52,8 @@ namespace MvcCoreBootstrapButton.Rendering
             this.AddElement(new TagBuilder("span"), new[] {"badge"}, _config.Badge);
             this.AddContextualState(_button, config.State, "btn-");
             this.SetSize();
-            this.AddClassIf("btn-block", _config.Block);
-            this.AddClassIf("active", _config.Active);
+            this.AddCssClass("btn-block", _config.Block);
+            this.AddCssClass("active", _config.Active);
             if(_config.Disabled)
             {
                 if(_config.Url == null)
@@ -58,8 +68,9 @@ namespace MvcCoreBootstrapButton.Rendering
             this.AddCssClasses(config.CssClasses, _button);
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
+            this.TriggerModal(_button, _config.Modal);
                         
-            return(Element);
+            return(_builder);
         }
 
         private void Ajax(TagBuilder element, AjaxConfig config)
@@ -154,11 +165,14 @@ namespace MvcCoreBootstrapButton.Rendering
             }
         }
 
-        private void AddClassIf(string cssClass, bool condition)
+        private void TriggerModal(TagBuilder button, ModalConfig modal)
         {
-            if(condition)
+            if(modal != null)
             {
-                _button.AddCssClass(cssClass);
+
+                button.Attributes.Add("data-toggle", "modal");
+                button.Attributes.Add("data-target", "#" + modal.Id);
+                _builder.AppendHtml(_modalRenderer.Render(modal));
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using MvcCoreBootstrap.Config;
+using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Config
 {
@@ -20,5 +21,6 @@ namespace MvcCoreBootstrapButton.Config
         public AjaxConfig Ajax { get; set; }
         public DropdownConfig Dropdown { get; set; }
         public string Badge { get; set; }
+        public ModalConfig Modal { get; set; }
     }
 }

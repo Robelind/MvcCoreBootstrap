@@ -4,6 +4,7 @@
   "dependencies": {
     "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.1",
     "MvcCoreBootstrap": "1.0.0-*",
+    "MvcCoreBootstrapModal": "1.0.0-*",
     "NETStandard.Library": "1.6.0"
   },
 
