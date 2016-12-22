@@ -34,6 +34,15 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Configures the modal to not use animation when displayed.
+        /// </summary>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder NoAnimation()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Animation = false));
+        }
+
+        /// <summary>
         /// Configures the modal header.
         /// </summary>
         /// <param name="configAction">Action that implements modal header configuration.</param>

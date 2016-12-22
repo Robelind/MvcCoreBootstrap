@@ -24,6 +24,7 @@ namespace MvcCoreBootstrapModal.Rendering
             this.BaseConfig(config, "modal");
             Element.Attributes.Add("role", "dialog");
             Element.Attributes.Add("tabindex", "-1");
+            this.AddCssClass("fade", config.Animation);
             Element.InnerHtml.AppendHtml(dialog);
 
             dialog.AddCssClass("modal-dialog");
