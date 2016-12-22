@@ -167,12 +167,15 @@ namespace MvcCoreBootstrapButton.Rendering
 
         private void TriggerModal(TagBuilder button, ModalConfig modal)
         {
-            if(modal != null)
+            if(modal != null || _config.ModalId != null)
             {
 
                 button.Attributes.Add("data-toggle", "modal");
-                button.Attributes.Add("data-target", "#" + modal.Id);
-                _builder.AppendHtml(_modalRenderer.Render(modal));
+                button.Attributes.Add("data-target", "#" + (modal != null ? modal.Id : _config.ModalId));
+                if(modal != null)
+                {
+                    _builder.AppendHtml(_modalRenderer.Render(modal));
+                }
             }
         }
 

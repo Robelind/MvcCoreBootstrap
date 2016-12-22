@@ -254,5 +254,15 @@ namespace MvcCoreBootstrapButton.Builders
 
             return(this);
         }
+
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="id">Id of a modal.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id));
+        }
     }
 }

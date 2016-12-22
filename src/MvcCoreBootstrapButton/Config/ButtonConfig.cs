@@ -22,5 +22,6 @@ namespace MvcCoreBootstrapButton.Config
         public DropdownConfig Dropdown { get; set; }
         public string Badge { get; set; }
         public ModalConfig Modal { get; set; }
+        public string ModalId { get; set; }
     }
 }
