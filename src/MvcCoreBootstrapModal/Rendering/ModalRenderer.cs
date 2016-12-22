@@ -14,26 +14,48 @@ namespace MvcCoreBootstrapModal.Rendering
     {
         public IHtmlContent Render(ModalConfig config)
         {
+            TagBuilder dialog = new TagBuilder("div");
+            TagBuilder content = new TagBuilder("div");
+            TagBuilder header = new TagBuilder("div");
+            TagBuilder body = new TagBuilder("div");
+            TagBuilder footer = new TagBuilder("div");
+            
             Element = new TagBuilder("div");
-            this.BaseConfig(config, "alert", "alert-");
-            Element.Attributes.Add("role", "alert");
+            this.BaseConfig(config, "modal");
+            Element.Attributes.Add("role", "dialog");
+            Element.Attributes.Add("tabindex", "-1");
+            Element.InnerHtml.AppendHtml(dialog);
 
+            dialog.AddCssClass("modal-dialog");
+            dialog.Attributes.Add("role", "document");
+            dialog.InnerHtml.AppendHtml(content);
+            
+            content.AddCssClass("modal-content");
+            content.InnerHtml.AppendHtml(header);
+            content.InnerHtml.AppendHtml(body);
+            content.InnerHtml.AppendHtml(footer);
+            
+            header.AddCssClass("modal-header");
             if(config.Dismissable)
             {
-                TagBuilder button = new TagBuilder("button");
+                TagBuilder closeBtn = new TagBuilder("button");
                 TagBuilder x = new TagBuilder("span");
 
-                Element.AddCssClass("alert-dismissible");
-                button.AddCssClass("close");
-                button.Attributes.Add("data-dismiss", "alert");
-                button.Attributes.Add("aria-label", "Close");
+                closeBtn.Attributes.Add("type", "button");
+                closeBtn.AddCssClass("close");
+                closeBtn.Attributes.Add("data-dismiss", "modal");
+                closeBtn.Attributes.Add("aria-label", "Close");
+                closeBtn.Attributes.Add("aria-hidden", "true");
                 x.InnerHtml.AppendHtml("&times;");
-                x.Attributes.Add("aria-hidden", "true");
-                button.InnerHtml.AppendHtml(x);
-                Element.InnerHtml.AppendHtml(button);
+                closeBtn.InnerHtml.AppendHtml(x);
+                header.InnerHtml.AppendHtml(closeBtn);
             }
-            Element.InnerHtml.AppendHtml(config.Text);
-                        
+            header.InnerHtml.AppendHtml(config.Title);
+            
+            body.AddCssClass("modal-body");
+            
+            footer.AddCssClass("modal-footer");
+
             return(Element);
         }
 

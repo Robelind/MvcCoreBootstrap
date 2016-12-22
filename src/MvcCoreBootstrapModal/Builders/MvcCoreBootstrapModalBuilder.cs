@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using System;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapModal.Builders
@@ -30,6 +31,17 @@ namespace MvcCoreBootstrapModal.Builders
         public MvcCoreBootstrapModalBuilder Name(string name)
         {
             return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Name = name));
+        }
+
+        /// <summary>
+        /// Configures the modal header.
+        /// </summary>
+        /// <param name="configAction">Action that implements modal header configuration.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Header(Action<MvcCoreBootstrapModalHeaderBuilder> configAction)
+        {
+            configAction(new MvcCoreBootstrapModalHeaderBuilder(_config));
+            return(this);
         }
     }
 }
