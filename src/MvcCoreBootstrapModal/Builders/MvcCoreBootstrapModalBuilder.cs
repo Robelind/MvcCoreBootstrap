@@ -53,5 +53,16 @@ namespace MvcCoreBootstrapModal.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Body = body));
         }
+
+        /// <summary>
+        /// Configures the modal footer.
+        /// </summary>
+        /// <param name="configAction">Action that implements footer configuration.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Footer(Action<MvcCoreBootstrapModalFooterBuilder> configAction)
+        {
+            configAction(new MvcCoreBootstrapModalFooterBuilder(_config));
+            return(this);
+        }
     }
 }

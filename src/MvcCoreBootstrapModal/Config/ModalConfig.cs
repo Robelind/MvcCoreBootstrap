@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Config;
+﻿using MvcCoreBootstrap;
+using MvcCoreBootstrap.Config;
 
 namespace MvcCoreBootstrapModal.Config
 {
@@ -7,5 +8,7 @@ namespace MvcCoreBootstrapModal.Config
         public bool Dismissable { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        public string CloseBtnText { get; set; }
+        public ContextualState CloseBtnState { get; set; }
     }
 }

@@ -56,9 +56,18 @@ namespace MvcCoreBootstrapModal.Rendering
             body.InnerHtml.AppendHtml(config.Body);
             
             footer.AddCssClass("modal-footer");
+            if(config.CloseBtnText != null)
+            {
+                TagBuilder closeBtn = new TagBuilder("button");
+
+                closeBtn.AddCssClass("btn");
+                this.AddContextualState(closeBtn, config.CloseBtnState);
+                closeBtn.Attributes.Add("data-dismiss", "modal");
+                closeBtn.InnerHtml.AppendHtml(config.CloseBtnText);
+                footer.InnerHtml.AppendHtml(closeBtn);
+            }
 
             return(Element);
         }
-
-   }
+    }
 }
