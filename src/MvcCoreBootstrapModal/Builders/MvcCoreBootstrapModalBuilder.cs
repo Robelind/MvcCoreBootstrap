@@ -1,4 +1,5 @@
 ﻿using System;
+using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapModal.Config;
 
@@ -82,6 +83,23 @@ namespace MvcCoreBootstrapModal.Builders
         {
             configAction(new MvcCoreBootstrapModalFooterBuilder(_config));
             return(this);
+        }
+
+        /// <summary>
+        /// Configures a basic modal with title, body and a close button.
+        /// </summary>
+        /// <param name="title">Modal title.</param>
+        /// <param name="body">Modal body.</param>
+        /// <param name="closeBtnText">Close button text.</param>
+        /// <param name="closeBtnState">Close button contextual state.</param>
+        public void Modal(string title, string body, string closeBtnText,
+            ContextualState closeBtnState = ContextualState.Default)
+        {
+            _config.Title = title;
+            _config.Body = body;
+            _config.CloseBtnText = closeBtnText;
+            _config.CloseBtnState = closeBtnState;
+            _config.Dismissable = true;
         }
     }
 }
