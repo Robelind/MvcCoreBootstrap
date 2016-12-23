@@ -97,8 +97,7 @@ namespace MvcCoreBootstrapModal.Builders
         {
             _config.Title = title;
             _config.Body = body;
-            _config.CloseBtnText = closeBtnText;
-            _config.CloseBtnState = closeBtnState;
+            _config.Buttons.Add(new ModalButton { Text = closeBtnText, State = closeBtnState });
             _config.Dismissable = true;
         }
     }

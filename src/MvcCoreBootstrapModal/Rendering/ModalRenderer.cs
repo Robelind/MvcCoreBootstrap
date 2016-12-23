@@ -20,7 +20,7 @@ namespace MvcCoreBootstrapModal.Rendering
             TagBuilder header = new TagBuilder("div");
             TagBuilder body = new TagBuilder("div");
             TagBuilder footer = new TagBuilder("div");
-            
+
             Element = new TagBuilder("div");
             this.BaseConfig(config, "modal");
             Element.Attributes.Add("role", "dialog");
@@ -32,12 +32,12 @@ namespace MvcCoreBootstrapModal.Rendering
             dialog.AddCssClass("modal-dialog");
             dialog.Attributes.Add("role", "document");
             dialog.InnerHtml.AppendHtml(content);
-            
+
             content.AddCssClass("modal-content");
             content.InnerHtml.AppendHtml(header);
             content.InnerHtml.AppendHtml(body);
             content.InnerHtml.AppendHtml(footer);
-            
+
             header.AddCssClass("modal-header");
             if(config.Dismissable)
             {
@@ -54,23 +54,35 @@ namespace MvcCoreBootstrapModal.Rendering
                 header.InnerHtml.AppendHtml(closeBtn);
             }
             header.InnerHtml.AppendHtml(config.Title);
-            
+
             body.AddCssClass("modal-body");
             body.InnerHtml.AppendHtml(config.Body);
-            
-            footer.AddCssClass("modal-footer");
-            if(config.CloseBtnText != null)
-            {
-                TagBuilder closeBtn = new TagBuilder("button");
 
-                closeBtn.AddCssClass("btn");
-                this.AddContextualState(closeBtn, config.CloseBtnState);
-                closeBtn.Attributes.Add("data-dismiss", "modal");
-                closeBtn.InnerHtml.AppendHtml(config.CloseBtnText);
-                footer.InnerHtml.AppendHtml(closeBtn);
-            }
+            this.Footer(config, footer);
 
             return(Element);
+        }
+
+        private void Footer(ModalConfig config, TagBuilder footer)
+        {
+            footer.AddCssClass("modal-footer");
+            foreach(ModalButton modalButton in config.Buttons)
+            {
+                TagBuilder button = new TagBuilder("button");
+
+                button.AddCssClass("btn");
+                this.AddContextualState(button, modalButton.State, "btn-");
+                if(modalButton.JsFunc != null)
+                {
+                    button.Attributes.Add("data-mvccorebootstrap-modal-btn-action", modalButton.JsFunc +  "()");
+                }
+                else
+                {
+                    button.Attributes.Add("data-dismiss", "modal");
+                }
+                button.InnerHtml.AppendHtml(modalButton.Text);
+                footer.InnerHtml.AppendHtml(button);
+            }
         }
 
         private void SetSize(ModalConfig config, TagBuilder dialog)
