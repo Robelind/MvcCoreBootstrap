@@ -42,7 +42,6 @@ namespace MvcCoreBootstrapPanel.Rendering
             if(config.Ajax != null)
             {
                 string id = Guid.NewGuid().ToString();
-                string triggerId = Guid.NewGuid().ToString();
                 string indicatorId = null;
                 TagBuilder ajaxTrigger = new TagBuilder("a");
                 AjaxConfigBase ajaxConfig = new AjaxConfigBase
@@ -55,7 +54,7 @@ namespace MvcCoreBootstrapPanel.Rendering
                 this.AddElement(body, new[] {"panel-body"}, " ");
                 body.Attributes.Add("id", id);
                 ajaxTrigger.Attributes.Add("style", "display:none;");
-                ajaxTrigger.Attributes.Add("id", triggerId);
+                ajaxTrigger.Attributes.Add("data-mvccorebootstrap-panel-ajax", null);
                 body.InnerHtml.AppendHtml(ajaxTrigger);
                 if(!string.IsNullOrEmpty(config.Ajax.IndicatorPath))
                 {
@@ -82,7 +81,6 @@ namespace MvcCoreBootstrapPanel.Rendering
                     ajaxConfig.Error = $"$('#{id}').show();$('#{indicatorId}').hide();";
                 }
                 this.ConfigAjax(ajaxTrigger, ajaxConfig);
-                this.AddJavaScript(sb => sb.Append($"$('#{triggerId}').click();"));
             }
             else
             {

@@ -36,10 +36,7 @@ namespace MvcCoreBootstrapListGroup.Rendering
             Element = new TagBuilder(_types == ItemTypes.Buttons || _types == ItemTypes.Links ? "div" : "ul");
             this.BaseConfig(_config, "list-group");
             this.Items();
-            if(_config.TrackActive)
-            {
-                this.AddJavaScript(sb => sb.Append(string.Format(ActiveJs, _config.Id)));
-            }
+            this.AddAttribute("data-mvccorebootstrap-listgroup-track-active", _config.TrackActive);
                         
             return(Element);
         }
@@ -84,13 +81,5 @@ namespace MvcCoreBootstrapListGroup.Rendering
                 }
             }
         }
-
-        private const string ActiveJs =
-        @"$('#{0} .list-group-item').click(function () {{
-            if (!$(this).hasClass('disabled')) {{
-                $('#{0} .list-group-item').removeClass('active');
-                $(this).addClass('active');
-            }}
-        }});";
     }
 }

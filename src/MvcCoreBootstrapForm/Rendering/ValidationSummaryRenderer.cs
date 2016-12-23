@@ -39,10 +39,11 @@ namespace MvcCoreBootstrapForm.Rendering
                 Element = new TagBuilder("div");
                 this.BaseConfig(_config, "alert", "alert-");
                 Element.Attributes.Add("role", "alert");
+                Element.AddCssClass("MvcCoreBootstrapValSummary");
 
                 Element.Attributes.Add("data-valmsg-summary", "true");
                 this.AddAttribute("style", "display:none;", !errors.Any());
-                this.AddCssClass("NoPropErrors", _config.ExcludePropertyErrors);
+                this.AddCssClass("MvcCoreBootstrapNoPropErrors", _config.ExcludePropertyErrors);
                 this.AddAttribute("style", "display:none;", errors.Count() > 1, msg);
                 if(errors.Count() == 1)
                 {
@@ -59,25 +60,9 @@ namespace MvcCoreBootstrapForm.Rendering
 
                 this.AddAttribute("style", "display:none;", errors.Count() == 1, msgs);
                 Element.InnerHtml.AppendHtml(msgs);
-                this.AddJavaScript(sb => sb.Append(string.Format(ValidationJs, _config.Id)));
             }
 
             return(Element);
         }
-
-        private string ValidationJs { get; } =
-        @"$('#{0}').closest('form').bind('invalid-form.validate', function () {{
-            if(!$('#{0}').hasClass('NoPropErrors')) {{
-                $('#{0}').show();
-                if ($('#{0} ul').children().length > 1) {{
-                    $('#{0} ul').show();
-                    $('#{0} span').hide();
-                }} else {{
-                    $('#{0} span').html($('#{0} ul li').first().text());
-                    $('#{0} span').show();
-                    $('#{0} ul').hide();
-                }}
-            }}
-        }});";
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Config;
 
@@ -120,24 +118,6 @@ namespace MvcCoreBootstrap.Rendering
             }
 
             return(jsFunc);
-        }
-
-        protected void AddJavaScript(Action<StringBuilder> codeAction, bool onload = true)
-        {
-            StringBuilder js = new StringBuilder(@"<script type=""text/javascript"">");
-
-            if(onload)
-            {
-                js.Append("$(function() {");
-            }
-            codeAction(js);
-            if(onload)
-            {
-                js.Append("});");
-            }
-            js.Append("</script>");
-
-            Element.InnerHtml.AppendHtml(js.ToString());
         }
     }
 }
