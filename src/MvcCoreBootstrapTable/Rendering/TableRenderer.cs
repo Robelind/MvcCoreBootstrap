@@ -15,21 +15,24 @@ namespace MvcCoreBootstrapTable.Rendering
         IHtmlContent Render();
     }
 
-    internal class TableRenderer : RenderBase, ITableRenderer
+    internal class TableRenderer<T> : RenderBase, ITableRenderer where T : new()
     {
         private readonly TableState _tableState;
         private readonly object _entity;
         private readonly ITableNodeParser _nodeParser;
+        private readonly IEnumerable<T> _entities;
         private readonly ITableConfig _config;
         private readonly int _entityCount;
         private string _containerId;
 
-        public TableRenderer(TableConfig config, int entityCount, TableState tableState, object entity, ITableNodeParser nodeParser)
+        public TableRenderer(IEnumerable<T> entities, TableConfig config, TableState tableState,
+            ITableNodeParser nodeParser)
         {
+            _entities = entities;
             _config = config;
-            _entityCount = entityCount;
+            _entityCount = entities.Count();
             _tableState = tableState;
-            _entity = entity;
+            _entity = new T();
             _nodeParser = nodeParser;
         }
 
@@ -195,22 +198,62 @@ namespace MvcCoreBootstrapTable.Rendering
                         // Filtering.
                         if(config.Filtering.Threshold > 0)
                         {
-                            TableNode input = this.CreateAndAppend("input", filter);
+                            //TableNode input = this.CreateAndAppend("input", filter);
+                            TableNode dropDown = this.CreateAndAppend("div", filter);
+                            TagBuilder dropDownBtn = new TagBuilder("button");
+                            //TableNode dropDownBtn = this.CreateAndAppend("button", dropDown);
+                            //TableNode dropDownMenu = this.CreateAndAppend("div", dropDownBtn);
+                            TagBuilder dropDownMenu = new TagBuilder("ul");
+                            TagBuilder dropDownCaret = new TagBuilder("span");
+                            List<string> filterValues = new List<string>();
 
-                            input.Element.Attributes.Add("type", "text");
-                            input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
-                            input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
-                            input.Element.AddCssClass("form-control");
-                            this.AddCssClasses(config.Filtering.CssClasses, input.Element);
-                            if(_tableState.Filter.ContainsKey(propInfo.Name))
+                            foreach(var entity in _entities)
                             {
-                                input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
+                                PropertyInfo pi = entity.GetType().GetProperties().Single(p => p.Name == propInfo.Name);
+                                
+                                filterValues.Add(pi.GetValue(entity).ToString());
                             }
-                            if(propInfo.Name == _tableState.CurrentFilter)
+
+                            dropDown.Element.AddCssClass("dropdown");
+                            dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
+                            dropDownBtn.AddCssClass("btn");
+                            dropDownBtn.AddCssClass("btn-default");
+                            dropDownBtn.AddCssClass("dropdown-toggle");
+                            dropDownBtn.Attributes.Add("type", "button");
+                            dropDownBtn.Attributes.Add("data-toggle", "dropdown");
+                            dropDownBtn.Attributes.Add("aria-haspopup", "true");
+                            dropDownBtn.Attributes.Add("aria-expanded", "false");
+                            dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
+                            dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
+                            dropDownMenu.AddCssClass("dropdown-menu");
+                            dropDownCaret.AddCssClass("caret");
+                            foreach(var filterValue in filterValues.Distinct().OrderBy(fv => fv))
                             {
-                                // Filter input should be focused.
-                                input.Element.Attributes.Add("data-filter-focus", string.Empty);
+                                TagBuilder valueContainer = new TagBuilder("li");
+                                TagBuilder value = new TagBuilder("a");
+
+                                dropDownMenu.InnerHtml.AppendHtml(valueContainer);
+                                valueContainer.InnerHtml.AppendHtml(value);
+                                value.AddCssClass("dropdown-item");
+                                value.Attributes.Add("href", "#");
+                                value.InnerHtml.Append(filterValue);
+                                this.SetupAjaxAttrs(value, $"&filter[]={propInfo.Name}&filter[]={filterValue}");
                             }
+
+                            //input.Element.Attributes.Add("type", "text");
+                            //input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
+                            //input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
+                            //input.Element.AddCssClass("form-control");
+                            //this.AddCssClasses(config.Filtering.CssClasses, input.Element);
+                            //if(_tableState.Filter.ContainsKey(propInfo.Name))
+                            //{
+                            //    input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
+                            //}
+                            //if(propInfo.Name == _tableState.CurrentFilter)
+                            //{
+                            //    // Filter input should be focused.
+                            //    input.Element.Attributes.Add("data-filter-focus", string.Empty);
+                            //}
                         }
                     }
                 });
@@ -379,7 +422,7 @@ namespace MvcCoreBootstrapTable.Rendering
         }
 
        private void SetupAjaxAttrs(TagBuilder builder, string queryAttr = null)
-        {
+       {
             string url = queryAttr != null
                 ? $"{_config.Update.Url}?{this.CommonQueryAttrs()}{this.FilterQueryAttrs()}{queryAttr}"
                 : "";

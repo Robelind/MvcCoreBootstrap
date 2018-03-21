@@ -33,7 +33,7 @@ namespace MvcCoreBootstrapTable
             configAction?.Invoke(builder);
             configHandler.Check(config, model.Entities);
 
-            return(new TableRenderer(config, model.EntityCount, tableState, new T(), new TableNodeParser()).Render());
+            return(new TableRenderer<T>(model.Entities, config, tableState, new TableNodeParser()).Render());
         }
     }
 }

@@ -137,7 +137,7 @@ namespace MvcCoreBootstrapPanel.Builders
 
             _tableEntities = model.Entities as IEnumerable<object>;
             _tableConfig = new TableConfig();
-            _tableRenderer = new TableRenderer(_tableConfig, model.EntityCount, tableState, new T(), new TableNodeParser());
+            _tableRenderer = new TableRenderer<T>(model.Entities, _tableConfig, tableState, new TableNodeParser());
             configAction(new MvcCoreBootstrapTableBuilder<T>(model, new BuilderFactory(), _tableConfig));
 
             _tableConfigHandler.Check(_tableConfig, _tableEntities);

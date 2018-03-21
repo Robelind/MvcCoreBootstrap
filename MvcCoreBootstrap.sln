@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapAlert", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapForm", "src\MvcCoreBootstrapForm\MvcCoreBootstrapForm.csproj", "{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapDemo", "..\MvcCoreBootstrapDemo\src\MvcCoreBootstrapDemo\MvcCoreBootstrapDemo.csproj", "{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
