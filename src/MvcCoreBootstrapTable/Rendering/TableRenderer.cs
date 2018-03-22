@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
@@ -199,8 +198,11 @@ namespace MvcCoreBootstrapTable.Rendering
                         // Filtering.
                         if(config.Filtering.Threshold > 0)
                         {
+                            this.ManualFiltering(config, propInfo, filter);
+                        }
+                        else if(config.Filtering.Prepopulated)
+                        {
                             this.PrepopulatedFiltering(propInfo, filter);
-                            //this.ManualFiltering(config, propInfo, filter);
                         }
                     }
                 });

@@ -10,6 +10,7 @@ namespace MvcCoreBootstrapTable.Config
         }
 
         public int Threshold { get; set; }
-        public IList<string> CssClasses { get; private set; }
+        public IList<string> CssClasses { get; }
+        public bool Prepopulated { get; set; }
     }
 }
