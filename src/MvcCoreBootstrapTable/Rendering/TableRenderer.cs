@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
@@ -198,65 +199,73 @@ namespace MvcCoreBootstrapTable.Rendering
                         // Filtering.
                         if(config.Filtering.Threshold > 0)
                         {
-                            //TableNode input = this.CreateAndAppend("input", filter);
-                            TableNode dropDown = this.CreateAndAppend("div", filter);
-                            TagBuilder dropDownBtn = new TagBuilder("button");
-                            //TableNode dropDownBtn = this.CreateAndAppend("button", dropDown);
-                            //TableNode dropDownMenu = this.CreateAndAppend("div", dropDownBtn);
-                            TagBuilder dropDownMenu = new TagBuilder("ul");
-                            TagBuilder dropDownCaret = new TagBuilder("span");
-                            List<string> filterValues = new List<string>();
-
-                            foreach(var entity in _model.Entities)
-                            {
-                                PropertyInfo pi = entity.GetType().GetProperties().Single(p => p.Name == propInfo.Name);
-                                
-                                filterValues.Add(pi.GetValue(entity).ToString());
-                            }
-
-                            dropDown.Element.AddCssClass("dropdown");
-                            dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
-                            dropDownBtn.AddCssClass("btn");
-                            dropDownBtn.AddCssClass("btn-default");
-                            dropDownBtn.AddCssClass("dropdown-toggle");
-                            dropDownBtn.Attributes.Add("type", "button");
-                            dropDownBtn.Attributes.Add("data-toggle", "dropdown");
-                            dropDownBtn.Attributes.Add("aria-haspopup", "true");
-                            dropDownBtn.Attributes.Add("aria-expanded", "false");
-                            dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
-                            dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
-                            dropDownMenu.AddCssClass("dropdown-menu");
-                            dropDownCaret.AddCssClass("caret");
-                            foreach(var filterValue in filterValues.Distinct().OrderBy(fv => fv))
-                            {
-                                TagBuilder valueContainer = new TagBuilder("li");
-                                TagBuilder value = new TagBuilder("a");
-
-                                dropDownMenu.InnerHtml.AppendHtml(valueContainer);
-                                valueContainer.InnerHtml.AppendHtml(value);
-                                value.AddCssClass("dropdown-item");
-                                value.Attributes.Add("href", "#");
-                                value.InnerHtml.Append(filterValue);
-                                this.SetupAjaxAttrs(value, $"&filter[]={propInfo.Name}&filter[]={filterValue}");
-                            }
-
-                            //input.Element.Attributes.Add("type", "text");
-                            //input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
-                            //input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
-                            //input.Element.AddCssClass("form-control");
-                            //this.AddCssClasses(config.Filtering.CssClasses, input.Element);
-                            //if(_tableState.Filter.ContainsKey(propInfo.Name))
-                            //{
-                            //    input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
-                            //}
-                            //if(propInfo.Name == _tableState.CurrentFilter)
-                            //{
-                            //    // Filter input should be focused.
-                            //    input.Element.Attributes.Add("data-filter-focus", string.Empty);
-                            //}
+                            this.PrepopulatedFiltering(propInfo, filter);
+                            //this.ManualFiltering(config, propInfo, filter);
                         }
                     }
                 });
+            }
+        }
+
+        private void ManualFiltering(ColumnConfig config, PropertyInfo propInfo, TableNode filter)
+        {
+            TableNode input = this.CreateAndAppend("input", filter);
+
+            input.Element.Attributes.Add("type", "text");
+            input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
+            input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
+            input.Element.AddCssClass("form-control");
+            this.AddCssClasses(config.Filtering.CssClasses, input.Element);
+            if(_tableState.Filter.ContainsKey(propInfo.Name))
+            {
+                input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
+            }
+            if(propInfo.Name == _tableState.CurrentFilter)
+            {
+                // Filter input should be focused.
+                input.Element.Attributes.Add("data-filter-focus", string.Empty);
+            }
+        }
+
+        private void PrepopulatedFiltering(PropertyInfo propInfo, TableNode filter)
+        {
+            TableNode dropDown = this.CreateAndAppend("div", filter);
+            TagBuilder dropDownBtn = new TagBuilder("button");
+            TagBuilder dropDownMenu = new TagBuilder("ul");
+            TagBuilder dropDownCaret = new TagBuilder("span");
+            List<string> filterValues = new List<string>();
+
+            foreach(var entity in _model.Entities)
+            {
+                PropertyInfo pi = entity.GetType().GetProperties().Single(p => p.Name == propInfo.Name);
+
+                filterValues.Add(pi.GetValue(entity).ToString());
+            }
+
+            dropDown.Element.AddCssClass("dropdown");
+            dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
+            dropDownBtn.AddCssClass("btn");
+            dropDownBtn.AddCssClass("btn-default");
+            dropDownBtn.AddCssClass("dropdown-toggle");
+            dropDownBtn.Attributes.Add("type", "button");
+            dropDownBtn.Attributes.Add("data-toggle", "dropdown");
+            dropDownBtn.Attributes.Add("aria-haspopup", "true");
+            dropDownBtn.Attributes.Add("aria-expanded", "false");
+            dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
+            dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
+            dropDownMenu.AddCssClass("dropdown-menu");
+            dropDownCaret.AddCssClass("caret");
+            foreach(var filterValue in filterValues.Distinct().OrderBy(fv => fv))
+            {
+                TagBuilder valueContainer = new TagBuilder("li");
+                TagBuilder value = new TagBuilder("a");
+
+                dropDownMenu.InnerHtml.AppendHtml(valueContainer);
+                valueContainer.InnerHtml.AppendHtml(value);
+                value.AddCssClass("dropdown-item");
+                value.Attributes.Add("href", "#");
+                value.InnerHtml.Append(filterValue);
+                this.SetupAjaxAttrs(value, $"&filter[]={propInfo.Name}&filter[]={filterValue}", propInfo.Name);
             }
         }
 
@@ -421,23 +430,13 @@ namespace MvcCoreBootstrapTable.Rendering
             }
         }
 
-       private void SetupAjaxAttrs(TagBuilder builder, string queryAttr = null)
+       private void SetupAjaxAttrs(TagBuilder builder, string queryAttr = null, string ignore = null)
        {
             string url = queryAttr != null
-                ? $"{_config.Update.Url}?{this.CommonQueryAttrs()}{this.FilterQueryAttrs()}{queryAttr}"
+                ? $"{_config.Update.Url}?{this.CommonQueryAttrs()}{this.FilterQueryAttrs(ignore)}{queryAttr}"
                 : "";
 
             this.ConfigAjax(builder, _config.Update, url, true, _config.Id);
-            //builder.Attributes.Add("data-ajax", "true");
-            //builder.Attributes.Add("data-ajax-update", $"#{_containerId}");
-            //builder.Attributes.Add("data-ajax-mode", "replace");
-            //builder.Attributes.Add("data-ajax-url", url);
-            //builder.Attributes.Add("data-ajax-loading", "#" + _config.Update.BusyIndicatorId);
-            //builder.Attributes.Add("data-ajax-begin", $"{_config.Update.Start}");
-            //builder.Attributes.Add("data-ajax-success", $"{_config.Update.Success}");
-            //builder.Attributes.Add("data-ajax-failure", $"{_config.Update.Error}");
-            //builder.Attributes.Add("data-ajax-complete", $"{_config.Update.Complete}");
-            //builder.Attributes.Add("data-ajax-loading-duration", "100");
         }
 
         private string PagingLinkQueryAttrs(int pageNumber)
@@ -445,9 +444,11 @@ namespace MvcCoreBootstrapTable.Rendering
             return($"{this.PagingQueryAttrs(pageNumber)}{this.SortQueryAttrs()}");
         }
 
-        private string FilterQueryAttrs()
+        private string FilterQueryAttrs(string ignore = null)
         {
-            return(_tableState.Filter.Aggregate("", (attrs, f) => attrs + $"&filter[]={f.Key}&filter[]={f.Value}"));
+            return(_tableState.Filter.Aggregate("", (attrs, f) => f.Key != ignore
+                ? attrs + $"&filter[]={f.Key}&filter[]={f.Value}"
+                : attrs));
         }
 
         private string SortQueryAttrs()
