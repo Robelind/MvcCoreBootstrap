@@ -176,8 +176,8 @@ namespace MvcCoreBootstrapTable.Builders
         public MvcCoreBootstrapTableBuilder<T> Rows(Action<MvcCoreBootstrapTableRowBuilder<T>, T> configAction)
         {
             IEnumerable<T> entities = _config.Paging.PageSize > 0
-                ? _model.Entities.Take(_config.Paging.PageSize)
-                : _model.Entities;
+                ? _model.ProcessedEntities.Take(_config.Paging.PageSize)
+                : _model.ProcessedEntities;
 
             foreach(T entity in entities)
             {

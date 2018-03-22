@@ -22,7 +22,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
         public TableModel<T> Update<T>(IEnumerable<T> entities) where T : new()
         {
-            IEnumerable<T> modelEntities = entities;
+            IEnumerable<T> processedEntities = entities;
             int entityCount;
 
             // Filtering.
@@ -32,28 +32,28 @@ namespace MvcCoreBootstrapTable.Rendering
                 Expression<Func<T, bool>> expr = arg => propertyInfo.GetValue(arg).ToString()
                     .ToLower().StartsWith(filter.Value.ToLower());
                 
-                modelEntities = modelEntities.Where(expr.Compile());
+                processedEntities = processedEntities.Where(expr.Compile());
             }
-            entityCount = modelEntities.Count();
+            entityCount = processedEntities.Count();
 
             // Sorting.
             if(!string.IsNullOrEmpty(_tableState.SortProp))
             {
                 var lambda = Lambda<T>(_tableState.SortProp);
 
-                modelEntities = _tableState.AscSort
-                    ? modelEntities.OrderBy(lambda)
-                    : modelEntities.OrderByDescending(lambda);
+                processedEntities = _tableState.AscSort
+                    ? processedEntities.OrderBy(lambda)
+                    : processedEntities.OrderByDescending(lambda);
             }
 
             // Paging.
             if(_tableState.PageSize > 0)
             {
-                modelEntities = modelEntities.Skip(_tableState.PageSize * (_tableState.Page - 1))
+                processedEntities = processedEntities.Skip(_tableState.PageSize * (_tableState.Page - 1))
                     .Take(_tableState.PageSize);
             }
 
-            return(new TableModel<T>(modelEntities, entityCount));
+            return(new TableModel<T>(entities, processedEntities, entityCount));
         }
 
         private Func<T, object> Lambda<T>(string propName) where T : new()

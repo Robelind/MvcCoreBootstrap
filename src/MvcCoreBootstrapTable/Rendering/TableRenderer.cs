@@ -20,17 +20,17 @@ namespace MvcCoreBootstrapTable.Rendering
         private readonly TableState _tableState;
         private readonly object _entity;
         private readonly ITableNodeParser _nodeParser;
-        private readonly IEnumerable<T> _entities;
+        private readonly TableModel<T> _model;
         private readonly ITableConfig _config;
         private readonly int _entityCount;
         private string _containerId;
 
-        public TableRenderer(IEnumerable<T> entities, TableConfig config, TableState tableState,
+        public TableRenderer(TableModel<T> model, TableConfig config, TableState tableState,
             ITableNodeParser nodeParser)
         {
-            _entities = entities;
+            _model = model;
             _config = config;
-            _entityCount = entities.Count();
+            _entityCount = model.ProcessedEntities.Count();
             _tableState = tableState;
             _entity = new T();
             _nodeParser = nodeParser;
@@ -207,7 +207,7 @@ namespace MvcCoreBootstrapTable.Rendering
                             TagBuilder dropDownCaret = new TagBuilder("span");
                             List<string> filterValues = new List<string>();
 
-                            foreach(var entity in _entities)
+                            foreach(var entity in _model.Entities)
                             {
                                 PropertyInfo pi = entity.GetType().GetProperties().Single(p => p.Name == propInfo.Name);
                                 

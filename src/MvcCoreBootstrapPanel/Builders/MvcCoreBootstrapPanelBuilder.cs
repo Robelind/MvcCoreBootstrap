@@ -135,9 +135,9 @@ namespace MvcCoreBootstrapPanel.Builders
         {
             TableState tableState = new TableStateParser().Parse(_httpContext);
 
-            _tableEntities = model.Entities as IEnumerable<object>;
+            _tableEntities = model.ProcessedEntities as IEnumerable<object>;
             _tableConfig = new TableConfig();
-            _tableRenderer = new TableRenderer<T>(model.Entities, _tableConfig, tableState, new TableNodeParser());
+            _tableRenderer = new TableRenderer<T>(model, _tableConfig, tableState, new TableNodeParser());
             configAction(new MvcCoreBootstrapTableBuilder<T>(model, new BuilderFactory(), _tableConfig));
 
             _tableConfigHandler.Check(_tableConfig, _tableEntities);
