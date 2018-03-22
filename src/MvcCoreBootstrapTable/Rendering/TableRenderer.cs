@@ -251,22 +251,33 @@ namespace MvcCoreBootstrapTable.Rendering
             dropDownBtn.Attributes.Add("data-toggle", "dropdown");
             dropDownBtn.Attributes.Add("aria-haspopup", "true");
             dropDownBtn.Attributes.Add("aria-expanded", "false");
+            if(_tableState.Filter.ContainsKey(propInfo.Name))
+            {
+                // Currently selected filter value.
+                dropDownBtn.InnerHtml.Append(_tableState.Filter[propInfo.Name]);
+            }
             dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
             dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
             dropDownMenu.AddCssClass("dropdown-menu");
             dropDownCaret.AddCssClass("caret");
+            this.AddFilterSelection(dropDownMenu, propInfo.Name, null);
             foreach(var filterValue in filterValues.Distinct().OrderBy(fv => fv))
             {
-                TagBuilder valueContainer = new TagBuilder("li");
-                TagBuilder value = new TagBuilder("a");
-
-                dropDownMenu.InnerHtml.AppendHtml(valueContainer);
-                valueContainer.InnerHtml.AppendHtml(value);
-                value.AddCssClass("dropdown-item");
-                value.Attributes.Add("href", "#");
-                value.InnerHtml.Append(filterValue);
-                this.SetupAjaxAttrs(value, $"&filter[]={propInfo.Name}&filter[]={filterValue}", propInfo.Name);
+                this.AddFilterSelection(dropDownMenu, propInfo.Name, filterValue);
             }
+        }
+
+        private void AddFilterSelection(TagBuilder dropDownMenu, string propName, string filterValue)
+        {
+            TagBuilder valueContainer = new TagBuilder("li");
+            TagBuilder value = new TagBuilder("a");
+
+            dropDownMenu.InnerHtml.AppendHtml(valueContainer);
+            valueContainer.InnerHtml.AppendHtml(value);
+            value.AddCssClass("dropdown-item");
+            value.Attributes.Add("href", "#");
+            value.InnerHtml.Append(filterValue);
+            this.SetupAjaxAttrs(value, $"&filter[]={propName}&filter[]={filterValue}", propName);
         }
 
         private TableNode Table()
