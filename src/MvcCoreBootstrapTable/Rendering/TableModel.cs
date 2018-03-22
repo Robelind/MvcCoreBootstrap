@@ -5,23 +5,18 @@ namespace MvcCoreBootstrapTable.Rendering
 {
     public class TableModel<T>
     {
-        public TableModel(IEnumerable<T> entities)
+        public TableModel(IQueryable<T> entities)
         {
             Entities = ProcessedEntities = entities;
-            EntityCount = entities.Count();
         }
 
-        internal TableModel(IEnumerable<T> entities, IEnumerable<T> processedEntities, int entityCount)
+        internal TableModel(IQueryable<T> entities, IQueryable<T> processedEntities)
         {
             Entities = entities;
             ProcessedEntities = processedEntities;
-            EntityCount = entityCount;
-            Processed = true;
         }
 
-        internal IEnumerable<T> Entities { get; }
-        internal IEnumerable<T> ProcessedEntities { get; }
-        internal int EntityCount { get; }
-        internal bool Processed { get; }
+        internal IQueryable<T> Entities { get; }
+        internal IQueryable<T> ProcessedEntities { get; }
     }
 }

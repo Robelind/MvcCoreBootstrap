@@ -22,7 +22,6 @@ namespace MvcCoreBootstrapTable.Rendering
         private readonly ITableNodeParser _nodeParser;
         private readonly TableModel<T> _model;
         private readonly ITableConfig _config;
-        private readonly int _entityCount;
         private string _containerId;
 
         public TableRenderer(TableModel<T> model, TableConfig config, TableState tableState,
@@ -30,7 +29,6 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             _model = model;
             _config = config;
-            _entityCount = model.ProcessedEntities.Count();
             _tableState = tableState;
             _entity = new T();
             _nodeParser = nodeParser;
@@ -152,10 +150,23 @@ namespace MvcCoreBootstrapTable.Rendering
             {
                 TableNode header = this.CreateAndAppend("thead", table);
                 TableNode headerRow = this.CreateAndAppend("tr", header);
-                TableNode filterRow = _config.Columns.Any(c => c.Value.Filtering.Threshold > 0)
+                TableNode filterRow = _config.Columns.Any(c => c.Value.Filtering.Threshold > 0 || c.Value.Filtering.Prepopulated)
                     ? this.CreateAndAppend("tr", header)
                     : null;
+                IDictionary<string, IEnumerable<string>> filterValues = new Dictionary<string, IEnumerable<string>>();
 
+                // For each column configured for prepopulated filtering, retrieve the possible
+                // filter values.
+                this.IterateProperties(_entity, (propInfo, config) =>
+                {
+                    if(config.Filtering.Prepopulated)
+                    {
+                        List<object> values = _model.Entities
+                            .Select(ExpressionHelper.PropertyExpr<T>(propInfo.Name)).Distinct().ToList();
+                        filterValues.Add(propInfo.Name, values.Select(v => v.ToString()).OrderBy(v => v));
+                    }
+                });
+                
                 // Columns.
                 this.IterateProperties(_entity, (propInfo, config) =>
                 {
@@ -202,7 +213,7 @@ namespace MvcCoreBootstrapTable.Rendering
                         }
                         else if(config.Filtering.Prepopulated)
                         {
-                            this.PrepopulatedFiltering(propInfo, filter);
+                            this.PrepopulatedFiltering(propInfo, filter, filterValues[propInfo.Name]);
                         }
                     }
                 });
@@ -229,20 +240,13 @@ namespace MvcCoreBootstrapTable.Rendering
             }
         }
 
-        private void PrepopulatedFiltering(PropertyInfo propInfo, TableNode filter)
+        private void PrepopulatedFiltering(PropertyInfo propInfo, TableNode filter,
+            IEnumerable<string> filterValues)
         {
             TableNode dropDown = this.CreateAndAppend("div", filter);
             TagBuilder dropDownBtn = new TagBuilder("button");
             TagBuilder dropDownMenu = new TagBuilder("ul");
             TagBuilder dropDownCaret = new TagBuilder("span");
-            List<string> filterValues = new List<string>();
-
-            foreach(var entity in _model.Entities)
-            {
-                PropertyInfo pi = entity.GetType().GetProperties().Single(p => p.Name == propInfo.Name);
-
-                filterValues.Add(pi.GetValue(entity).ToString());
-            }
 
             dropDown.Element.AddCssClass("dropdown");
             dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
@@ -263,7 +267,7 @@ namespace MvcCoreBootstrapTable.Rendering
             dropDownMenu.AddCssClass("dropdown-menu");
             dropDownCaret.AddCssClass("caret");
             this.AddFilterSelection(dropDownMenu, propInfo.Name, null);
-            foreach(var filterValue in filterValues.Distinct().OrderBy(fv => fv))
+            foreach(var filterValue in filterValues)
             {
                 this.AddFilterSelection(dropDownMenu, propInfo.Name, filterValue);
             }
@@ -311,8 +315,9 @@ namespace MvcCoreBootstrapTable.Rendering
             if(_config.Paging.PageSize > 0 || !string.IsNullOrEmpty(_config.Footer.Text))
             {
                 List<TableNode> footerContent = new List<TableNode>();
+                int entityCount = _model.ProcessedEntities.Count();
                 int pageCount = _config.Paging.PageSize > 0
-                    ? _entityCount / _config.Paging.PageSize + (_entityCount%_config.Paging.PageSize > 0 ? 1 : 0)
+                    ? entityCount / _config.Paging.PageSize + (entityCount%_config.Paging.PageSize > 0 ? 1 : 0)
                     : 0;
 
                 if(_config.Paging.PageInfo)
@@ -324,7 +329,7 @@ namespace MvcCoreBootstrapTable.Rendering
                 }
 
                 // Paging.
-                if(_config.Paging.PageSize > 0 && _entityCount > _config.Paging.PageSize)
+                if(_config.Paging.PageSize > 0 && entityCount > _config.Paging.PageSize)
                 {
                     TableNode firstContainer = this.FooterContainer("NavBtnContainer");
                     TableNode prevContainer = this.FooterContainer("NavBtnContainer");
