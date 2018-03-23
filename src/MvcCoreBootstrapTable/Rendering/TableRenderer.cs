@@ -179,7 +179,8 @@ namespace MvcCoreBootstrapTable.Rendering
 
                     if(cellValue != null)
                     {
-                        if(columnConfig.Filtering.Prepopulated && columnConfig.Filtering.Links)
+                        if(columnConfig != null && columnConfig.Filtering.Prepopulated &&
+                           columnConfig.Filtering.Links)
                         {
                             TagBuilder filterLink = new TagBuilder("a");
 
