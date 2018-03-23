@@ -13,5 +13,6 @@ namespace MvcCoreBootstrapTable.Config
         public IList<string> CssClasses { get; }
         public bool Prepopulated { get; set; }
         public string Initial { get; set; }
+        public bool Links { get; set; }
     }
 }

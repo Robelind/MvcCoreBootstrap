@@ -169,15 +169,32 @@ namespace MvcCoreBootstrapTable.Rendering
                 }
 
                 // Cells.
-                this.IterateProperties(rowConfig.Entity, (property, _) =>
+                this.IterateProperties(rowConfig.Entity, (property, columnConfig) =>
                 {
                     CellConfig cellConfig = rowConfig.CellConfigs.ContainsKey(property.Name)
                         ? rowConfig.CellConfigs[property.Name]
                         : null;
                     TableNode cell = this.CreateAndAppend("td", row);
-                    object cellValue = property.GetValue(rowConfig.Entity);
+                    string cellValue = property.GetValue(rowConfig.Entity)?.ToString();
 
-                    cell.Element.InnerHtml.Append(cellValue?.ToString() ?? string.Empty);
+                    if(cellValue != null)
+                    {
+                        if(columnConfig.Filtering.Prepopulated && columnConfig.Filtering.Links)
+                        {
+                            TagBuilder filterLink = new TagBuilder("a");
+
+                            filterLink.AddCssClass("FilterLink");
+                            filterLink.InnerHtml.Append(cellValue?.ToString());
+                            filterLink.Attributes.Add("href", "#");
+                            this.SetupAjaxAttrs(filterLink, $"&filter[]={property.Name}&filter[]={cellValue}&filter[]={true}", property.Name);
+                            cell.Element.InnerHtml.AppendHtml(filterLink);
+                        }
+                        else
+                        {
+                            cell.Element.InnerHtml.Append(cellValue);
+                        }
+                    }
+
                     if(cellConfig != null)
                     {
                         this.AddContextualState(cell.Element, cellConfig.State);

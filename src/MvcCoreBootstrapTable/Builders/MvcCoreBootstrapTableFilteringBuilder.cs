@@ -32,11 +32,16 @@ namespace MvcCoreBootstrapTable.Builders
         /// <summary>
         /// Activates on prepopulated filtering.
         /// </summary>
+        /// <param name="links">If true, filtering can be activated by clicking on column values.</param>
         /// <param name="condition">If true, filtering will be activated.</param>
         /// <returns>Filtering builder instance.</returns>
-        public MvcCoreBootstrapTableFilteringBuilder Prepopulated(bool condition = true)
+        public MvcCoreBootstrapTableFilteringBuilder Prepopulated(bool links, bool condition = true)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapTableFilteringBuilder>(() => _config.Prepopulated = condition));
+            return(this.SetConfigProp<MvcCoreBootstrapTableFilteringBuilder>(() =>
+            {
+                _config.Prepopulated = condition;
+                _config.Links = links;
+            }));
         }
 
         /// <summary>
