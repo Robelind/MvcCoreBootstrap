@@ -27,7 +27,7 @@ namespace MvcCoreBootstrapTable.Rendering
             {
                 Debug.WriteLine($"Filter: {filter.Key};{filter.Value}");
                 processedEntities = processedEntities.Where(filter.Value.Prepopulated
-                    ? ExpressionHelper.ComparisonExpr<T>(filter.Key, filter.Value.Value)
+                    ? ExpressionHelper.EqualsExpr<T>(filter.Key, filter.Value.Value)
                     : ExpressionHelper.StartsWithExpr<T>(filter.Key, filter.Value.Value));
             }
 

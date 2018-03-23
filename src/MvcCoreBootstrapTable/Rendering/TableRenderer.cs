@@ -119,7 +119,7 @@ namespace MvcCoreBootstrapTable.Rendering
                     // Initial rendering of the table, apply initial filteringm sorting and paging.
                     if(initialFilterColumn.Key != null)
                     {
-                        Expression<Func<T, bool>> whereExpr = ExpressionHelper.ComparisonExpr<T>(initialFilterColumn.Key,
+                        Expression<Func<T, bool>> whereExpr = ExpressionHelper.EqualsExpr<T>(initialFilterColumn.Key,
                             initialFilterColumn.Value.Filtering.Initial);
 
                         entities = entities.Where(whereExpr);
