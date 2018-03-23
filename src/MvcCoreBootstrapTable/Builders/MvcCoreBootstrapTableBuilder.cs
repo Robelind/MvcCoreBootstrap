@@ -182,8 +182,10 @@ namespace MvcCoreBootstrapTable.Builders
             {
                 KeyValuePair<string, ColumnConfig> initialFilterColumn = _config.Columns
                     .FirstOrDefault(c => c.Value.Filtering.Initial != null);
+                KeyValuePair<string, ColumnConfig> initialSortColumn = _config.Columns
+                    .FirstOrDefault(c => c.Value.SortState.HasValue);
 
-                // Initial rendering of the table, apply initial filtering and paging.
+                // Initial rendering of the table, apply initial filteringm sorting and paging.
                 if(initialFilterColumn.Key != null)
                 {
                     Expression<Func<T, bool>> whereExpr = ExpressionHelper.ComparisonExpr<T>(initialFilterColumn.Key,
@@ -195,9 +197,18 @@ namespace MvcCoreBootstrapTable.Builders
                 entities = _config.Paging.PageSize > 0
                     ? entities.Take(_config.Paging.PageSize)
                     : entities;
+
+                if(initialSortColumn.Key != null)
+                {
+                    var sortExpr = ExpressionHelper.PropertyExpr<T>(initialSortColumn.Key);
+
+                    entities = initialSortColumn.Value.SortState == SortState.Ascending
+                        ? entities.OrderBy(sortExpr)
+                        : entities.OrderByDescending(sortExpr);
+                }
             }
 
-            foreach(T entity in entities)
+                foreach(T entity in entities)
             {
                 MvcCoreBootstrapTableRowBuilder<T> builder = _builderFactory.RowBuilder(entity);
 
