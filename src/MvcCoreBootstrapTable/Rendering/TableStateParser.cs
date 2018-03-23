@@ -22,13 +22,19 @@ namespace MvcCoreBootstrapTable.Rendering
                 PageSize = pageSize.Count == 1 ? int.Parse(pageSize[0]) : 0,
                 CurrentFilter = currentFilter.Count == 1 ? currentFilter[0] : null,
                 ContainerId = containerId.Count == 1 ? containerId[0] : null,
-                Filter = new Dictionary<string, string>(),
+                Filters = new Dictionary<string, Filter>(),
             };
 
-            for(int i = 0; i < httpContext.Request.Query["filter[]"].Count; i += 2)
+            for(int i = 0; i < httpContext.Request.Query["filter[]"].Count; i += 3)
             {
-                tableState.Filter.Add(httpContext.Request.Query["filter[]"][i],
-                    httpContext.Request.Query["filter[]"][i + 1]);
+                if(!string.IsNullOrEmpty(httpContext.Request.Query["filter[]"][i + 1]))
+                {
+                    tableState.Filters.Add(httpContext.Request.Query["filter[]"][i], new Filter
+                    {
+                        Value = httpContext.Request.Query["filter[]"][i + 1],
+                        Prepopulated = bool.Parse(httpContext.Request.Query["filter[]"][i + 2])
+                    });
+                }
             }
 
             return(tableState);

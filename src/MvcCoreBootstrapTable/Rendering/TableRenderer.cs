@@ -272,9 +272,9 @@ namespace MvcCoreBootstrapTable.Rendering
             input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
             input.Element.AddCssClass("form-control");
             this.AddCssClasses(config.Filtering.CssClasses, input.Element);
-            if(_tableState.Filter.ContainsKey(propInfo.Name))
+            if(_tableState.Filters.ContainsKey(propInfo.Name))
             {
-                input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
+                input.Element.Attributes.Add("value", _tableState.Filters[propInfo.Name].Value);
             }
             if(propInfo.Name == _tableState.CurrentFilter)
             {
@@ -300,10 +300,10 @@ namespace MvcCoreBootstrapTable.Rendering
             dropDownBtn.Attributes.Add("data-toggle", "dropdown");
             dropDownBtn.Attributes.Add("aria-haspopup", "true");
             dropDownBtn.Attributes.Add("aria-expanded", "false");
-            if(_tableState.Filter.ContainsKey(propInfo.Name))
+            if(_tableState.Filters.ContainsKey(propInfo.Name))
             {
                 // Currently selected filter value.
-                dropDownBtn.InnerHtml.Append(_tableState.Filter[propInfo.Name]);
+                dropDownBtn.InnerHtml.Append(_tableState.Filters[propInfo.Name].Value);
             }
             dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
             dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
@@ -326,7 +326,7 @@ namespace MvcCoreBootstrapTable.Rendering
             value.AddCssClass("dropdown-item");
             value.Attributes.Add("href", "#");
             value.InnerHtml.Append(filterValue);
-            this.SetupAjaxAttrs(value, $"&filter[]={propName}&filter[]={filterValue}", propName);
+            this.SetupAjaxAttrs(value, $"&filter[]={propName}&filter[]={filterValue}&filter[]={true}", propName);
         }
 
         private TableNode Table()
@@ -507,8 +507,8 @@ namespace MvcCoreBootstrapTable.Rendering
 
         private string FilterQueryAttrs(string ignore = null)
         {
-            return(_tableState.Filter.Aggregate("", (attrs, f) => f.Key != ignore
-                ? attrs + $"&filter[]={f.Key}&filter[]={f.Value}"
+            return(_tableState.Filters.Aggregate("", (attrs, f) => f.Key != ignore
+                ? attrs + $"&filter[]={f.Key}&filter[]={f.Value.Value}&filter[]={f.Value.Prepopulated}"
                 : attrs));
         }
 

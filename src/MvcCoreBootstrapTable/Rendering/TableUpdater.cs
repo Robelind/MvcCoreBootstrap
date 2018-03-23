@@ -23,11 +23,12 @@ namespace MvcCoreBootstrapTable.Rendering
 
             Debug.WriteLine("Updating");
             // Filtering.
-            foreach(var filter in _tableState.Filter.Where(f => !string.IsNullOrEmpty(f.Value)))
+            foreach(var filter in _tableState.Filters)
             {
                 Debug.WriteLine($"Filter: {filter.Key};{filter.Value}");
-                processedEntities = processedEntities
-                    .Where(ExpressionHelper.ComparisonExpr<T>(filter.Key, filter.Value));
+                processedEntities = processedEntities.Where(filter.Value.Prepopulated
+                    ? ExpressionHelper.ComparisonExpr<T>(filter.Key, filter.Value.Value)
+                    : ExpressionHelper.StartsWithExpr<T>(filter.Key, filter.Value.Value));
             }
 
             // Sorting.
