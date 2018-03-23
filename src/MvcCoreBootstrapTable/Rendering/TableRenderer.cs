@@ -273,7 +273,7 @@ namespace MvcCoreBootstrapTable.Rendering
                         }
                         else if(config.Filtering.Prepopulated)
                         {
-                            this.PrepopulatedFiltering(propInfo, filter, filterValues[propInfo.Name]);
+                            this.PrepopulatedFiltering(config, propInfo, filter, filterValues[propInfo.Name]);
                         }
                     }
                 });
@@ -300,7 +300,7 @@ namespace MvcCoreBootstrapTable.Rendering
             }
         }
 
-        private void PrepopulatedFiltering(PropertyInfo propInfo, TableNode filter,
+        private void PrepopulatedFiltering(ColumnConfig config, PropertyInfo propInfo, TableNode filter,
             IEnumerable<string> filterValues)
         {
             TableNode dropDown = this.CreateAndAppend("div", filter);
@@ -310,6 +310,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
             dropDown.Element.AddCssClass("dropdown");
             dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
+            this.AddCssClasses(config.Filtering.CssClasses, dropDownMenu);
             dropDownBtn.AddCssClass("btn");
             dropDownBtn.AddCssClass("btn-default");
             dropDownBtn.AddCssClass("dropdown-toggle");
