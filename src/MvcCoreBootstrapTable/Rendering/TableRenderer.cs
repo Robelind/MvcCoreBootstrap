@@ -383,7 +383,7 @@ namespace MvcCoreBootstrapTable.Rendering
             if(_config.Paging.PageSize > 0 || !string.IsNullOrEmpty(_config.Footer.Text))
             {
                 List<TableNode> footerContent = new List<TableNode>();
-                int entityCount = _model.ProcessedEntities.Count();
+                int entityCount = _model.Entities.Count();
                 int pageCount = _config.Paging.PageSize > 0
                     ? entityCount / _config.Paging.PageSize + (entityCount%_config.Paging.PageSize > 0 ? 1 : 0)
                     : 0;
