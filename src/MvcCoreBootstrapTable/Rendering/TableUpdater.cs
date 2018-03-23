@@ -1,8 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace MvcCoreBootstrapTable.Rendering
 {
@@ -26,7 +23,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
             Debug.WriteLine("Updating");
             // Filtering.
-            foreach(var filter in _tableState.Filter)
+            foreach(var filter in _tableState.Filter.Where(f => !string.IsNullOrEmpty(f.Value)))
             {
                 Debug.WriteLine($"Filter: {filter.Key};{filter.Value}");
                 processedEntities = processedEntities
