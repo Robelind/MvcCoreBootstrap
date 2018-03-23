@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -102,9 +103,41 @@ namespace MvcCoreBootstrapTable.Rendering
         private void Body(TableNode table)
         {
             TableNode body = this.CreateAndAppend("tbody", table);
+            IList<RowConfig> rows = _config.Rows;
+
+            if(!rows.Any())
+            {
+                IQueryable<T> entities = _model.ProcessedEntities;
+
+                if(!_model.Processed)
+                {
+                    KeyValuePair<string, ColumnConfig> initialFilterColumn = _config.Columns
+                        .FirstOrDefault(c => c.Value.Filtering.Initial != null);
+
+                    // Initial rendering of the table, apply initial filtering and paging.
+                    if(initialFilterColumn.Key != null)
+                    {
+                        Expression<Func<T, bool>> whereExpr = ExpressionHelper.ComparisonExpr<T>(initialFilterColumn.Key,
+                            initialFilterColumn.Value.Filtering.Initial);
+
+                        entities = entities.Where(whereExpr);
+                    }
+                    entities = _config.Paging.PageSize > 0
+                        ? entities.Take(_config.Paging.PageSize)
+                        : entities;
+                }
+
+                // No row configuration has been performed.
+                // Create rows from the entities.
+                foreach(var row in entities.Select(e => new RowConfig(e)))
+                {
+                    rows.Add(row);
+                }
+            }
+
 
             // Rows.
-            foreach(RowConfig rowConfig in _config.Rows)
+            foreach(RowConfig rowConfig in rows)
             {
                 TableNode row = this.CreateAndAppend("tr", body);
 

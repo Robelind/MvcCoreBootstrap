@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -23,9 +24,11 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             IQueryable<T> processedEntities = entities;
 
+            Debug.WriteLine("Updating");
             // Filtering.
             foreach(var filter in _tableState.Filter)
             {
+                Debug.WriteLine($"Filter: {filter.Key};{filter.Value}");
                 processedEntities = processedEntities
                     .Where(ExpressionHelper.ComparisonExpr<T>(filter.Key, filter.Value));
             }

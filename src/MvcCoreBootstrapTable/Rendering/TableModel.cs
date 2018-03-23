@@ -14,9 +14,11 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             Entities = entities;
             ProcessedEntities = processedEntities;
+            Processed = true;
         }
 
         internal IQueryable<T> Entities { get; }
         internal IQueryable<T> ProcessedEntities { get; }
+        internal bool Processed { get; }
     }
 }
