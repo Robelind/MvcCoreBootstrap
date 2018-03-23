@@ -202,7 +202,7 @@ namespace MvcCoreBootstrapTable.Rendering
                 // filter values.
                 this.IterateProperties(_entity, (propInfo, config) =>
                 {
-                    if(config.Filtering.Prepopulated)
+                    if(config?.Filtering.Prepopulated != null)
                     {
                         List<object> values = _model.Entities
                             .Select(ExpressionHelper.PropertyExpr<T>(propInfo.Name)).Distinct().ToList();
