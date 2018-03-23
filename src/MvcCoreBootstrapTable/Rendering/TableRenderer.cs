@@ -309,14 +309,14 @@ namespace MvcCoreBootstrapTable.Rendering
             dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
             dropDownMenu.AddCssClass("dropdown-menu");
             dropDownCaret.AddCssClass("caret");
-            this.AddFilterSelection(dropDownMenu, propInfo.Name, null);
+            this.AddFilterSelection(dropDownMenu, propInfo.Name, "&nbsp;", true);
             foreach(var filterValue in filterValues)
             {
                 this.AddFilterSelection(dropDownMenu, propInfo.Name, filterValue);
             }
         }
 
-        private void AddFilterSelection(TagBuilder dropDownMenu, string propName, string filterValue)
+        private void AddFilterSelection(TagBuilder dropDownMenu, string propName, string filterValue, bool html = false)
         {
             TagBuilder valueContainer = new TagBuilder("li");
             TagBuilder value = new TagBuilder("a");
@@ -325,7 +325,14 @@ namespace MvcCoreBootstrapTable.Rendering
             valueContainer.InnerHtml.AppendHtml(value);
             value.AddCssClass("dropdown-item");
             value.Attributes.Add("href", "#");
-            value.InnerHtml.Append(filterValue);
+            if(html)
+            {
+                value.InnerHtml.AppendHtml(filterValue);
+            }
+            else
+            {
+                value.InnerHtml.Append(filterValue);
+            }
             this.SetupAjaxAttrs(value, $"&filter[]={propName}&filter[]={filterValue}&filter[]={true}", propName);
         }
 
