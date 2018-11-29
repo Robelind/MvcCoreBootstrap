@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Config;
+using MvcCoreBootstrapModal.Rendering;
 
 namespace MvcCoreBootstrapButton.Rendering
 {
@@ -13,8 +15,15 @@ namespace MvcCoreBootstrapButton.Rendering
 
     internal class ButtonRenderer : RenderBase, IButtonRenderer
     {
+        private readonly IModalRenderer _modalRenderer;
         private ButtonConfig _config;
         private TagBuilder _button;
+        private readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
+
+        public ButtonRenderer(IModalRenderer modalRenderer)
+        {
+            _modalRenderer = modalRenderer;
+        }
 
         public IHtmlContent Render(ButtonConfig config)
         {
@@ -58,7 +67,8 @@ namespace MvcCoreBootstrapButton.Rendering
             this.AddCssClasses(config.CssClasses, _button);
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
-                        
+            this.TriggerModal(_button, _config.Modal);
+            
             return(Element);
         }
 
@@ -150,6 +160,19 @@ namespace MvcCoreBootstrapButton.Rendering
                     }
 
                     menu.InnerHtml.AppendHtml(menuItem);
+                }
+            }
+        }
+
+        private void TriggerModal(TagBuilder button, ModalConfig modal)
+        {
+            if(modal != null || _config.ModalId != null)
+            {
+                button.Attributes.Add("data-toggle", "modal");
+                button.Attributes.Add("data-target", "#" + (modal != null ? modal.Id : _config.ModalId));
+                if(modal != null)
+                {
+                    _builder.AppendHtml(_modalRenderer.Render(modal));
                 }
             }
         }

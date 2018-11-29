@@ -2,18 +2,16 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <AssemblyName>MvcCoreBootstrapButton</AssemblyName>
-    <PackageId>MvcCoreBootstrapButton</PackageId>
+    <AssemblyName>MvcCoreBootstrapModal</AssemblyName>
+    <PackageId>MvcCoreBootstrapModal</PackageId>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard2.0' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MvcCoreBootstrapModal\MvcCoreBootstrapModal.csproj" />
     <ProjectReference Include="..\MvcCoreBootstrap\MvcCoreBootstrap.csproj" />
   </ItemGroup>
 

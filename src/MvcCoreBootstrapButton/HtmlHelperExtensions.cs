@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrapButton.Builders;
 using MvcCoreBootstrapButton.Config;
 using MvcCoreBootstrapButton.Rendering;
+using MvcCoreBootstrapModal.Rendering;
 
 namespace MvcCoreBootstrapButton
 {
@@ -22,7 +23,7 @@ namespace MvcCoreBootstrapButton
 
             configAction(new MvcCoreBootstrapButtonBuilder(config));
 
-            return(new ButtonRenderer().Render(config));
+            return(new ButtonRenderer(new ModalRenderer()).Render(config));
         }
 
         /// <summary>

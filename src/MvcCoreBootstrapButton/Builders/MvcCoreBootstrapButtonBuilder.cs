@@ -2,6 +2,8 @@
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Builders;
+using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Builders
 {
@@ -238,6 +240,29 @@ namespace MvcCoreBootstrapButton.Builders
             configAction(new MvcCoreBootstrapButtonDropdownBuilder(_config.Dropdown));
 
             return(this);
+        }
+
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="configAction">Action that implements modal configuration.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
+        {
+            _config.Modal = new ModalConfig();
+            configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
+
+            return(this);
+        }
+
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="id">Id of a modal.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id));
         }
     }
 }
