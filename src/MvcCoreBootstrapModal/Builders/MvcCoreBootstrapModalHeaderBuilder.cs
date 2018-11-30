@@ -21,14 +21,5 @@ namespace MvcCoreBootstrapModal.Builders
         {
             return(this.SetConfigProp<MvcCoreBootstrapModalHeaderBuilder>(() => _config.Title = title));
         }
-
-        /// <summary>
-        /// Sets whether the header will contain a means for dismissing the modal.
-        /// </summary>
-        /// <returns>The modal builder instance.</returns>
-        public MvcCoreBootstrapModalHeaderBuilder Dismissable()
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapModalHeaderBuilder>(() => _config.Dismissable = true));
-        }
     }
 }

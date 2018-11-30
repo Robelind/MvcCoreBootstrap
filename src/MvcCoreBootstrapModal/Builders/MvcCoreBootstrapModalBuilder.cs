@@ -97,6 +97,15 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Sets whether the modal header will contain a means for dismissing the modal.
+        /// </summary>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Dismissible()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Dismissable = true));
+        }
+
+        /// <summary>
         /// Configures a basic modal with title, body and a close button.
         /// </summary>
         /// <param name="title">Modal title.</param>
