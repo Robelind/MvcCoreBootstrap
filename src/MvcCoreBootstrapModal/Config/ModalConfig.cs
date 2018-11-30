@@ -29,6 +29,7 @@ namespace MvcCoreBootstrapModal.Config
         public string Title { get; set; }
         public string Body { get; set; }
         public IHtmlContent BodyHtml { get; set; }
+        public bool OnLoad { get; set; }
         public IList<ModalButton> Buttons { get; set; }
     }
 }

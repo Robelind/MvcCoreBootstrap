@@ -27,6 +27,10 @@ namespace MvcCoreBootstrapModal.Rendering
             Element.Attributes.Add("role", "dialog");
             Element.Attributes.Add("tabindex", "-1");
             this.AddCssClass("fade", config.Animation);
+            if(config.OnLoad)
+            {
+                Element.Attributes.Add("data-mvccorebootstrap-modal-on-load", null);
+            }
             Element.InnerHtml.AppendHtml(dialog);
             this.SetSize(config, dialog);
             this.AddContextualState(header, config.State, "bg-");

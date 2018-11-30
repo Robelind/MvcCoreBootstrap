@@ -117,6 +117,16 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Configures the model to be displayed on page load.
+        /// </summary>
+        /// <param name="condition">If true, the modal will be displayed on page load.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder DisplayOnLoad(bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.OnLoad = condition));
+        }
+
+        /// <summary>
         /// Configures a basic modal with title, body and a close button.
         /// </summary>
         /// <param name="title">Modal title.</param>
