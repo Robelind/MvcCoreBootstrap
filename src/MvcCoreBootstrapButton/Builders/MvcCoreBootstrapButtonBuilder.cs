@@ -2,8 +2,6 @@
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapButton.Config;
-using MvcCoreBootstrapModal.Builders;
-using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Builders
 {
@@ -242,18 +240,19 @@ namespace MvcCoreBootstrapButton.Builders
             return(this);
         }
 
+        //Problem: The modal created by this API needs to be rendered outside of the button.
         /// <summary>
         /// Configures the button to trigger display of a modal.
         /// </summary>
         /// <param name="configAction">Action that implements modal configuration.</param>
         /// <returns>The button builder instance.</returns>
-        public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
-        {
-            _config.Modal = new ModalConfig();
-            configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
+        //public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
+        //{
+        //    _config.Modal = new ModalConfig();
+        //    configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
 
-            return(this);
-        }
+        //    return(this);
+        //}
 
         /// <summary>
         /// Configures the button to trigger display of a modal.
@@ -262,7 +261,7 @@ namespace MvcCoreBootstrapButton.Builders
         /// <returns>The button builder instance.</returns>
         public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
         {
-            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id));
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id, nameof(id)));
         }
     }
 }

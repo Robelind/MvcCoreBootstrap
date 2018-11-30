@@ -5,8 +5,12 @@ namespace MvcCoreBootstrap.Building
 {
     public class BuilderBase
     {
-        protected T SetConfigProp<T>(Action configAction) where T : BuilderBase
+        protected T SetConfigProp<T>(Action configAction, object notNullProperty  = null, string notNullPropertyName = null) where T : BuilderBase
         {
+            if(notNullProperty == null && notNullPropertyName != null)
+            {
+                throw new ArgumentNullException($"\"{notNullPropertyName}\" cannot be null");
+            }
             configAction();
             return(this as T);
         }

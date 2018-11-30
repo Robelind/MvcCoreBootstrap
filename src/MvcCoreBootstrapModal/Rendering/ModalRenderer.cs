@@ -20,6 +20,7 @@ namespace MvcCoreBootstrapModal.Rendering
             TagBuilder header = new TagBuilder("div");
             TagBuilder body = new TagBuilder("div");
             TagBuilder footer = new TagBuilder("div");
+            TagBuilder title = new TagBuilder("h4");
 
             Element = new TagBuilder("div");
             this.BaseConfig(config, "modal");
@@ -53,7 +54,10 @@ namespace MvcCoreBootstrapModal.Rendering
                 closeBtn.InnerHtml.AppendHtml(x);
                 header.InnerHtml.AppendHtml(closeBtn);
             }
-            header.InnerHtml.AppendHtml(config.Title);
+
+            title.AddCssClass("modal-title");
+            title.InnerHtml.Append(config.Title);
+            header.InnerHtml.AppendHtml(title);
 
             body.AddCssClass("modal-body");
             if(config.BodyHtml != null)
