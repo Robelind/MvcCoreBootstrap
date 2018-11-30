@@ -88,6 +88,11 @@ namespace MvcCoreBootstrapModal.Rendering
                 {
                     button.Attributes.Add("data-mvccorebootstrap-modal-btn-action", modalButton.JsFunc +  "()");
                 }
+                else if(modalButton.Submit)
+                {
+                    button.Attributes.Add("type", "submit");
+                    button.Attributes.Add("data-mvccorebootstrap-modal-submit-btn", null);
+                }
                 else
                 {
                     button.Attributes.Add("data-dismiss", "modal");

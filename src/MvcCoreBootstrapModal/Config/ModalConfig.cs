@@ -10,6 +10,7 @@ namespace MvcCoreBootstrapModal.Config
         public string Text { get; set; }
         public ContextualState State { get; set; }
         public string JsFunc { get; set; }
+        public bool Submit { get; set; }
         //public ButtonConfig Config { get; set; }
     }
 
