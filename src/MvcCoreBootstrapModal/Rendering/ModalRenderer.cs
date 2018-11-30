@@ -29,6 +29,7 @@ namespace MvcCoreBootstrapModal.Rendering
             this.AddCssClass("fade", config.Animation);
             Element.InnerHtml.AppendHtml(dialog);
             this.SetSize(config, dialog);
+            this.AddContextualState(header, config.State, "bg-");
 
             dialog.AddCssClass("modal-dialog");
             dialog.Attributes.Add("role", "document");

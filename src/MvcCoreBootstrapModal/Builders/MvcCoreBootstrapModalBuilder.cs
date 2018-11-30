@@ -106,6 +106,17 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Sets the <see cref="ContextualState"/> of the modal.
+        /// </summary>
+        /// <param name="state">Contextual state</param>
+        /// <param name="condition">If true, the contextual state will be applied.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Contextual(ContextualState state, bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.State = condition ? state : ContextualState.Default));
+        }
+
+        /// <summary>
         /// Configures a basic modal with title, body and a close button.
         /// </summary>
         /// <param name="title">Modal title.</param>
