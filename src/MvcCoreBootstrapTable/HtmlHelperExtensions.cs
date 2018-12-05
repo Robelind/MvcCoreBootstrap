@@ -31,9 +31,9 @@ namespace MvcCoreBootstrapTable
             MvcCoreBootstrapTableBuilder<T> builder = new MvcCoreBootstrapTableBuilder<T>(model, new BuilderFactory(), config);
 
             configAction?.Invoke(builder);
-            configHandler.Check(config, model.Entities);
+            configHandler.Check(config, model.ProcessedEntities);
 
-            return(new TableRenderer(config, model.EntityCount, tableState, new T(), new TableNodeParser()).Render());
+            return(new TableRenderer<T>(model, config, tableState, new TableNodeParser()).Render());
         }
     }
 }

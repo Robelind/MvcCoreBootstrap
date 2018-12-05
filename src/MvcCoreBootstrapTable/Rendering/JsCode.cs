@@ -17,7 +17,7 @@
 
                 $('#{0} [data-filter-prop]').each(function () {{
                     if ($(this).val().length > 0) {{
-                        queryAttrs += '&filter[]=' + $(this).data('filter-prop') + '&filter[]=' + $(this).val();
+                        queryAttrs += '&filter[]=' + $(this).data('filter-prop') + '&filter[]=' + $(this).val() + '&filter[]=false';
                     }}
                 }});
                 queryAttrs += '&currentFilter=' + $(this).data('filter-prop');

@@ -10,6 +10,6 @@ namespace MvcCoreBootstrapTable.Rendering
         public int PageSize { get; set; }
         public string CurrentFilter { get; set; }
         public string ContainerId { get; set; }
-        public Dictionary<string, string> Filter { get; set; }
+        public Dictionary<string, Filter> Filters { get; set; }
     }
 }

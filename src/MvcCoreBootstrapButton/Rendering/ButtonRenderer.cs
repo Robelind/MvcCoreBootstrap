@@ -18,7 +18,7 @@ namespace MvcCoreBootstrapButton.Rendering
         private readonly IModalRenderer _modalRenderer;
         private ButtonConfig _config;
         private TagBuilder _button;
-        readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
+        private readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
 
         public ButtonRenderer(IModalRenderer modalRenderer)
         {
@@ -69,7 +69,7 @@ namespace MvcCoreBootstrapButton.Rendering
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
             this.TriggerModal(_button, _config.Modal);
-                        
+            
             return(_builder);
         }
 
@@ -161,6 +161,19 @@ namespace MvcCoreBootstrapButton.Rendering
                     }
 
                     menu.InnerHtml.AppendHtml(menuItem);
+                }
+            }
+        }
+
+        private void TriggerModal(TagBuilder button, ModalConfig modal)
+        {
+            if(modal != null || _config.ModalId != null)
+            {
+                button.Attributes.Add("data-toggle", "modal");
+                button.Attributes.Add("data-target", "#" + (modal != null ? modal.Id : _config.ModalId));
+                if(modal != null)
+                {
+                    _builder.AppendHtml(_modalRenderer.Render(modal));
                 }
             }
         }

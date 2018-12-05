@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,21 +16,22 @@ namespace MvcCoreBootstrapTable.Rendering
         IHtmlContent Render();
     }
 
-    internal class TableRenderer : RenderBase, ITableRenderer
+    internal class TableRenderer<T> : RenderBase, ITableRenderer where T : new()
     {
         private readonly TableState _tableState;
         private readonly object _entity;
         private readonly ITableNodeParser _nodeParser;
+        private readonly TableModel<T> _model;
         private readonly ITableConfig _config;
-        private readonly int _entityCount;
         private string _containerId;
 
-        public TableRenderer(TableConfig config, int entityCount, TableState tableState, object entity, ITableNodeParser nodeParser)
+        public TableRenderer(TableModel<T> model, TableConfig config, TableState tableState,
+            ITableNodeParser nodeParser)
         {
+            _model = model;
             _config = config;
-            _entityCount = entityCount;
             _tableState = tableState;
-            _entity = entity;
+            _entity = new T();
             _nodeParser = nodeParser;
         }
 
@@ -101,9 +103,51 @@ namespace MvcCoreBootstrapTable.Rendering
         private void Body(TableNode table)
         {
             TableNode body = this.CreateAndAppend("tbody", table);
+            IList<RowConfig> rows = _config.Rows;
+
+            if(!rows.Any())
+            {
+                IQueryable<T> entities = _model.ProcessedEntities;
+
+                if(!_model.Processed)
+                {
+                    KeyValuePair<string, ColumnConfig> initialFilterColumn = _config.Columns
+                        .FirstOrDefault(c => c.Value.Filtering.Initial != null);
+                    KeyValuePair<string, ColumnConfig> initialSortColumn = _config.Columns
+                        .FirstOrDefault(c => c.Value.SortState.HasValue);
+
+                    // Initial rendering of the table, apply initial filteringm sorting and paging.
+                    if(initialFilterColumn.Key != null)
+                    {
+                        Expression<Func<T, bool>> whereExpr = ExpressionHelper.EqualsExpr<T>(initialFilterColumn.Key,
+                            initialFilterColumn.Value.Filtering.Initial);
+
+                        entities = entities.Where(whereExpr);
+                    }
+                    entities = _config.Paging.PageSize > 0
+                        ? entities.Take(_config.Paging.PageSize)
+                        : entities;
+                    if(initialSortColumn.Key != null)
+                    {
+                        var sortExpr = ExpressionHelper.PropertyExpr<T>(initialSortColumn.Key);
+
+                        entities = initialSortColumn.Value.SortState == SortState.Ascending
+                            ? entities.OrderBy(sortExpr)
+                            : entities.OrderByDescending(sortExpr);
+                    }
+                }
+
+                // No row configuration has been performed.
+                // Create rows from the entities.
+                foreach(var row in entities.Select(e => new RowConfig(e)))
+                {
+                    rows.Add(row);
+                }
+            }
+
 
             // Rows.
-            foreach(RowConfig rowConfig in _config.Rows)
+            foreach(RowConfig rowConfig in rows)
             {
                 TableNode row = this.CreateAndAppend("tr", body);
 
@@ -125,15 +169,33 @@ namespace MvcCoreBootstrapTable.Rendering
                 }
 
                 // Cells.
-                this.IterateProperties(rowConfig.Entity, (property, _) =>
+                this.IterateProperties(rowConfig.Entity, (property, columnConfig) =>
                 {
                     CellConfig cellConfig = rowConfig.CellConfigs.ContainsKey(property.Name)
                         ? rowConfig.CellConfigs[property.Name]
                         : null;
                     TableNode cell = this.CreateAndAppend("td", row);
-                    object cellValue = property.GetValue(rowConfig.Entity);
+                    string cellValue = property.GetValue(rowConfig.Entity)?.ToString();
 
-                    cell.Element.InnerHtml.Append(cellValue?.ToString() ?? string.Empty);
+                    if(cellValue != null)
+                    {
+                        if(columnConfig != null && columnConfig.Filtering.Prepopulated &&
+                           columnConfig.Filtering.Links)
+                        {
+                            TagBuilder filterLink = new TagBuilder("a");
+
+                            filterLink.AddCssClass("FilterLink");
+                            filterLink.InnerHtml.Append(cellValue?.ToString());
+                            filterLink.Attributes.Add("href", "#");
+                            this.SetupAjaxAttrs(filterLink, $"&filter[]={property.Name}&filter[]={cellValue}&filter[]={true}", property.Name);
+                            cell.Element.InnerHtml.AppendHtml(filterLink);
+                        }
+                        else
+                        {
+                            cell.Element.InnerHtml.Append(cellValue);
+                        }
+                    }
+
                     if(cellConfig != null)
                     {
                         this.AddContextualState(cell.Element, cellConfig.State);
@@ -149,10 +211,23 @@ namespace MvcCoreBootstrapTable.Rendering
             {
                 TableNode header = this.CreateAndAppend("thead", table);
                 TableNode headerRow = this.CreateAndAppend("tr", header);
-                TableNode filterRow = _config.Columns.Any(c => c.Value.Filtering.Threshold > 0)
+                TableNode filterRow = _config.Columns.Any(c => c.Value.Filtering.Threshold > 0 || c.Value.Filtering.Prepopulated)
                     ? this.CreateAndAppend("tr", header)
                     : null;
+                IDictionary<string, IEnumerable<string>> filterValues = new Dictionary<string, IEnumerable<string>>();
 
+                // For each column configured for prepopulated filtering, retrieve the possible
+                // filter values.
+                this.IterateProperties(_entity, (propInfo, config) =>
+                {
+                    if(config?.Filtering.Prepopulated != null)
+                    {
+                        List<object> values = _model.Entities
+                            .Select(ExpressionHelper.PropertyExpr<T>(propInfo.Name)).Distinct().ToList();
+                        filterValues.Add(propInfo.Name, values.Select(v => v.ToString()).OrderBy(v => v));
+                    }
+                });
+                
                 // Columns.
                 this.IterateProperties(_entity, (propInfo, config) =>
                 {
@@ -195,26 +270,89 @@ namespace MvcCoreBootstrapTable.Rendering
                         // Filtering.
                         if(config.Filtering.Threshold > 0)
                         {
-                            TableNode input = this.CreateAndAppend("input", filter);
-
-                            input.Element.Attributes.Add("type", "text");
-                            input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
-                            input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
-                            input.Element.AddCssClass("form-control");
-                            this.AddCssClasses(config.Filtering.CssClasses, input.Element);
-                            if(_tableState.Filter.ContainsKey(propInfo.Name))
-                            {
-                                input.Element.Attributes.Add("value", _tableState.Filter[propInfo.Name]);
-                            }
-                            if(propInfo.Name == _tableState.CurrentFilter)
-                            {
-                                // Filter input should be focused.
-                                input.Element.Attributes.Add("data-filter-focus", string.Empty);
-                            }
+                            this.ManualFiltering(config, propInfo, filter);
+                        }
+                        else if(config.Filtering.Prepopulated)
+                        {
+                            this.PrepopulatedFiltering(config, propInfo, filter, filterValues[propInfo.Name]);
                         }
                     }
                 });
             }
+        }
+
+        private void ManualFiltering(ColumnConfig config, PropertyInfo propInfo, TableNode filter)
+        {
+            TableNode input = this.CreateAndAppend("input", filter);
+
+            input.Element.Attributes.Add("type", "text");
+            input.Element.Attributes.Add("data-filter-prop", propInfo.Name);
+            input.Element.Attributes.Add("data-filter-threshold", config.Filtering.Threshold.ToString());
+            input.Element.AddCssClass("form-control");
+            this.AddCssClasses(config.Filtering.CssClasses, input.Element);
+            if(_tableState.Filters.ContainsKey(propInfo.Name))
+            {
+                input.Element.Attributes.Add("value", _tableState.Filters[propInfo.Name].Value);
+            }
+            if(propInfo.Name == _tableState.CurrentFilter)
+            {
+                // Filter input should be focused.
+                input.Element.Attributes.Add("data-filter-focus", string.Empty);
+            }
+        }
+
+        private void PrepopulatedFiltering(ColumnConfig config, PropertyInfo propInfo, TableNode filter,
+            IEnumerable<string> filterValues)
+        {
+            TableNode dropDown = this.CreateAndAppend("div", filter);
+            TagBuilder dropDownBtn = new TagBuilder("button");
+            TagBuilder dropDownMenu = new TagBuilder("ul");
+            TagBuilder dropDownCaret = new TagBuilder("span");
+
+            dropDown.Element.AddCssClass("dropdown");
+            dropDown.Element.InnerHtml.AppendHtml(dropDownBtn);
+            this.AddCssClasses(config.Filtering.CssClasses, dropDownMenu);
+            dropDownBtn.AddCssClass("btn");
+            dropDownBtn.AddCssClass("btn-default");
+            dropDownBtn.AddCssClass("dropdown-toggle");
+            dropDownBtn.Attributes.Add("type", "button");
+            dropDownBtn.Attributes.Add("data-toggle", "dropdown");
+            dropDownBtn.Attributes.Add("aria-haspopup", "true");
+            dropDownBtn.Attributes.Add("aria-expanded", "false");
+            if(_tableState.Filters.ContainsKey(propInfo.Name))
+            {
+                // Currently selected filter value.
+                dropDownBtn.InnerHtml.Append(_tableState.Filters[propInfo.Name].Value);
+            }
+            dropDownBtn.InnerHtml.AppendHtml(dropDownCaret);
+            dropDown.Element.InnerHtml.AppendHtml(dropDownMenu);
+            dropDownMenu.AddCssClass("dropdown-menu");
+            dropDownCaret.AddCssClass("caret");
+            this.AddFilterSelection(dropDownMenu, propInfo.Name, "&nbsp;", true);
+            foreach(var filterValue in filterValues)
+            {
+                this.AddFilterSelection(dropDownMenu, propInfo.Name, filterValue);
+            }
+        }
+
+        private void AddFilterSelection(TagBuilder dropDownMenu, string propName, string filterValue, bool html = false)
+        {
+            TagBuilder valueContainer = new TagBuilder("li");
+            TagBuilder value = new TagBuilder("a");
+
+            dropDownMenu.InnerHtml.AppendHtml(valueContainer);
+            valueContainer.InnerHtml.AppendHtml(value);
+            value.AddCssClass("dropdown-item");
+            value.Attributes.Add("href", "#");
+            if(html)
+            {
+                value.InnerHtml.AppendHtml(filterValue);
+            }
+            else
+            {
+                value.InnerHtml.Append(filterValue);
+            }
+            this.SetupAjaxAttrs(value, $"&filter[]={propName}&filter[]={filterValue}&filter[]={true}", propName);
         }
 
         private TableNode Table()
@@ -246,8 +384,9 @@ namespace MvcCoreBootstrapTable.Rendering
             if(_config.Paging.PageSize > 0 || !string.IsNullOrEmpty(_config.Footer.Text))
             {
                 List<TableNode> footerContent = new List<TableNode>();
+                int entityCount = _model.Entities.Count();
                 int pageCount = _config.Paging.PageSize > 0
-                    ? _entityCount / _config.Paging.PageSize + (_entityCount%_config.Paging.PageSize > 0 ? 1 : 0)
+                    ? entityCount / _config.Paging.PageSize + (entityCount%_config.Paging.PageSize > 0 ? 1 : 0)
                     : 0;
 
                 if(_config.Paging.PageInfo)
@@ -259,7 +398,7 @@ namespace MvcCoreBootstrapTable.Rendering
                 }
 
                 // Paging.
-                if(_config.Paging.PageSize > 0 && _entityCount > _config.Paging.PageSize)
+                if(_config.Paging.PageSize > 0 && entityCount > _config.Paging.PageSize)
                 {
                     TableNode firstContainer = this.FooterContainer("NavBtnContainer");
                     TableNode prevContainer = this.FooterContainer("NavBtnContainer");
@@ -378,23 +517,13 @@ namespace MvcCoreBootstrapTable.Rendering
             }
         }
 
-       private void SetupAjaxAttrs(TagBuilder builder, string queryAttr = null)
-        {
+       private void SetupAjaxAttrs(TagBuilder builder, string queryAttr = null, string ignore = null)
+       {
             string url = queryAttr != null
-                ? $"{_config.Update.Url}?{this.CommonQueryAttrs()}{this.FilterQueryAttrs()}{queryAttr}"
+                ? $"{_config.Update.Url}?{this.CommonQueryAttrs()}{this.FilterQueryAttrs(ignore)}{queryAttr}"
                 : "";
 
             this.ConfigAjax(builder, _config.Update, url, true, _config.Id);
-            //builder.Attributes.Add("data-ajax", "true");
-            //builder.Attributes.Add("data-ajax-update", $"#{_containerId}");
-            //builder.Attributes.Add("data-ajax-mode", "replace");
-            //builder.Attributes.Add("data-ajax-url", url);
-            //builder.Attributes.Add("data-ajax-loading", "#" + _config.Update.BusyIndicatorId);
-            //builder.Attributes.Add("data-ajax-begin", $"{_config.Update.Start}");
-            //builder.Attributes.Add("data-ajax-success", $"{_config.Update.Success}");
-            //builder.Attributes.Add("data-ajax-failure", $"{_config.Update.Error}");
-            //builder.Attributes.Add("data-ajax-complete", $"{_config.Update.Complete}");
-            //builder.Attributes.Add("data-ajax-loading-duration", "100");
         }
 
         private string PagingLinkQueryAttrs(int pageNumber)
@@ -402,9 +531,11 @@ namespace MvcCoreBootstrapTable.Rendering
             return($"{this.PagingQueryAttrs(pageNumber)}{this.SortQueryAttrs()}");
         }
 
-        private string FilterQueryAttrs()
+        private string FilterQueryAttrs(string ignore = null)
         {
-            return(_tableState.Filter.Aggregate("", (attrs, f) => attrs + $"&filter[]={f.Key}&filter[]={f.Value}"));
+            return(_tableState.Filters.Aggregate("", (attrs, f) => f.Key != ignore
+                ? attrs + $"&filter[]={f.Key}&filter[]={f.Value.Value}&filter[]={f.Value.Prepopulated}"
+                : attrs));
         }
 
         private string SortQueryAttrs()

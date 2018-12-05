@@ -14,7 +14,7 @@ namespace MvcCoreBootstrapTable.Builders
         }
 
         /// <summary>
-        /// Sets the number of characters to be entered to trigger filtering.
+        /// Sets the number of characters to be entered to trigger manual filtering.
         /// </summary>
         /// <param name="threshold">Number of characters</param>
         /// <param name="condition">If true, filtering will be activated.</param>
@@ -25,8 +25,34 @@ namespace MvcCoreBootstrapTable.Builders
             {
                 throw(new ArgumentException("Filtering threshold must be larger than zero."));
             }
-            _config.Threshold = condition ? threshold : 0;
-            return(this);
+            
+            return(this.SetConfigProp<MvcCoreBootstrapTableFilteringBuilder>(() => _config.Threshold = condition ? threshold : 0));
+        }
+
+        /// <summary>
+        /// Activates on prepopulated filtering.
+        /// </summary>
+        /// <param name="links">If true, filtering can be activated by clicking on column values.</param>
+        /// <param name="condition">If true, filtering will be activated.</param>
+        /// <returns>Filtering builder instance.</returns>
+        public MvcCoreBootstrapTableFilteringBuilder Prepopulated(bool links, bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTableFilteringBuilder>(() =>
+            {
+                _config.Prepopulated = condition;
+                _config.Links = links;
+            }));
+        }
+
+        /// <summary>
+        /// Activates initial filtering.
+        /// </summary>
+        /// <param name="value">The value to filter on.</param>
+        /// <param name="condition">If true, initial filtering will be activated.</param>
+        /// <returns>Filtering builder instance.</returns>
+        public MvcCoreBootstrapTableFilteringBuilder Initial(string value, bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTableFilteringBuilder>(() => _config.Initial = condition ? value : null));
         }
 
         /// <summary>

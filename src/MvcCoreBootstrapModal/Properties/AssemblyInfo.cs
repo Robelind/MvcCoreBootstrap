@@ -16,6 +16,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b0c7e57f-4eb6-433e-9f64-0e09ab157507")]
+[assembly: Guid("45eaa001-0abf-46db-a193-3214d4f02c59")]
 
 [assembly: InternalsVisibleTo("MvcCoreBootstrapButton")]

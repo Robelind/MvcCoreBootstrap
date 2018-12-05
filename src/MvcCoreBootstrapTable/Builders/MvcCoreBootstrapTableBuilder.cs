@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapTable.Config;
 using MvcCoreBootstrapTable.Rendering;
@@ -171,15 +172,43 @@ namespace MvcCoreBootstrapTable.Builders
         /// <param name="configAction">Configuration action</param>
         /// <returns>The table builder instance.</returns>
         /// <remarks>
-        /// If using paging, configure it before doing row configuration.
+        /// If using paging or initial filtering, configure it before doing row configuration.
         /// </remarks>
         public MvcCoreBootstrapTableBuilder<T> Rows(Action<MvcCoreBootstrapTableRowBuilder<T>, T> configAction)
         {
-            IEnumerable<T> entities = _config.Paging.PageSize > 0
-                ? _model.Entities.Take(_config.Paging.PageSize)
-                : _model.Entities;
+            IQueryable<T> entities = _model.ProcessedEntities;
 
-            foreach(T entity in entities)
+            if(!_model.Processed)
+            {
+                KeyValuePair<string, ColumnConfig> initialFilterColumn = _config.Columns
+                    .FirstOrDefault(c => c.Value.Filtering.Initial != null);
+                KeyValuePair<string, ColumnConfig> initialSortColumn = _config.Columns
+                    .FirstOrDefault(c => c.Value.SortState.HasValue);
+
+                // Initial rendering of the table, apply initial filteringm sorting and paging.
+                if(initialFilterColumn.Key != null)
+                {
+                    Expression<Func<T, bool>> whereExpr = ExpressionHelper.EqualsExpr<T>(initialFilterColumn.Key,
+                        initialFilterColumn.Value.Filtering.Initial);
+
+                    entities = entities.Where(whereExpr);
+                }
+
+                entities = _config.Paging.PageSize > 0
+                    ? entities.Take(_config.Paging.PageSize)
+                    : entities;
+
+                if(initialSortColumn.Key != null)
+                {
+                    var sortExpr = ExpressionHelper.PropertyExpr<T>(initialSortColumn.Key);
+
+                    entities = initialSortColumn.Value.SortState == SortState.Ascending
+                        ? entities.OrderBy(sortExpr)
+                        : entities.OrderByDescending(sortExpr);
+                }
+            }
+
+                foreach(T entity in entities)
             {
                 MvcCoreBootstrapTableRowBuilder<T> builder = _builderFactory.RowBuilder(entity);
 

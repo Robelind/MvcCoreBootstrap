@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Html;
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Config;
 
@@ -9,6 +10,7 @@ namespace MvcCoreBootstrapModal.Config
         public string Text { get; set; }
         public ContextualState State { get; set; }
         public string JsFunc { get; set; }
+        public bool Submit { get; set; }
         //public ButtonConfig Config { get; set; }
     }
 
@@ -26,6 +28,8 @@ namespace MvcCoreBootstrapModal.Config
         public MvcCoreBootstrapModalSize Size { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
-        public IList<ModalButton> Buttons { get; set; } 
+        public IHtmlContent BodyHtml { get; set; }
+        public bool OnLoad { get; set; }
+        public IList<ModalButton> Buttons { get; set; }
     }
 }

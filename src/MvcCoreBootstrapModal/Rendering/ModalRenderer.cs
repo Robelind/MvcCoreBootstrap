@@ -20,14 +20,20 @@ namespace MvcCoreBootstrapModal.Rendering
             TagBuilder header = new TagBuilder("div");
             TagBuilder body = new TagBuilder("div");
             TagBuilder footer = new TagBuilder("div");
+            TagBuilder title = new TagBuilder("h4");
 
             Element = new TagBuilder("div");
             this.BaseConfig(config, "modal");
             Element.Attributes.Add("role", "dialog");
             Element.Attributes.Add("tabindex", "-1");
             this.AddCssClass("fade", config.Animation);
+            if(config.OnLoad)
+            {
+                Element.Attributes.Add("data-mvccorebootstrap-modal-on-load", null);
+            }
             Element.InnerHtml.AppendHtml(dialog);
             this.SetSize(config, dialog);
+            this.AddContextualState(header, config.State, "bg-");
 
             dialog.AddCssClass("modal-dialog");
             dialog.Attributes.Add("role", "document");
@@ -53,10 +59,20 @@ namespace MvcCoreBootstrapModal.Rendering
                 closeBtn.InnerHtml.AppendHtml(x);
                 header.InnerHtml.AppendHtml(closeBtn);
             }
-            header.InnerHtml.AppendHtml(config.Title);
+
+            title.AddCssClass("modal-title");
+            title.InnerHtml.Append(config.Title);
+            header.InnerHtml.AppendHtml(title);
 
             body.AddCssClass("modal-body");
-            body.InnerHtml.AppendHtml(config.Body);
+            if(config.BodyHtml != null)
+            {
+                body.InnerHtml.AppendHtml(config.BodyHtml);
+            }
+            else
+            {
+                body.InnerHtml.AppendHtml(config.Body);
+            }
 
             this.Footer(config, footer);
 
@@ -75,6 +91,11 @@ namespace MvcCoreBootstrapModal.Rendering
                 if(modalButton.JsFunc != null)
                 {
                     button.Attributes.Add("data-mvccorebootstrap-modal-btn-action", modalButton.JsFunc +  "()");
+                }
+                else if(modalButton.Submit)
+                {
+                    button.Attributes.Add("type", "submit");
+                    button.Attributes.Add("data-mvccorebootstrap-modal-submit-btn", null);
                 }
                 else
                 {

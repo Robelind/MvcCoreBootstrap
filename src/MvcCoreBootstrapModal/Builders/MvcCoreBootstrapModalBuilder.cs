@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Html;
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapModal.Config;
@@ -75,6 +76,16 @@ namespace MvcCoreBootstrapModal.Builders
         }
 
         /// <summary>
+        /// Sets the body of the modal.
+        /// </summary>
+        /// <param name="body">Body content.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Body(IHtmlContent body)
+        {
+            return (this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.BodyHtml = body));
+        }
+
+        /// <summary>
         /// Configures the modal footer.
         /// </summary>
         /// <param name="configAction">Action that implements footer configuration.</param>
@@ -83,6 +94,36 @@ namespace MvcCoreBootstrapModal.Builders
         {
             configAction(new MvcCoreBootstrapModalFooterBuilder(_config));
             return(this);
+        }
+
+        /// <summary>
+        /// Sets whether the modal header will contain a means for dismissing the modal.
+        /// </summary>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Dismissible()
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.Dismissable = true));
+        }
+
+        /// <summary>
+        /// Sets the <see cref="ContextualState"/> of the modal.
+        /// </summary>
+        /// <param name="state">Contextual state</param>
+        /// <param name="condition">If true, the contextual state will be applied.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder Contextual(ContextualState state, bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.State = condition ? state : ContextualState.Default));
+        }
+
+        /// <summary>
+        /// Configures the model to be displayed on page load.
+        /// </summary>
+        /// <param name="condition">If true, the modal will be displayed on page load.</param>
+        /// <returns>The modal builder instance.</returns>
+        public MvcCoreBootstrapModalBuilder DisplayOnLoad(bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapModalBuilder>(() => _config.OnLoad = condition));
         }
 
         /// <summary>
