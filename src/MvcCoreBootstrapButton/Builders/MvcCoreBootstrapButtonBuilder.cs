@@ -255,16 +255,6 @@ namespace MvcCoreBootstrapButton.Builders
             return(this);
         }
 
-        /// <summary>
-        /// Configures the button to trigger display of a modal.
-        /// </summary>
-        /// <param name="id">Id of a modal.</param>
-        /// <returns>The button builder instance.</returns>
-        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id));
-        }
-
         //Problem: The modal created by this API needs to be rendered outside of the button.
         /// <summary>
         /// Configures the button to trigger display of a modal.
