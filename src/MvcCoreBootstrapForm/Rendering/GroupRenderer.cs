@@ -3,8 +3,6 @@ using System.IO;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
-using MvcCoreBootstrapForm.Extensions;
 
 namespace MvcCoreBootstrapForm.Rendering
 {
@@ -21,7 +19,6 @@ namespace MvcCoreBootstrapForm.Rendering
 
         public IHtmlContent Render()
         {
-            //IHtmlContentBuilder builder = new HtmlContentBuilder();
             TagBuilder group = new TagBuilder("div") {TagRenderMode = TagRenderMode.StartTag};
             TextWriter writer = new StringWriter();
 
@@ -32,18 +29,15 @@ namespace MvcCoreBootstrapForm.Rendering
                 TagBuilder label = new TagBuilder("label");
 
                 label.InnerHtml.Append(_label);
-                //group.InnerHtml.AppendHtml(label);
                 label.WriteTo(writer, HtmlEncoder.Default);
             }
-            //builder.AppendHtml(group);
+            
             foreach(IHtmlContent content in _contents)
             {
-                //builder.AppendHtml(content);
                 content.WriteTo(writer, HtmlEncoder.Default);
             }
             group.TagRenderMode = TagRenderMode.EndTag;
             group.WriteTo(writer, HtmlEncoder.Default);
-            //builder.AppendHtml(group);
 
             return(new HtmlString(writer.ToString()));
         }

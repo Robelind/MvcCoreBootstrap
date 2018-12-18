@@ -62,6 +62,16 @@ namespace MvcCoreBootstrapButton.Builders
         }
 
         /// <summary>
+        /// Sets the outline state of the button.
+        /// </summary>
+        /// <param name="condition">If true, the button will be outlined.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder Outline(bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.Outline = condition));
+        }
+
+        /// <summary>
         /// Sets the button size.
         /// </summary>
         /// <param name="size">Size</param>
@@ -174,18 +184,14 @@ namespace MvcCoreBootstrapButton.Builders
         }
 
         /// <summary>
-        /// Sets a css class for the table element.
+        /// Sets a css class for the button element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
         /// <param name="condition">If true, the css class will be set for the button element.</param>
         /// <returns>The button builder instance.</returns>
         public MvcCoreBootstrapButtonBuilder CssClass(string cssClass, bool condition = true)
         {
-            if(condition)
-            {
-                _config.CssClasses.Add(cssClass);
-            }
-            return(this);
+            return(this.AddCssClass<MvcCoreBootstrapButtonBuilder>(_config.CssClasses, cssClass, condition));
         }
 
         /// <summary>

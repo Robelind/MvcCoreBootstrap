@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Config;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapTable.Builders;
 using MvcCoreBootstrapTable.Config;
@@ -151,7 +152,7 @@ namespace MvcCoreBootstrapTable.Rendering
             {
                 TableNode row = this.CreateAndAppend("tr", body);
 
-                this.AddContextualState(row.Element, rowConfig.State);
+                this.AddContextualState(row.Element, rowConfig.State, "table-");
                 this.AddCssClasses(rowConfig.CssClasses, row.Element);
                 if(rowConfig.NavigationUrl != null)
                 {
@@ -198,7 +199,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
                     if(cellConfig != null)
                     {
-                        this.AddContextualState(cell.Element, cellConfig.State);
+                        this.AddContextualState(cell.Element, cellConfig.State, "table-");
                         this.AddCssClasses(cellConfig.CssClasses, cell.Element);
                     }
                 });
@@ -359,14 +360,17 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             TableNode table = new TableNode("table");
 
-            this.AddAttribute("id", _config.Id, table.Element);
-            this.AddAttribute("name", _config.Name, table.Element);
-            table.Element.AddCssClass("table");
+            Element = table.Element;
+            this.BaseConfig((ConfigBase)_config, "table", "table-");
+            //this.AddAttribute("id", _config.Id, table.Element);
+            //this.AddAttribute("name", _config.Name, table.Element);
+            //table.Element.AddCssClass("table");
+            table.Element.AddCssClass(_config.Dark ? "table-dark" : null);
             table.Element.AddCssClass(_config.Striped ? "table-striped" : null);
             table.Element.AddCssClass(_config.Bordered ? "table-bordered" : null);
             table.Element.AddCssClass(_config.HoverState ? "table-hover" : null);
-            table.Element.AddCssClass(_config.Condensed ? "table-condensed" : null);
-            this.AddCssClasses(_config.CssClasses, table.Element);
+            table.Element.AddCssClass(_config.Small ? "table-sm" : null);
+            //this.AddCssClasses(_config.CssClasses, table.Element);
 
             return(table);
         }
@@ -467,7 +471,7 @@ namespace MvcCoreBootstrapTable.Rendering
                         .Count(pi => !_config.Columns.ContainsKey(pi.Name) || _config.Columns[pi.Name].Visible);
 
                     content.Element.Attributes.Add("colspan", colCount.ToString());
-                    this.AddContextualState(content.Element, _config.Footer.State);
+                    this.AddContextualState(content.Element, _config.Footer.State, "table-");
                     this.AddCssClasses(_config.Footer.CssClasses, content.Element);
                     content.InnerContent.AddRange(footerContent);
                 }
@@ -478,7 +482,7 @@ namespace MvcCoreBootstrapTable.Rendering
         {
             TableNode container = new TableNode("div");
 
-            container.Element.AddCssClass("pull-right");
+            container.Element.AddCssClass("float-right");
             container.Element.AddCssClass(cssClass);
 
             return(container);
@@ -490,7 +494,7 @@ namespace MvcCoreBootstrapTable.Rendering
 
             if(!enabled)
             {
-                nav.Element.Attributes.Add("disabled", "disabled");
+                nav.Element.AddCssClass("disabled");
             }
 
             if(iconLib != null)

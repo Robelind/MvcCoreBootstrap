@@ -15,6 +15,6 @@ namespace MvcCoreBootstrap.Config
         public string Id { get; set; }
         public string Name { get; set; }
         public ContextualState State { get; set; }
-        public IList<string> CssClasses { get; private set; }
+        public IList<string> CssClasses { get; }
     }
 }

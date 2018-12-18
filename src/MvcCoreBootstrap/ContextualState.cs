@@ -11,6 +11,10 @@
         Warning,
         Success,
         Info,
-        Default
+        Default,
+        Primary,
+        Secondary,
+        Light,
+        Dark
     }
 }

@@ -37,7 +37,7 @@ namespace MvcCoreBootstrapForm.Rendering
 
                 classes += $" {formClass}";
             }
-            classes += " MvcCoreBootstrapForm";
+            classes += _config.PropertyValidationMessages ? null : " MvcCoreBootstrapNoPropErrors";
             htmlAttributes["class"] = classes;
 
             return(_htmlHelper.BeginForm(_parameters.ActionName, _parameters.ControllerName,

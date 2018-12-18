@@ -10,7 +10,7 @@ namespace MvcCoreBootstrapButton.Rendering
 {
     internal interface IButtonRenderer
     {
-        IHtmlContent Render(ButtonConfig config);
+        IHtmlContent Render(ButtonConfig config, bool inGroup = false);
     }
 
     internal class ButtonRenderer : RenderBase, IButtonRenderer
@@ -18,22 +18,29 @@ namespace MvcCoreBootstrapButton.Rendering
         private readonly IModalRenderer _modalRenderer;
         private ButtonConfig _config;
         private TagBuilder _button;
-        private readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
+        //private readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
 
         public ButtonRenderer(IModalRenderer modalRenderer)
         {
             _modalRenderer = modalRenderer;
         }
 
-        public IHtmlContent Render(ButtonConfig config)
+        public IHtmlContent Render(ButtonConfig config, bool inGroup = false)
         {
             _config = config;
             _button = _config.Url != null || _config.Ajax != null
                 ? new TagBuilder("a")
                 : new TagBuilder("button");
             Element = config.Dropdown != null ? new TagBuilder("div") : _button;
-            _builder.AppendHtml(Element);
-            this.BaseConfig(config, config.Dropdown != null ? "btn-group" : "btn", "btn-");
+            //_builder.AppendHtml(Element);
+            if(config.Dropdown != null)
+            {
+                Element.AddCssClass(inGroup || _config.Url != null || _config.Ajax != null ? "btn-group" : "dropdown");
+            }
+            else
+            {
+                this.BaseConfig(config, config.Dropdown != null ? "btn-group" : "btn", "btn-");
+            }
             _button.AddCssClass("btn");
             if(_config.Url == null)
             {
@@ -49,8 +56,8 @@ namespace MvcCoreBootstrapButton.Rendering
             {
                 _button.InnerHtml.Append(config.Text);
             }
-            this.AddElement(new TagBuilder("span"), new[] {"badge"}, _config.Badge);
-            this.AddContextualState(_button, config.State, "btn-");
+            this.AddElement(new TagBuilder("span"), new[] {"badge badge-light"}, _config.Badge);
+            this.AddContextualState(_button, config.State, "btn-", _config.Outline ? "outline" : null);
             this.SetSize();
             this.AddCssClass("btn-block", _config.Block);
             this.AddCssClass("active", _config.Active);
@@ -70,7 +77,7 @@ namespace MvcCoreBootstrapButton.Rendering
             this.Ajax(_button, _config.Ajax);
             this.TriggerModal(_button, _config.Modal);
             
-            return(_builder);
+            return(Element);
         }
 
         private void Ajax(TagBuilder element, AjaxConfig config)
@@ -95,8 +102,7 @@ namespace MvcCoreBootstrapButton.Rendering
         {
             if(_config.Dropdown != null)
             {
-                TagBuilder caret = new TagBuilder("span");
-                TagBuilder menu = new TagBuilder("ul");
+                TagBuilder menu = new TagBuilder("div");
                 bool splitBtn = _config.Url != null || _config.Ajax != null;
                 TagBuilder toggleBtn = null;
 
@@ -104,6 +110,7 @@ namespace MvcCoreBootstrapButton.Rendering
                 {
                     toggleBtn = new TagBuilder("button");
                     toggleBtn.AddCssClass("dropdown-toggle");
+                    toggleBtn.AddCssClass("dropdown-toggle-split");
                     toggleBtn.AddCssClass("btn");
                     toggleBtn.AddCssClass("btn-" + _config.State.ToString().ToLower());
                     toggleBtn.Attributes.Add("data-toggle", "dropdown");
@@ -114,40 +121,33 @@ namespace MvcCoreBootstrapButton.Rendering
                     _button.Attributes.Add("data-toggle", "dropdown");
                 }
 
-                caret.AddCssClass("caret");
                 Element.InnerHtml.AppendHtml(_button);
                 if(toggleBtn != null)
                 {
                     TagBuilder srOnly = new TagBuilder("span");
 
                     Element.InnerHtml.AppendHtml(toggleBtn);
-                    toggleBtn.InnerHtml.AppendHtml(caret);
                     srOnly.AddCssClass("sr-only");
                     toggleBtn.InnerHtml.AppendHtml(srOnly);
-                }
-                else
-                {
-                    _button.InnerHtml.AppendHtml(caret);
                 }
                 Element.InnerHtml.AppendHtml(menu);
 
                 menu.AddCssClass("dropdown-menu");
                 foreach(DropdownItemConfig item in _config.Dropdown.Items)
                 {
-                    TagBuilder menuItem = new TagBuilder("li");
                     TagBuilder link = new TagBuilder("a");
 
                     if(item.Separated)
                     {
-                        TagBuilder separator = new TagBuilder("li");
+                        TagBuilder separator = new TagBuilder("div");
 
-                        separator.AddCssClass("divider");
-                        separator.Attributes.Add("role", "separator");
+                        separator.AddCssClass("dropdown-divider");
                         menu.InnerHtml.AppendHtml(separator);
                     }
 
+                    link.AddCssClass("dropdown-item");
                     link.InnerHtml.Append(item.Text);
-                    menuItem.InnerHtml.AppendHtml(link);
+                    //menuItem.InnerHtml.AppendHtml(link);
 
                     this.Ajax(link, item.Ajax);
                     if(item.JsHandler != null)
@@ -160,7 +160,7 @@ namespace MvcCoreBootstrapButton.Rendering
                         link.Attributes.Add("href", item.Url);
                     }
 
-                    menu.InnerHtml.AppendHtml(menuItem);
+                    menu.InnerHtml.AppendHtml(link);
                 }
             }
         }
@@ -172,10 +172,10 @@ namespace MvcCoreBootstrapButton.Rendering
 
                 button.Attributes.Add("data-toggle", "modal");
                 button.Attributes.Add("data-target", "#" + (modal != null ? modal.Id : _config.ModalId));
-                if(modal != null)
-                {
-                    _builder.AppendHtml(_modalRenderer.Render(modal));
-                }
+                //if(modal != null)
+                //{
+                //    _builder.AppendHtml(_modalRenderer.Render(modal));
+                //}
             }
         }
 
@@ -190,9 +190,6 @@ namespace MvcCoreBootstrapButton.Rendering
                     break;
                 case MvcCoreBootstrapButtonSize.Small:
                     _button.AddCssClass("btn-sm");
-                    break;
-                case MvcCoreBootstrapButtonSize.ExtraSmall:
-                    _button.AddCssClass("btn-xs");
                     break;
                 default:
                     Debug.Assert(false);

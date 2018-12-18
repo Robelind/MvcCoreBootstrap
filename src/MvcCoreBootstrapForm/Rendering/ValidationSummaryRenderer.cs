@@ -26,43 +26,42 @@ namespace MvcCoreBootstrapForm.Rendering
 
         public IHtmlContent Render()
         {
-            IEnumerable<ModelError> errors = _config.ExcludePropertyErrors
+            IEnumerable<ModelError> serverSideErrors = _config.ExcludePropertyErrors
                 ? _htmlHelper.ViewContext.ModelState.Where(keyValuePair => keyValuePair.Key == string.Empty)
                     .SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList()
                 : _htmlHelper.ViewContext.ModelState.SelectMany(keyValuePair => keyValuePair.Value.Errors).ToList();
+            string alertClasses = $"alert alert-{_config.State.ToString().ToLower()}";
+            IHtmlContent summary = _htmlHelper.ValidationSummary(_config.ExcludePropertyErrors, "", new {@class = alertClasses});
 
-            if(errors.Any() || !_config.ExcludePropertyErrors)
+            if(serverSideErrors.Any())
             {
                 TagBuilder msg = new TagBuilder("span");
-                TagBuilder msgs = new TagBuilder("ul");
 
                 Element = new TagBuilder("div");
                 this.BaseConfig(_config, "alert", "alert-");
                 Element.Attributes.Add("role", "alert");
-                Element.AddCssClass("MvcCoreBootstrapValSummary");
 
-                Element.Attributes.Add("data-valmsg-summary", "true");
-                this.AddAttribute("style", "display:none;", !errors.Any());
-                this.AddCssClass("MvcCoreBootstrapNoPropErrors", _config.ExcludePropertyErrors);
-                this.AddAttribute("style", "display:none;", errors.Count() > 1, msg);
-                if(errors.Count() == 1)
+                if(serverSideErrors.Count() == 1)
                 {
-                    msg.InnerHtml.Append(errors.First().ErrorMessage);
+                    msg.InnerHtml.Append(serverSideErrors.First().ErrorMessage);
+                    Element.InnerHtml.AppendHtml(msg);
                 }
-                Element.InnerHtml.AppendHtml(msg);
-
-                foreach(ModelError error in errors)
+                else
                 {
-                    msg = new TagBuilder("li");
-                    msg.InnerHtml.Append(error.ErrorMessage);
-                    msgs.InnerHtml.AppendHtml(msg);
-                }
+                    TagBuilder msgs = new TagBuilder("ul");
 
-                this.AddAttribute("style", "display:none;", errors.Count() == 1, msgs);
-                Element.InnerHtml.AppendHtml(msgs);
+                    foreach (ModelError error in serverSideErrors)
+                    {
+                        msg = new TagBuilder("li");
+                        msg.InnerHtml.Append(error.ErrorMessage);
+                        msgs.InnerHtml.AppendHtml(msg);
+                    }
+                    Element.InnerHtml.AppendHtml(msgs);
+                }
+                summary = Element;
             }
 
-            return(Element);
+            return(summary);
         }
     }
 }

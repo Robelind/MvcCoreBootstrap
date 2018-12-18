@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcCoreBootstrap.Config;
 
@@ -33,15 +34,32 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
-        protected void AddElement(TagBuilder element, IEnumerable<string> cssClasses, string content,
-            TagBuilder parentElement = null)
+        protected void AddElement(TagBuilder element, IEnumerable<string> cssClasses, string content, TagBuilder parentElement = null)
         {
             if(!string.IsNullOrEmpty(content))
             {
                 TagBuilder parent = parentElement ?? Element;
             
                 element.InnerHtml.AppendHtml(content);
-                this.AddCssClasses(cssClasses, element);
+                if(cssClasses != null)
+                {
+                    this.AddCssClasses(cssClasses, element);
+                }
+                parent.InnerHtml.AppendHtml(element);
+            }
+        }
+
+        protected void AddElement(TagBuilder element, IEnumerable<string> cssClasses, IHtmlContent content, TagBuilder parentElement = null)
+        {
+            if(content != null)
+            {
+                TagBuilder parent = parentElement ?? Element;
+
+                element.InnerHtml.AppendHtml(content);
+                if(cssClasses != null)
+                {
+                    this.AddCssClasses(cssClasses, element);
+                }
                 parent.InnerHtml.AppendHtml(element);
             }
         }
@@ -86,9 +104,17 @@ namespace MvcCoreBootstrap.Rendering
             }
         }
 
-        protected void AddContextualState(TagBuilder element, ContextualState state, string prefix = null)
+        protected void AddContextualState(TagBuilder element, ContextualState state, string prefix = null,
+            string qualifier = null)
         {
-            element.AddCssClass(prefix + state.ToString().ToLower());
+            if(qualifier != null)
+            {
+                element.AddCssClass($"{prefix}{qualifier}-{state.ToString().ToLower()}");
+            }
+            else
+            {
+                element.AddCssClass(prefix + state.ToString().ToLower());
+            }
         }
 
         protected void ConfigAjax(TagBuilder element, AjaxConfigBase config, string url = null,
@@ -97,10 +123,16 @@ namespace MvcCoreBootstrap.Rendering
             if(config != null)
             {
                 element.Attributes.Add("data-ajax", "true");
-                element.Attributes.Add("data-ajax-update", $"#{config.UpdateId}");
+                if(config.UpdateId != null)
+                {
+                    element.Attributes.Add("data-ajax-update", $"#{config.UpdateId}");
+                }
                 element.Attributes.Add("data-ajax-mode", config.UpdateMode.ToString().ToLower());
                 element.Attributes.Add("data-ajax-url", url ?? config.Url);
-                element.Attributes.Add("data-ajax-loading", "#" + config.BusyIndicatorId);
+                if(config.BusyIndicatorId != null)
+                {
+                    element.Attributes.Add("data-ajax-loading", "#" + config.BusyIndicatorId);
+                }
                 element.Attributes.Add("data-ajax-begin", $"{this.AddJavascriptFuncPars(config.Start, id)}");
                 element.Attributes.Add("data-ajax-success", $"{this.AddJavascriptFuncPars(config.Success, id, true, dataOnSuccess)}");
                 element.Attributes.Add("data-ajax-failure", $"{this.AddJavascriptFuncPars(config.Error, id)}");

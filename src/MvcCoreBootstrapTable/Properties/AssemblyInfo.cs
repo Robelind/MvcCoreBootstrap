@@ -21,4 +21,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Test")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly:InternalsVisibleTo("MvcCoreBootstrapPanel")]
+[assembly:InternalsVisibleTo("MvcCoreBootstrapCard")]

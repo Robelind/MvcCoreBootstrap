@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapButton", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapListGroup", "src\MvcCoreBootstrapListGroup\MvcCoreBootstrapListGroup.csproj", "{4BB72161-B981-4514-A2FC-B19EE963859D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapPanel", "src\MvcCoreBootstrapPanel\MvcCoreBootstrapPanel.csproj", "{3D754F64-BC07-455F-BFAC-0CC3B82CE30A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapCard", "src\MvcCoreBootstrapPanel\MvcCoreBootstrapCard.csproj", "{3D754F64-BC07-455F-BFAC-0CC3B82CE30A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapTable", "src\MvcCoreBootstrapTable\MvcCoreBootstrapTable.csproj", "{B62D6DE4-3456-4DD1-B924-B38BE3C690FB}"
 EndProject
@@ -19,13 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapAlert", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapForm", "src\MvcCoreBootstrapForm\MvcCoreBootstrapForm.csproj", "{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapDemo", "..\MvcCoreBootstrapDemo\src\MvcCoreBootstrapDemo\MvcCoreBootstrapDemo.csproj", "{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTest", "TableTest\TableTest.csproj", "{33664062-B346-41DE-97D2-D971A3335DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTest", "TableTest\TableTest.csproj", "{33664062-B346-41DE-97D2-D971A3335DCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapDemo", "..\MvcCoreBootstrapDemo\src\MvcCoreBootstrapDemo\MvcCoreBootstrapDemo.csproj", "{8F1FF273-130B-42FF-9C17-559A5DAFA124}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapModal", "src\MvcCoreBootstrapModal\MvcCoreBootstrapModal.csproj", "{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MvcCoreBootstrapModal", "src\MvcCoreBootstrapModal\MvcCoreBootstrapModal.xproj", "{B0C7E57F-4EB6-433E-9F64-0E09AB157507}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,14 +59,14 @@ Global
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13F5F6E5-98BE-45B4-ABB2-FC368CC4C479}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33664062-B346-41DE-97D2-D971A3335DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33664062-B346-41DE-97D2-D971A3335DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33664062-B346-41DE-97D2-D971A3335DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33664062-B346-41DE-97D2-D971A3335DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Release|Any CPU.ActiveCfg = Release|Any CPU

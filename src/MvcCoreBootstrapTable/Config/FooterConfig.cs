@@ -1,4 +1,6 @@
-﻿namespace MvcCoreBootstrapTable.Config
+﻿using MvcCoreBootstrap.Config;
+
+namespace MvcCoreBootstrapTable.Config
 {
     internal class FooterConfig : ConfigBase
     {

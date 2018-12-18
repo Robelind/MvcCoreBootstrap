@@ -20,41 +20,74 @@ namespace MvcCoreBootstrapForm.Rendering
             Config = config;
         }
 
+        public virtual IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression)
+        {
+            TagBuilder label = this.Label(htmlHelper, expression);
+            FormConfig formConfig = htmlHelper.ViewBag.FormConfig as FormConfig;
+
+            Debug.Assert(formConfig != null);
+            Element = this.TagBuilderFromHtmlContent(this.HtmlElement(htmlHelper, expression));
+            Debug.Assert(Element != null);
+            this.Render();
+            
+            return(this.CommonRender(null, label, !formConfig.Inline));
+        }
+
+        public virtual IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
+        {
+            FormConfig formConfig = htmlHelper.ViewBag.FormConfig as FormConfig;
+
+            Debug.Assert(formConfig != null);
+            Element = this.TagBuilderFromHtmlContent(element);
+            this.Render();
+
+            return(this.CommonRender(null, this.Label(), !formConfig.Inline));
+        }
+
         protected IHtmlContent DoRender<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression, TagBuilder element = null)
         {
             TagBuilder label = this.Label(htmlHelper, expression);
-            IHtmlContent validationElement = Config.PropertyValidationMessages
-                ? htmlHelper.ValidationMessageFor(expression)
-                : null;
+            FormConfig formConfig = htmlHelper.ViewBag.FormConfig as FormConfig;
 
-            return(this.CommonRender(element, label, validationElement));
+            Debug.Assert(formConfig != null);
+
+            return(this.CommonRender(element, label, !formConfig.Inline));
         }
 
         protected IHtmlContent DoRender(TagBuilder element = null)
         {
-            return(this.CommonRender(element, this.Label()));
+            return(this.CommonRender(element, this.Label(), true));
         }
 
-        private IHtmlContent CommonRender(TagBuilder element, TagBuilder label,
-            IHtmlContent validationElement = null)
-        {
-            TagBuilder group = new TagBuilder("div");
-            TagBuilder widthContainer = this.ColumnWidths(label);
-            TagBuilder elementContainer = widthContainer ?? group;
+        protected virtual IHtmlContent HtmlElement<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TResult>> expression) {return(null);}
+        protected virtual void Render() {}
+        protected virtual TagBuilder Container() { return(null); }
 
+        private IHtmlContent CommonRender(TagBuilder element, TagBuilder label, bool formGroup)
+        {
             Element.AddCssClass("form-control");
             this.AddAttribute("disabled", Config.Disabled);
             this.AddCssClasses(Config.CssClasses);
-            group.AddCssClass("form-group");
-            this.AddInner(label, group);
-            this.AddInner(widthContainer, group);
-            elementContainer.InnerHtml.AppendHtml(element ?? Element);
+            element = this.Container() ?? Element;
 
-            // Add a validation message element, in case failed property validations are to be displayed.
-            group.InnerHtml.AppendHtml(validationElement);
+            if(formGroup)
+            {
+                TagBuilder group = new TagBuilder("div");
+                TagBuilder widthContainer = this.ColumnWidths(label);
+                TagBuilder elementContainer = widthContainer ?? group;
 
-            return(group);
+                group.AddCssClass("form-group");
+                this.AddCssClass("row", Config.ColumnWidths != null, group);
+                this.AddInner(label, group);
+                this.AddInner(widthContainer, group);
+                elementContainer.InnerHtml.AppendHtml(element);
+                element = group;
+            }
+
+            return(element);
         }
 
         protected TagBuilder ColumnWidths(TagBuilder label)
@@ -110,27 +143,28 @@ namespace MvcCoreBootstrapForm.Rendering
         }
 
         protected TagBuilder Label<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TResult>> expression)
+            Expression<Func<TModel, TResult>> expression, string cssClass = null)
         {
             TagBuilder label = null;
 
             if(Config.AutoLabel || !string.IsNullOrEmpty(Config.Label))
             {
                 label = this.TagBuilderFromHtmlContent(htmlHelper.LabelFor(expression, Config.Label, null), false);
-                this.AddCssClass("control-label", Config.ColumnWidths != null, label);
+                //this.AddCssClass("col-form-label", Config.ColumnWidths != null, label);
+                label.AddCssClass(cssClass ?? "col-form-label");
             }
 
-            return(label);
+            return (label);
         }
 
-        protected TagBuilder Label()
+        protected TagBuilder Label(string cssClass = null)
         {
             TagBuilder label = null;
 
             if(!string.IsNullOrEmpty(Config.Label))
             {
                 label = new TagBuilder("label");
-                this.AddCssClass("control-label", Config.ColumnWidths != null, label);
+                label.AddCssClass(cssClass ?? "col-form-label");
                 label.InnerHtml.Append(Config.Label);
             }
 

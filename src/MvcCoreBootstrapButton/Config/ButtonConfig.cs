@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Config;
+﻿using MvcCoreBootstrap;
+using MvcCoreBootstrap.Config;
 using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Config
@@ -8,6 +9,7 @@ namespace MvcCoreBootstrapButton.Config
         public ButtonConfig()
         {
             Size = MvcCoreBootstrapButtonSize.Default;
+            State = ContextualState.Primary;
         }
 
         public string Text { get; set; }
@@ -21,6 +23,7 @@ namespace MvcCoreBootstrapButton.Config
         public AjaxConfig Ajax { get; set; }
         public DropdownConfig Dropdown { get; set; }
         public string Badge { get; set; }
+        public bool Outline { get; set; }
         public ModalConfig Modal { get; set; }
         public string ModalId { get; set; }
     }

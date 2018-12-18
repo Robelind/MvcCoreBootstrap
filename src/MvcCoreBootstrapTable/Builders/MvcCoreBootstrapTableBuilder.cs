@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapTable.Config;
 using MvcCoreBootstrapTable.Rendering;
@@ -88,14 +89,34 @@ namespace MvcCoreBootstrapTable.Builders
         }
 
         /// <summary>
-        /// Sets whether the table should be rendered in a condensed fashion.
+        /// Sets whether the table should be rendered in a small fashion.
         /// </summary>
-        /// <param name="condensed">If true, the table is rendered in a condensed fashion.</param>
+        /// <param name="small">If true, the table is rendered in a small fashion.</param>
         /// <returns>The table builder instance.</returns>
-        public MvcCoreBootstrapTableBuilder<T> Condensed(bool condensed = true)
+        public MvcCoreBootstrapTableBuilder<T> Small(bool small = true)
         {
-            _config.Condensed = condensed;
-            return(this);
+            return(this.SetConfigProp<MvcCoreBootstrapTableBuilder<T>>(() => _config.Small = small));
+        }
+
+        /// <summary>
+        /// Sets whether the table should be rendered in a dark fashion.
+        /// </summary>
+        /// <param name="dark">If true, the table is rendered in a dark fashion.</param>
+        /// <returns>The table builder instance.</returns>
+        public MvcCoreBootstrapTableBuilder<T> Dark(bool dark = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTableBuilder<T>>(() => _config.Dark = dark));
+        }
+
+        /// <summary>
+        /// Sets the <see cref="ContextualState"/> of the table.
+        /// </summary>
+        /// <param name="state">Contextual state</param>
+        /// <param name="condition">If true, the contextual state will be applied.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapTableBuilder<T> Contextual(ContextualState state, bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapTableBuilder<T>>(() => _config.State = condition ? state : ContextualState.Default));
         }
 
         /// <summary>

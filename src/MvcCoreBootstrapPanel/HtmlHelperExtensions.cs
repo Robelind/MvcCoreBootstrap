@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MvcCoreBootstrapPanel.Builders;
-using MvcCoreBootstrapPanel.Config;
-using MvcCoreBootstrapPanel.Rendering;
+using MvcCoreBootstrapCard.Builders;
+using MvcCoreBootstrapCard.Config;
+using MvcCoreBootstrapCard.Rendering;
 using MvcCoreBootstrapTable.Config;
 
-namespace MvcCoreBootstrapPanel
+namespace MvcCoreBootstrapCard
 {
     public static class HtmlHelperExtensions
     {
@@ -16,16 +16,16 @@ namespace MvcCoreBootstrapPanel
         /// <param name="htmlHelper">Html helper instance.</param>
         /// <param name="configAction">Action that implements panel configuration.</param>
         /// <returns>Panel html markup.</returns>
-        public static IHtmlContent MvcCoreBootstrapPanel(this IHtmlHelper htmlHelper,
-            Action<MvcCoreBootstrapPanelBuilder> configAction)
+        public static IHtmlContent MvcCoreBootstrapCard(this IHtmlHelper htmlHelper,
+            Action<MvcCoreBootstrapCardBuilder> configAction)
         {
-            PanelConfig panelConfig = new PanelConfig();
-            MvcCoreBootstrapPanelBuilder builder = new MvcCoreBootstrapPanelBuilder(panelConfig,
+            CardConfig cardConfig = new CardConfig();
+            MvcCoreBootstrapCardBuilder builder = new MvcCoreBootstrapCardBuilder(cardConfig,
                 new TableConfigHandler(), htmlHelper.ViewContext.HttpContext); 
 
             configAction(builder);
 
-            return(new PanelRenderer().Render(panelConfig, builder.TableRenderer, builder.ListGroupRenderer));
+            return(new CardRenderer().Render(cardConfig, builder.TableRenderer, builder.ListGroupRenderer));
         }
     }
 }

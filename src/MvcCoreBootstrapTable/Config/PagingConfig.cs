@@ -4,11 +4,11 @@
     {
         public PagingConfig()
         {
-            IconLib = "glyphicon";
-            FirstCssClass = "glyphicon-fast-backward";
-            PreviousCssClass = "glyphicon-step-backward";
-            NextCssClass = "glyphicon-step-forward";
-            LastCssClass = "glyphicon-fast-forward";
+            IconLib = "fa";
+            FirstCssClass = "fa-fast-backward";
+            PreviousCssClass = "fa-step-backward";
+            NextCssClass = "fa-step-forward";
+            LastCssClass = "fa-fast-forward";
         }
 
         public int PageSize { get; set; }
