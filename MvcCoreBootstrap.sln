@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapAlert", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapForm", "src\MvcCoreBootstrapForm\MvcCoreBootstrapForm.csproj", "{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTest", "TableTest\TableTest.csproj", "{33664062-B346-41DE-97D2-D971A3335DCE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapDemo", "..\MvcCoreBootstrapDemo\src\MvcCoreBootstrapDemo\MvcCoreBootstrapDemo.csproj", "{8F1FF273-130B-42FF-9C17-559A5DAFA124}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapModal", "src\MvcCoreBootstrapModal\MvcCoreBootstrapModal.csproj", "{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}"
@@ -59,10 +57,6 @@ Global
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33664062-B346-41DE-97D2-D971A3335DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33664062-B346-41DE-97D2-D971A3335DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33664062-B346-41DE-97D2-D971A3335DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33664062-B346-41DE-97D2-D971A3335DCE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F1FF273-130B-42FF-9C17-559A5DAFA124}.Release|Any CPU.ActiveCfg = Release|Any CPU
