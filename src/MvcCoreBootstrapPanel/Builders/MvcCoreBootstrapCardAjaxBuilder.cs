@@ -1,12 +1,12 @@
-﻿using MvcCoreBootstrapPanel.Config;
+﻿using MvcCoreBootstrapCard.Config;
 
-namespace MvcCoreBootstrapPanel.Builders
+namespace MvcCoreBootstrapCard.Builders
 {
-    public class MvcCoreBootstrapPanelAjaxBuilder
+    public class MvcCoreBootstrapCardAjaxBuilder
     {
         private readonly AjaxConfig _config;
 
-        internal MvcCoreBootstrapPanelAjaxBuilder(AjaxConfig config)
+        internal MvcCoreBootstrapCardAjaxBuilder(AjaxConfig config)
         {
             _config = config;
         }
@@ -17,7 +17,7 @@ namespace MvcCoreBootstrapPanel.Builders
         /// <param name="path">Path to indicator icon.</param>
         /// <param name="cssClass">CSS class to apply to the indicator element.</param>
         /// <returns>The ajax builder instance.</returns>
-        public MvcCoreBootstrapPanelAjaxBuilder IndicatorPath(string path, string cssClass = null)
+        public MvcCoreBootstrapCardAjaxBuilder IndicatorPath(string path, string cssClass = null)
         {
             _config.IndicatorPath = path;
             _config.IndicatorCss = cssClass;
@@ -30,7 +30,7 @@ namespace MvcCoreBootstrapPanel.Builders
         /// <param name="content">Content.</param>
         /// <param name="cssClass">CSS class to apply to the error content element.</param>
         /// <returns>The ajax builder instance.</returns>
-        public MvcCoreBootstrapPanelAjaxBuilder ErrorContent(string content, string cssClass = null)
+        public MvcCoreBootstrapCardAjaxBuilder ErrorContent(string content, string cssClass = null)
         {
             _config.ErrorContent = content;
             _config.ErrorContentCss = cssClass;

@@ -4,9 +4,9 @@
     {
         public SortingConfig()
         {
-            IconLib = "glyphicon";
-            AscendingCssClass = "glyphicon-chevron-up";
-            DescendingCssClass = "glyphicon-chevron-down";
+            IconLib = "fa";
+            AscendingCssClass = "fa-chevron-up";
+            DescendingCssClass = "fa-chevron-down";
         }
 
         public string IconLib { get; set; }

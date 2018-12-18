@@ -12,6 +12,7 @@ namespace MvcCoreBootstrapListGroup.Config
         public string Content { get; set; }
         public ContextualState State { get; set; }
         public string Badge { get; set; }
+        public ContextualState BadgeContextualState { get; set; }
         public string Url { get; set; }
         public bool Button { get; set; }
         public string Id { get; set; }

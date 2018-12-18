@@ -13,5 +13,6 @@
         public string PrependIconPrefix { get; set; }
         public string AppendIcon { get; set; }
         public string AppendIconPrefix { get; set; }
+        public bool IsInputGroup => PrependIcon != null || Prepend != null || AppendIcon != null || Append != null;
     }
 }

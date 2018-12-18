@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Rendering;
 
 namespace MvcCoreBootstrapButton.Rendering
 {
-    internal class GroupRenderer
+    internal class GroupRenderer : RenderBase
     {
         public IHtmlContent Render(GroupConfig config)
         {
@@ -15,9 +17,10 @@ namespace MvcCoreBootstrapButton.Rendering
         private IHtmlContent Group(GroupConfig config)
         {
             TagBuilder group = new TagBuilder("div");
-            ButtonRenderer buttonRenderer = new ButtonRenderer();
+            ButtonRenderer buttonRenderer = new ButtonRenderer(new ModalRenderer());
 
             group.AddCssClass(config.Vertical ? "btn-group-vertical" : "btn-group");
+            this.AddCssClasses(config.CssClasses, group);
             group.Attributes.Add("role", "group");
             this.ButtonSize(@group, config);
             foreach(ButtonConfig button in config.Buttons)
@@ -27,7 +30,7 @@ namespace MvcCoreBootstrapButton.Rendering
                     button.Size = config.ButtonSize;
                 }
                 button.State = config.State;
-                group.InnerHtml.AppendHtml(buttonRenderer.Render(button));
+                group.InnerHtml.AppendHtml(buttonRenderer.Render(button, true));
             }
 
             return group;
@@ -61,9 +64,6 @@ namespace MvcCoreBootstrapButton.Rendering
                     break;
                 case MvcCoreBootstrapButtonSize.Small:
                     group.AddCssClass("btn-group-sm");
-                    break;
-                case MvcCoreBootstrapButtonSize.ExtraSmall:
-                    group.AddCssClass("btn-group-xs");
                     break;
                 default:
                     Debug.Assert(false);

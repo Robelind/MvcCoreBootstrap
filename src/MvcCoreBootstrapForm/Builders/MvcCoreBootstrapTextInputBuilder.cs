@@ -86,7 +86,7 @@ namespace MvcCoreBootstrapForm.Builders
         /// <param name="icon">Name of the icon.</param>
         /// <param name="prefix">Icon prefix.</param>
         /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder PrependIcon(string icon, string prefix = "glyphicon")
+        public MvcCoreBootstrapTextInputBuilder PrependIcon(string icon, string prefix = "fa")
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() =>
             {
@@ -111,7 +111,7 @@ namespace MvcCoreBootstrapForm.Builders
         /// <param name="icon">Name of the icon.</param>
         /// <param name="prefix">Icon prefix.</param>
         /// <returns>The text input builder instance.</returns>
-        public MvcCoreBootstrapTextInputBuilder AppendIcon(string icon, string prefix = "glyphicon")
+        public MvcCoreBootstrapTextInputBuilder AppendIcon(string icon, string prefix = "fa")
         {
             return(this.SetConfigProp<MvcCoreBootstrapTextInputBuilder>(() =>
             {

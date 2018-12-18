@@ -26,7 +26,9 @@ namespace MvcCoreBootstrapForm
         {
             TextInputConfig config = new TextInputConfig();
 
-            return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
+            //return(htmlHelper.TextInputFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
+            //    new TextInputRenderer(config), config));
+            return (htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
                 new TextInputRenderer(config), config));
         }
 

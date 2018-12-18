@@ -5,6 +5,5 @@
         Large,
         Default,
         Small,
-        ExtraSmall
     }
 }

@@ -2,6 +2,8 @@
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapButton.Config;
+using MvcCoreBootstrapModal.Builders;
+using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Builders
 {
@@ -57,6 +59,16 @@ namespace MvcCoreBootstrapButton.Builders
         {
             _config.State = condition ? state : ContextualState.Default;
             return(this);
+        }
+
+        /// <summary>
+        /// Sets the outline state of the button.
+        /// </summary>
+        /// <param name="condition">If true, the button will be outlined.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder Outline(bool condition = true)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.Outline = condition));
         }
 
         /// <summary>
@@ -172,18 +184,14 @@ namespace MvcCoreBootstrapButton.Builders
         }
 
         /// <summary>
-        /// Sets a css class for the table element.
+        /// Sets a css class for the button element.
         /// </summary>
         /// <param name="cssClass">Name of css class.</param>
         /// <param name="condition">If true, the css class will be set for the button element.</param>
         /// <returns>The button builder instance.</returns>
         public MvcCoreBootstrapButtonBuilder CssClass(string cssClass, bool condition = true)
         {
-            if(condition)
-            {
-                _config.CssClasses.Add(cssClass);
-            }
-            return(this);
+            return(this.AddCssClass<MvcCoreBootstrapButtonBuilder>(_config.CssClasses, cssClass, condition));
         }
 
         /// <summary>
@@ -238,6 +246,43 @@ namespace MvcCoreBootstrapButton.Builders
             configAction(new MvcCoreBootstrapButtonDropdownBuilder(_config.Dropdown));
 
             return(this);
+        }
+
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="configAction">Action that implements modal configuration.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
+        {
+            _config.Modal = new ModalConfig();
+            configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
+
+            return(this);
+        }
+
+        //Problem: The modal created by this API needs to be rendered outside of the button.
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="configAction">Action that implements modal configuration.</param>
+        /// <returns>The button builder instance.</returns>
+        //public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
+        //{
+        //    _config.Modal = new ModalConfig();
+        //    configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
+
+        //    return(this);
+        //}
+
+        /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="id">Id of a modal.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id, nameof(id)));
         }
     }
 }

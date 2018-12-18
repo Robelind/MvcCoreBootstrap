@@ -67,6 +67,17 @@ namespace MvcCoreBootstrapButton.Builders
         }
 
         /// <summary>
+        /// Sets a css class for the group element.
+        /// </summary>
+        /// <param name="cssClass">Name of css class.</param>
+        /// <param name="condition">If true, the css class will be set for the group element.</param>
+        /// <returns>The group builder instance.</returns>
+        public MvcCoreBootstrapButtonGroupBuilder CssClass(string cssClass, bool condition = true)
+        {
+            return(this.AddCssClass<MvcCoreBootstrapButtonGroupBuilder>(_config.CssClasses, cssClass, condition));
+        }
+
+        /// <summary>
         /// Configures a toolbar.
         /// </summary>
         /// <returns>Toolbar builder.</returns>

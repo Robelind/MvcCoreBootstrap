@@ -17,7 +17,7 @@ namespace MvcCoreBootstrapForm.Rendering
             _config = config;
         }
 
-        public IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+        public override IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
         {
             TResult propValue = expression.Compile().Invoke(htmlHelper.ViewData.Model);
@@ -29,14 +29,13 @@ namespace MvcCoreBootstrapForm.Rendering
             return(this.DoRender(htmlHelper, expression));
         }
 
-        public IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper = null)
+        public override IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper = null)
         {
             TagBuilder dropdown = this.TagBuilderFromHtmlContent(element);
 
             Element = !_config.Items.Any() && !_config.Multiple
                 ? dropdown
-                : this.TagBuilderFromHtmlContent(htmlHelper.DropDownList(dropdown.Attributes["id"], _config.Items,
-                    _config.HtmlAttributes));
+                : this.TagBuilderFromHtmlContent(htmlHelper.DropDownList(dropdown.Attributes["id"], _config.Items, _config.HtmlAttributes));
             this.CommonRender();
 
             return(this.DoRender());

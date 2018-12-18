@@ -1,4 +1,4 @@
-﻿namespace MvcCoreBootstrapPanel.Config
+﻿namespace MvcCoreBootstrapCard.Config
 {
     public class AjaxConfig
     {

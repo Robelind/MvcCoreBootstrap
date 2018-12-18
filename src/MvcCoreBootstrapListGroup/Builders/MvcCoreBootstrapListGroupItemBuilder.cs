@@ -31,10 +31,12 @@ namespace MvcCoreBootstrapListGroup.Builders
         /// Adds a badge to the list group item.
         /// </summary>
         /// <param name="badge">Badge content.</param>
+        /// <param name="state">Badge contextual state.</param>
         /// <returns>The list group item builder instance.</returns>
-        public MvcCoreBootstrapListGroupItemBuilder Badge(string badge)
+        public MvcCoreBootstrapListGroupItemBuilder Badge(string badge, ContextualState state = ContextualState.Default)
         {
             _item.Badge = badge;
+            _item.BadgeContextualState = state;
             return(this);
         }
     }

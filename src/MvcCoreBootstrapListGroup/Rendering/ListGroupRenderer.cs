@@ -36,10 +36,7 @@ namespace MvcCoreBootstrapListGroup.Rendering
             Element = new TagBuilder(_types == ItemTypes.Buttons || _types == ItemTypes.Links ? "div" : "ul");
             this.BaseConfig(_config, "list-group");
             this.Items();
-            if(_config.TrackActive)
-            {
-                this.AddJavaScript(sb => sb.Append(string.Format(ActiveJs, _config.Id)));
-            }
+            this.AddAttribute("data-mvccorebootstrap-listgroup-track-active", _config.TrackActive);
                         
             return(Element);
         }
@@ -52,8 +49,8 @@ namespace MvcCoreBootstrapListGroup.Rendering
                     ? "button"
                     : (_types == ItemTypes.Links ? "a" : "li"));
                 IEnumerable<string> cssClasses = item.Disabled
-                    ? new[] {"list-group-item", "disabled"}
-                    : new[] {"list-group-item"};
+                    ? new[] {"list-group-item", "d-flex", "justify-content-between", "align-items-center", "disabled"}
+                    : new[] {"list-group-item", "d-flex", "justify-content-between", "align-items-center"};
 
                 this.AddElement(element, cssClasses, item.Content);
                 this.AddContextualState(element, item.State, "list-group-item-");
@@ -80,17 +77,14 @@ namespace MvcCoreBootstrapListGroup.Rendering
                 }
                 if(!string.IsNullOrEmpty(item.Badge))
                 {
-                    this.AddElement(new TagBuilder("span"), new[] {"badge"}, item.Badge, element);
+                    TagBuilder badge = new TagBuilder("span");
+                    
+                    badge.AddCssClass("badge");
+                    this.AddContextualState(badge, item.BadgeContextualState, "badge-");
+                    this.AddElement(badge, item.Badge, element);
+                    //this.AddElement(new TagBuilder("span"), new[] { "badge badge-primary badge-pill" }, item.Badge, element);
                 }
             }
         }
-
-        private const string ActiveJs =
-        @"$('#{0} .list-group-item').click(function () {{
-            if (!$(this).hasClass('disabled')) {{
-                $('#{0} .list-group-item').removeClass('active');
-                $(this).addClass('active');
-            }}
-        }});";
     }
 }

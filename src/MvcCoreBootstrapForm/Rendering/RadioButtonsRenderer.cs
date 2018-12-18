@@ -17,7 +17,7 @@ namespace MvcCoreBootstrapForm.Rendering
             _config = config;
         }
 
-        public IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
+        public override IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TResult>> expression)
         {
             TagBuilder label = this.Label(htmlHelper, expression);
@@ -26,7 +26,7 @@ namespace MvcCoreBootstrapForm.Rendering
                         .RadioButtonFor(expression, value), false)));
         }
 
-        public IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
+        public override IHtmlContent Render(IHtmlContent element, IHtmlHelper htmlHelper)
         {
             TagBuilder radioBtnBase = this.TagBuilderFromHtmlContent(element, false);
             TagBuilder label = this.Label();
@@ -51,30 +51,25 @@ namespace MvcCoreBootstrapForm.Rendering
             this.AddCssClass(columnWidths?.LeftColumn.CssClass(), columnWidths != null && groupLabel != null, groupLabel);
             foreach(RadioButtonConfig radioButtonConfig in _config.RadioButtons)
             {
-                TagBuilder label = new TagBuilder("label");
+                TagBuilder container = new TagBuilder("div");
                 TagBuilder radioButton = this.TagBuilderFromHtmlContent(radioBtnFunc(radioButtonConfig.Value), false);
-                TagBuilder container = !_config.Horizontal ? new TagBuilder("div") : null;
+                TagBuilder label = new TagBuilder("label");
 
-                if(radioButtonConfig.Disabled || _config.Disabled)
-                {
-                    container?.AddCssClass("disabled");
-                    label.AddCssClass("disabled");
-                    radioButton.Attributes.Add("disabled", null);
-                }
-                if(container != null)
-                {
-                    container.AddCssClass("radio");
-                    container.InnerHtml.AppendHtml(label);
-                    this.AddCssClasses(radioButtonConfig.CssClasses, container);
-                }
-                this.AddCssClass("radio-inline", _config.Horizontal, label);
-                label.InnerHtml.AppendHtml(radioButton);
+                this.AddAttribute("disabled", _config.Disabled, radioButton);
+                radioButton.AddCssClass("form-check-input");
+                label.AddCssClass("form-check-label");
+                container.AddCssClass("form-check");
+                container.InnerHtml.AppendHtml(radioButton);
+                container.InnerHtml.AppendHtml(label);
+                this.AddCssClasses(radioButtonConfig.CssClasses, container);
+                this.AddCssClass("form-check-inline", _config.Horizontal, container);
+
                 if(!string.IsNullOrEmpty(radioButtonConfig.Label))
                 {
                     label.InnerHtml.Append(radioButtonConfig.Label);
                 }
 
-                (widthContainer ?? group).InnerHtml.AppendHtml(container ?? label);
+                (widthContainer ?? group).InnerHtml.AppendHtml(container);
             }
 
             return(group);
