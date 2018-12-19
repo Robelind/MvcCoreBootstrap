@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 using MvcCoreBootstrapForm.Extensions;
 
@@ -11,8 +12,8 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         private readonly RadioButtonsConfig _config;
 
-        public RadioButtonsRenderer(RadioButtonsConfig config)
-        : base(config)
+        public RadioButtonsRenderer(RadioButtonsConfig config, ITooltipRenderer tooltipRenderer)
+        : base(config, tooltipRenderer)
         {
             _config = config;
         }
@@ -70,9 +71,10 @@ namespace MvcCoreBootstrapForm.Rendering
                 }
 
                 (widthContainer ?? group).InnerHtml.AppendHtml(container);
+                TooltipRenderer.Render(radioButton, radioButtonConfig.Tooltip);
             }
 
-            return(group);
+            return (group);
         }
     }
 }

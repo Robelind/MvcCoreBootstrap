@@ -14,10 +14,12 @@ namespace MvcCoreBootstrapForm.Rendering
     internal abstract class ControlRenderer : RenderBase
     {
         protected readonly ControlConfig Config;
+        protected readonly ITooltipRenderer TooltipRenderer;
 
-        protected ControlRenderer(ControlConfig config)
+        protected ControlRenderer(ControlConfig config, ITooltipRenderer tooltipRenderer = null)
         {
             Config = config;
+            TooltipRenderer = tooltipRenderer;
         }
 
         public virtual IHtmlContent Render<TModel, TResult>(IHtmlHelper<TModel> htmlHelper,

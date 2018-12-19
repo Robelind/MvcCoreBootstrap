@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
@@ -10,8 +11,8 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         private readonly TextInputConfig _config;
 
-        public TextInputRenderer(TextInputConfig config)
-        : base(config)
+        public TextInputRenderer(TextInputConfig config, ITooltipRenderer tooltipRenderer)
+        : base(config, tooltipRenderer)
         {
             _config = config;
         }
@@ -30,6 +31,7 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
+            TooltipRenderer.Render(Element, _config.Tooltip);
         }
 
         protected override TagBuilder Container()
@@ -64,7 +66,7 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             TagBuilder addOn = null;
 
-            if (text != null || iconPrefix != null)
+            if(text != null || iconPrefix != null)
             {
                 TagBuilder addOnContent = new TagBuilder("span");
 
@@ -86,7 +88,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 addOn.InnerHtml.AppendHtml(addOnContent);
             }
 
-            return (addOn);
+            return(addOn);
         }
     }
 }

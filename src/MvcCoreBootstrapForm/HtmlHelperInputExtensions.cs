@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Builders;
 using MvcCoreBootstrapForm.Config;
 using MvcCoreBootstrapForm.Rendering;
@@ -29,7 +30,7 @@ namespace MvcCoreBootstrapForm
             //return(htmlHelper.TextInputFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
             //    new TextInputRenderer(config), config));
             return (htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config));
+                new TextInputRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig {Format = format};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config));
+                new TextInputRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig {HtmlAttributes = htmlAttributes};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config));
+                new TextInputRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config, htmlHelper.TextBox(expression)));
+                new TextInputRenderer(config, new TooltipRenderer()), config, htmlHelper.TextBox(expression)));
         }
 
         /// <summary>
@@ -146,7 +147,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config, htmlHelper.TextBox(expression, value)));
+                new TextInputRenderer(config, new TooltipRenderer()), config, htmlHelper.TextBox(expression, value)));
         }
 
         /// <summary>
@@ -199,7 +200,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config, htmlHelper.TextBox(expression, value, format)));
+                new TextInputRenderer(config, new TooltipRenderer()), config, htmlHelper.TextBox(expression, value, format)));
         }
 
         /// <summary>
@@ -250,7 +251,7 @@ namespace MvcCoreBootstrapForm
             TextInputConfig config = new TextInputConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextInputBuilder(config),
-                new TextInputRenderer(config), config, htmlHelper.TextBox(expression, value, htmlAttributes)));
+                new TextInputRenderer(config, new TooltipRenderer()), config, htmlHelper.TextBox(expression, value, htmlAttributes)));
         }
 
         /// <summary>
@@ -301,7 +302,7 @@ namespace MvcCoreBootstrapForm
             config.PropertyValidationMessages = formConfig.PropertyValidationMessages;
             configAction?.Invoke(new MvcCoreBootstrapCheckBoxBuilder(config));
             
-            return(new CheckBoxRenderer(config).Render(htmlHelper, expression));
+            return(new CheckBoxRenderer(config, new TooltipRenderer()).Render(htmlHelper, expression));
         }
 
         /// <summary>
@@ -346,7 +347,7 @@ namespace MvcCoreBootstrapForm
             CheckBoxConfig config = new CheckBoxConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapCheckBoxBuilder(config),
-                new CheckBoxRenderer(config), config, htmlHelper.CheckBox(expression)));
+                new CheckBoxRenderer(config, new TooltipRenderer()), config, htmlHelper.CheckBox(expression)));
         }
 
         /// <summary>
@@ -393,7 +394,7 @@ namespace MvcCoreBootstrapForm
             CheckBoxConfig config = new CheckBoxConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapCheckBoxBuilder(config),
-                new CheckBoxRenderer(config), config, htmlHelper.CheckBox(expression, isChecked)));
+                new CheckBoxRenderer(config, new TooltipRenderer()), config, htmlHelper.CheckBox(expression, isChecked)));
         }
 
         /// <summary>
@@ -444,7 +445,7 @@ namespace MvcCoreBootstrapForm
             CheckBoxConfig config = new CheckBoxConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapCheckBoxBuilder(config),
-                new CheckBoxRenderer(config), config, htmlHelper.CheckBox(expression, htmlAttributes)));
+                new CheckBoxRenderer(config, new TooltipRenderer()), config, htmlHelper.CheckBox(expression, htmlAttributes)));
         }
 
         /// <summary>
@@ -475,7 +476,7 @@ namespace MvcCoreBootstrapForm
             }
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapRadioButtonsBuilder(config), 
-                new RadioButtonsRenderer(config), config));
+                new RadioButtonsRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -515,7 +516,7 @@ namespace MvcCoreBootstrapForm
             }
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapRadioButtonsBuilder(config), 
-                new RadioButtonsRenderer(config), config));
+                new RadioButtonsRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -532,7 +533,7 @@ namespace MvcCoreBootstrapForm
             RadioButtonsConfig config = new RadioButtonsConfig();
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapRadioButtonsBuilder(config), 
-                new RadioButtonsRenderer(config), config));
+                new RadioButtonsRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -565,7 +566,7 @@ namespace MvcCoreBootstrapForm
             }
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapRadioButtonsBuilder(config), 
-                new RadioButtonsRenderer(config), config, htmlHelper.RadioButton(expression, 0)));
+                new RadioButtonsRenderer(config, new TooltipRenderer()), config, htmlHelper.RadioButton(expression, 0)));
         }
 
         /// <summary>
@@ -581,7 +582,7 @@ namespace MvcCoreBootstrapForm
             RadioButtonsConfig config = new RadioButtonsConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapRadioButtonsBuilder(config), 
-                new RadioButtonsRenderer(config), config, htmlHelper.RadioButton(expression, 0)));
+                new RadioButtonsRenderer(config, new TooltipRenderer()), config, htmlHelper.RadioButton(expression, 0)));
         }
 
         /// <summary>
@@ -599,7 +600,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextAreaBuilder(config),
-                new TextAreaRenderer(config), config));
+                new TextAreaRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -622,7 +623,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {HtmlAttributes = htmlAttributes, Rows = rows};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapTextAreaBuilder(config),
-                new TextAreaRenderer(config), config));
+                new TextAreaRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -664,7 +665,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextAreaBuilder(config), 
-                new TextAreaRenderer(config), config, htmlHelper.TextArea(expression)));
+                new TextAreaRenderer(config, new TooltipRenderer()), config, htmlHelper.TextArea(expression)));
         }
 
         /// <summary>
@@ -710,7 +711,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextAreaBuilder(config), 
-                new TextAreaRenderer(config), config, htmlHelper.TextArea(expression, htmlAttributes)));
+                new TextAreaRenderer(config, new TooltipRenderer()), config, htmlHelper.TextArea(expression, htmlAttributes)));
         }
 
         /// <summary>
@@ -754,7 +755,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextAreaBuilder(config), 
-                new TextAreaRenderer(config), config, htmlHelper.TextArea(expression, value)));
+                new TextAreaRenderer(config, new TooltipRenderer()), config, htmlHelper.TextArea(expression, value)));
         }
 
         /// <summary>
@@ -803,7 +804,7 @@ namespace MvcCoreBootstrapForm
             TextAreaConfig config = new TextAreaConfig {Rows = rows};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapTextAreaBuilder(config), 
-                new TextAreaRenderer(config), config, htmlHelper.TextArea(expression, value, htmlAttributes)));
+                new TextAreaRenderer(config, new TooltipRenderer()), config, htmlHelper.TextArea(expression, value, htmlAttributes)));
         }
     }
 }

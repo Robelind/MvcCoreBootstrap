@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
@@ -11,8 +12,8 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         private readonly DropdownConfig _config;
 
-        public DropdownRenderer(DropdownConfig config)
-        : base(config)
+        public DropdownRenderer(DropdownConfig config, ITooltipRenderer tooltipRenderer)
+        : base(config, tooltipRenderer)
         {
             _config = config;
         }
@@ -54,6 +55,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 Element.InnerHtml.AppendHtml($"<option value=\"{item.Value}\" {selected}>{item.Text}</option>");
             }
             this.AddAttribute("multiple", _config.Multiple);
+            TooltipRenderer.Render(Element, _config.Tooltip);
         }
     }
 }

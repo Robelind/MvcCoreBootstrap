@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapButton.Builders;
 using MvcCoreBootstrapButton.Config;
 using MvcCoreBootstrapButton.Rendering;
@@ -23,7 +24,7 @@ namespace MvcCoreBootstrapButton
 
             configAction(new MvcCoreBootstrapButtonBuilder(config));
 
-            return(new ButtonRenderer(new ModalRenderer()).Render(config));
+            return(new ButtonRenderer(new ModalRenderer(), new TooltipRenderer()).Render(config));
         }
 
         /// <summary>

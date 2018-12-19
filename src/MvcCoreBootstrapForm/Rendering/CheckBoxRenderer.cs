@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 using MvcCoreBootstrapForm.Extensions;
 
@@ -11,8 +12,8 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         private readonly CheckBoxConfig _config;
 
-        public CheckBoxRenderer(CheckBoxConfig config)
-        : base(config)
+        public CheckBoxRenderer(CheckBoxConfig config, ITooltipRenderer tooltipRenderer)
+        : base(config, tooltipRenderer)
         {
             _config = config;
         }
@@ -64,6 +65,7 @@ namespace MvcCoreBootstrapForm.Rendering
                 group.InnerHtml.AppendHtml(widthContainer);
                 element = group;
             }
+            TooltipRenderer.Render(checkBox, _config.Tooltip);
 
             return(element);
         }

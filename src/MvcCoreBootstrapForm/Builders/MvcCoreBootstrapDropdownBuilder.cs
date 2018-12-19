@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using System;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Builders
@@ -50,6 +51,18 @@ namespace MvcCoreBootstrapForm.Builders
         public MvcCoreBootstrapDropdownBuilder CssClass(string cssClass, bool condition = true)
         {
             return(this.AddCssClass<MvcCoreBootstrapDropdownBuilder>(_config.CssClasses, cssClass, condition));
+        }
+
+        /// <summary>
+        /// Tooltip for the dropdown.
+        /// </summary>
+        /// <param name="content">Tooltip content.</param>
+        /// <param name="configAction">Action that implements tooltip configuration.</param>
+        /// <returns>The dropdown builder instance.</returns>
+        public MvcCoreBootstrapDropdownBuilder Tooltip(string content, Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.Tooltip(content, _config, configAction);
+            return(this);
         }
     }
 }

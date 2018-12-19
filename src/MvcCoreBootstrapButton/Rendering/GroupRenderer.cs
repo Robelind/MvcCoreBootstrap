@@ -17,7 +17,7 @@ namespace MvcCoreBootstrapButton.Rendering
         private IHtmlContent Group(GroupConfig config)
         {
             TagBuilder group = new TagBuilder("div");
-            ButtonRenderer buttonRenderer = new ButtonRenderer(new ModalRenderer());
+            ButtonRenderer buttonRenderer = new ButtonRenderer(new ModalRenderer(), new TooltipRenderer());
 
             group.AddCssClass(config.Vertical ? "btn-group-vertical" : "btn-group");
             this.AddCssClasses(config.CssClasses, group);

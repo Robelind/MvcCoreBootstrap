@@ -2,7 +2,7 @@
 
 namespace MvcCoreBootstrapForm.Config
 {
-    internal class ControlConfig : ConfigBase
+    internal class ControlConfig : TooltipConfigBase
     {
         public ControlConfig()
         {

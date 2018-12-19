@@ -1,6 +1,7 @@
 ﻿using System;
 using MvcCoreBootstrap;
 using MvcCoreBootstrap.Building;
+using MvcCoreBootstrap.Config;
 using MvcCoreBootstrapButton.Config;
 using MvcCoreBootstrapModal.Builders;
 using MvcCoreBootstrapModal.Config;
@@ -283,6 +284,18 @@ namespace MvcCoreBootstrapButton.Builders
         public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
         {
             return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id, nameof(id)));
+        }
+
+        /// <summary>
+        /// Tooltip for the button.
+        /// </summary>
+        /// <param name="content">Tooltip content.</param>
+        /// <param name="configAction">Action that implements tooltip configuration.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder Tooltip(string content,  Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.Tooltip(content, _config, configAction);
+            return(this);
         }
     }
 }
