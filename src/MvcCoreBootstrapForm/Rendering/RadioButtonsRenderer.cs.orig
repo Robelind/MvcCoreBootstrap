@@ -71,7 +71,10 @@ namespace MvcCoreBootstrapForm.Rendering
                 }
 
                 (widthContainer ?? group).InnerHtml.AppendHtml(container);
+<<<<<<< HEAD
+=======
                 TooltipRenderer.Render(radioButton, radioButtonConfig.Tooltip);
+>>>>>>> dev
             }
 
             return (group);

@@ -16,15 +16,24 @@ namespace MvcCoreBootstrapButton.Rendering
     internal class ButtonRenderer : RenderBase, IButtonRenderer
     {
         private readonly IModalRenderer _modalRenderer;
+<<<<<<< HEAD
+=======
         private readonly ITooltipRenderer _tooltipRenderer;
+>>>>>>> dev
         private ButtonConfig _config;
         private TagBuilder _button;
         //private readonly IHtmlContentBuilder _builder = new HtmlContentBuilder();
 
+<<<<<<< HEAD
+        public ButtonRenderer(IModalRenderer modalRenderer)
+        {
+            _modalRenderer = modalRenderer;
+=======
         public ButtonRenderer(IModalRenderer modalRenderer, ITooltipRenderer tooltipRenderer)
         {
             _modalRenderer = modalRenderer;
             _tooltipRenderer = tooltipRenderer;
+>>>>>>> dev
         }
 
         public IHtmlContent Render(ButtonConfig config, bool inGroup = false)
@@ -78,7 +87,10 @@ namespace MvcCoreBootstrapButton.Rendering
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
             this.TriggerModal(_button, _config.Modal);
+<<<<<<< HEAD
+=======
             _tooltipRenderer.Render(Element, _config.Tooltip);
+>>>>>>> dev
             
             return(Element);
         }

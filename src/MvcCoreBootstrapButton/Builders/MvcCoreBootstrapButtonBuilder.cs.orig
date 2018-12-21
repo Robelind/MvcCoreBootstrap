@@ -277,6 +277,18 @@ namespace MvcCoreBootstrapButton.Builders
         //}
 
         /// <summary>
+        /// Configures the button to trigger display of a modal.
+        /// </summary>
+        /// <param name="id">Id of a modal.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id, nameof(id)));
+        }
+<<<<<<< HEAD
+=======
+
+        /// <summary>
         /// Tooltip for the button.
         /// </summary>
         /// <param name="content">Tooltip content.</param>
@@ -287,29 +299,6 @@ namespace MvcCoreBootstrapButton.Builders
             this.Tooltip(content, _config, configAction);
             return(this);
         }
-
-        //Problem: The modal created by this API needs to be rendered outside of the button.
-        /// <summary>
-        /// Configures the button to trigger display of a modal.
-        /// </summary>
-        /// <param name="configAction">Action that implements modal configuration.</param>
-        /// <returns>The button builder instance.</returns>
-        //public MvcCoreBootstrapButtonBuilder TriggerModal(Action<MvcCoreBootstrapModalBuilder> configAction)
-        //{
-        //    _config.Modal = new ModalConfig();
-        //    configAction(new MvcCoreBootstrapModalBuilder(_config.Modal));
-
-        //    return(this);
-        //}
-
-        /// <summary>
-        /// Configures the button to trigger display of a modal.
-        /// </summary>
-        /// <param name="id">Id of a modal.</param>
-        /// <returns>The button builder instance.</returns>
-        public MvcCoreBootstrapButtonBuilder TriggerModal(string id)
-        {
-            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.ModalId = id, nameof(id)));
-        }
+>>>>>>> dev
     }
 }

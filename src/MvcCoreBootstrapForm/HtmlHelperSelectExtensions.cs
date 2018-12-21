@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Builders;
 using MvcCoreBootstrapForm.Config;
 using MvcCoreBootstrapForm.Rendering;
@@ -26,7 +27,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config));
+                new DropdownRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, HtmlAttributes = htmlAttributes};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config));
+                new DropdownRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, Default = optionLabel};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config));
+                new DropdownRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, Default = optionLabel, HtmlAttributes = htmlAttributes};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config));
+                new DropdownRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression)));
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig();
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression, optionLabel)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression, optionLabel)));
         }
 
         /// <summary>
@@ -166,7 +167,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression, selectList)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression, selectList)));
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, HtmlAttributes = htmlAttributes};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression, selectList, htmlAttributes)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression, selectList, htmlAttributes)));
         }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, Default = optionLabel};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression, selectList, optionLabel)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression, selectList, optionLabel)));
         }
 
         /// <summary>
@@ -242,7 +243,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Items = selectList, Multiple = true};
 
             return(htmlHelper.ControlFor(expression, configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config));
+                new DropdownRenderer(config, new TooltipRenderer()), config));
         }
 
         /// <summary>
@@ -263,7 +264,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Multiple = true};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression)));
         }
 
         /// <summary>
@@ -289,7 +290,7 @@ namespace MvcCoreBootstrapForm
             DropdownConfig config = new DropdownConfig {Multiple = true, Items = selectList};
 
             return(htmlHelper.Control(configAction, new MvcCoreBootstrapDropdownBuilder(config),
-                new DropdownRenderer(config), config, htmlHelper.DropDownList(expression, selectList)));
+                new DropdownRenderer(config, new TooltipRenderer()), config, htmlHelper.DropDownList(expression, selectList)));
         }
     }
 }

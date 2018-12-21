@@ -4,7 +4,7 @@ using MvcCoreBootstrapModal.Config;
 
 namespace MvcCoreBootstrapButton.Config
 {
-    internal class ButtonConfig : ConfigBase
+    internal class ButtonConfig : TooltipConfigBase
     {
         public ButtonConfig()
         {

@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using System;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Builders
@@ -80,6 +81,18 @@ namespace MvcCoreBootstrapForm.Builders
         public MvcCoreBootstrapTextAreaBuilder CssClass(string cssClass, bool condition = true)
         {
             return(this.AddCssClass<MvcCoreBootstrapTextAreaBuilder>(_config.CssClasses, cssClass, condition));
+        }
+
+        /// <summary>
+        /// Tooltip for the text area.
+        /// </summary>
+        /// <param name="content">Tooltip content.</param>
+        /// <param name="configAction">Action that implements tooltip configuration.</param>
+        /// <returns>The text area builder instance.</returns>
+        public MvcCoreBootstrapTextAreaBuilder Tooltip(string content, Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.Tooltip(content, _config, configAction);
+            return(this);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using System;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Builders
@@ -129,6 +130,18 @@ namespace MvcCoreBootstrapForm.Builders
         public MvcCoreBootstrapTextInputBuilder CssClass(string cssClass, bool condition = true)
         {
             return(this.AddCssClass<MvcCoreBootstrapTextInputBuilder>(_config.CssClasses, cssClass, condition));
+        }
+
+        /// <summary>
+        /// Tooltip for the text input.
+        /// </summary>
+        /// <param name="content">Tooltip content.</param>
+        /// <param name="configAction">Action that implements tooltip configuration.</param>
+        /// <returns>The text input builder instance.</returns>
+        public MvcCoreBootstrapTextInputBuilder Tooltip(string content, Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.Tooltip(content, _config, configAction);
+            return(this);
         }
     }
 }

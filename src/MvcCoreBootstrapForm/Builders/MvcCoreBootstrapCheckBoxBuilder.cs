@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using System;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Builders
@@ -59,6 +60,18 @@ namespace MvcCoreBootstrapForm.Builders
         public MvcCoreBootstrapCheckBoxBuilder CssClass(string cssClass, bool condition = true)
         {
             return(this.AddCssClass<MvcCoreBootstrapCheckBoxBuilder>(_config.CssClasses, cssClass, condition));
+        }
+
+        /// <summary>
+        /// Tooltip for the checkbox.
+        /// </summary>
+        /// <param name="content">Tooltip content.</param>
+        /// <param name="configAction">Action that implements tooltip configuration.</param>
+        /// <returns>The check box builder instance.</returns>
+        public MvcCoreBootstrapCheckBoxBuilder Tooltip(string content, Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.Tooltip(content, _config, configAction);
+            return(this);
         }
     }
 }

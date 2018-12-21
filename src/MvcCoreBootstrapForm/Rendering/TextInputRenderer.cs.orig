@@ -31,7 +31,10 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             this.AddAttribute("placeholder", _config.PlaceHolder);
             this.AddAttribute("readonly", _config.ReadOnly);
+<<<<<<< HEAD
+=======
             TooltipRenderer.Render(Element, _config.Tooltip);
+>>>>>>> dev
         }
 
         protected override TagBuilder Container()
@@ -66,7 +69,11 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             TagBuilder addOn = null;
 
+<<<<<<< HEAD
+            if (text != null || iconPrefix != null)
+=======
             if(text != null || iconPrefix != null)
+>>>>>>> dev
             {
                 TagBuilder addOnContent = new TagBuilder("span");
 

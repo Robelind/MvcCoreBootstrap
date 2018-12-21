@@ -24,7 +24,11 @@ namespace MvcCoreBootstrapButton
 
             configAction(new MvcCoreBootstrapButtonBuilder(config));
 
+<<<<<<< HEAD
+            return(new ButtonRenderer(new ModalRenderer()).Render(config));
+=======
             return(new ButtonRenderer(new ModalRenderer(), new TooltipRenderer()).Render(config));
+>>>>>>> dev
         }
 
         /// <summary>

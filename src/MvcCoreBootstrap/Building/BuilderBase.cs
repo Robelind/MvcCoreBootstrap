@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MvcCoreBootstrap.Config;
 
 namespace MvcCoreBootstrap.Building
 {
@@ -30,6 +31,13 @@ namespace MvcCoreBootstrap.Building
             {
                 throw(new ArgumentNullException(paramterNameFunc()));
             }
+        }
+
+        protected void Tooltip(string content, TooltipConfigBase config, Action<MvcCoreBootstrapTooltipBuilder> configAction = null)
+        {
+            this.CheckNullPar(content, () => nameof(content));
+            config.Tooltip = new TooltipConfig(content);
+            configAction?.Invoke(new MvcCoreBootstrapTooltipBuilder(config.Tooltip));
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapForm.Config;
 
 namespace MvcCoreBootstrapForm.Rendering
@@ -10,8 +11,8 @@ namespace MvcCoreBootstrapForm.Rendering
     {
         private readonly TextAreaConfig _config;
 
-        public TextAreaRenderer(TextAreaConfig config)
-        : base(config)
+        public TextAreaRenderer(TextAreaConfig config, ITooltipRenderer tooltipRenderer)
+        : base(config, tooltipRenderer)
         {
             _config = config;
         }
@@ -37,6 +38,7 @@ namespace MvcCoreBootstrapForm.Rendering
         {
             this.AddAttribute("rows", _config.Rows.ToString());
             this.AddAttribute("readonly", _config.ReadOnly);
+            TooltipRenderer.Render(Element, _config.Tooltip);
         }
     }
 }
