@@ -61,9 +61,11 @@ namespace MvcCoreBootstrapCard.Builders
         /// </summary>
         /// <param name="header">Header text</param>
         /// <returns>The card builder instance.</returns>
-        public MvcCoreBootstrapCardBuilder Header(string header)
+        public MvcCoreBootstrapCardBuilder Header(string header, bool collapse = false, bool initiallyVisible = true)
         {
             _config.Header = header;
+            _config.Collapse = collapse;
+            _config.InitiallyVisible = initiallyVisible;
             return(this);
         }
 

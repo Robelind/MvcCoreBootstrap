@@ -18,10 +18,12 @@ namespace MvcCoreBootstrapCard.Rendering
     {
         public IHtmlContent Render(CardConfig config, ITableRenderer tableRenderer, IListGroupRenderer listGroupRenderer)
         {
+            string bodyId = config.Collapse ? $"a{Guid.NewGuid()}" : null;
+            
             Element = new TagBuilder("div");
             this.BaseConfig(config, "card", "bg-");
-            this.AddElement(new TagBuilder("div"), new[] { "card-header" }, config.Header);
-            this.Body(config);
+            this.Header(config, bodyId);
+            this.Body(config, bodyId);
             if(tableRenderer != null)
             {
                 Element.InnerHtml.AppendHtml(tableRenderer.Render());
@@ -35,7 +37,35 @@ namespace MvcCoreBootstrapCard.Rendering
             return(Element);
         }
 
-        private void Body(CardConfig config)
+        private void Header(CardConfig config, string bodyId)
+        {
+            if(!string.IsNullOrEmpty(config.Header))
+            {
+                TagBuilder header = new TagBuilder("div");
+
+                header.AddCssClass("card-header");
+                if(config.Collapse)
+                {
+                    TagBuilder toggle = new TagBuilder("button");
+
+                    toggle.AddCssClass("btn");
+                    toggle.AddCssClass("btn-link");
+                    this.AddCssClass("collapsed", !config.InitiallyVisible, toggle);
+                    toggle.Attributes.Add("type", "button");
+                    toggle.Attributes.Add("data-toggle", "collapse");
+                    toggle.Attributes.Add("data-target", $"#{bodyId}");
+                    toggle.InnerHtml.AppendHtml(config.Header);
+                    header.InnerHtml.AppendHtml(toggle);
+                }
+                else
+                {
+                    header.InnerHtml.AppendHtml(config.Header);
+                }
+                Element.InnerHtml.AppendHtml(header);
+            }
+        }
+
+        private void Body(CardConfig config, string bodyId)
         {
             if(config.Ajax != null || config.Content != null || config.HtmlContent != null)
             {
@@ -43,6 +73,12 @@ namespace MvcCoreBootstrapCard.Rendering
 
                 Element.InnerHtml.AppendHtml(body);
                 body.AddCssClass("card-body");
+                if(bodyId != null)
+                {
+                    body.Attributes.Add("id", bodyId);
+                    body.AddCssClass("collapse");
+                    this.AddCssClass("show", config.InitiallyVisible, body);
+                }
                 this.AddElement(new TagBuilder("h5"), new[] { "card-title" }, config.Title, body);
                 this.AddElement(new TagBuilder("h6"), new[] { "card-subtitle" }, config.SubTitle, body);
 
