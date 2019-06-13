@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2011
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0E0DECA8-4BA9-437E-A80A-E3449AFC9870}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapDemo", "..\MvcCoreBootstrapDemo\src\MvcCoreBootstrapDemo\MvcCoreBootstrapDemo.csproj", "{8F1FF273-130B-42FF-9C17-559A5DAFA124}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCoreBootstrapModal", "src\MvcCoreBootstrapModal\MvcCoreBootstrapModal.csproj", "{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcCoreBootstrapMediaObject", "src\MvcCoreBootstrapMediaObject\MvcCoreBootstrapMediaObject.csproj", "{8D94CE77-218C-4103-8AB8-31623EC81ED6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D94CE77-218C-4103-8AB8-31623EC81ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D94CE77-218C-4103-8AB8-31623EC81ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D94CE77-218C-4103-8AB8-31623EC81ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D94CE77-218C-4103-8AB8-31623EC81ED6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{45EAA001-0ABF-46DB-A193-3214D4F02C59} = {0E0DECA8-4BA9-437E-A80A-E3449AFC9870}
 		{47DB1008-3596-4AFE-B5F2-B4F8443CE5B3} = {0E0DECA8-4BA9-437E-A80A-E3449AFC9870}
 		{E8570D4F-1F0E-4886-AFE5-B1EE7486DEBE} = {0E0DECA8-4BA9-437E-A80A-E3449AFC9870}
+		{8D94CE77-218C-4103-8AB8-31623EC81ED6} = {0E0DECA8-4BA9-437E-A80A-E3449AFC9870}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F112628D-057F-4A90-907A-C84ED63DBCED}
