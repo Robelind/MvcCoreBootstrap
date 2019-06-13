@@ -26,5 +26,6 @@ namespace MvcCoreBootstrapButton.Config
         public bool Outline { get; set; }
         public ModalConfig Modal { get; set; }
         public string ModalId { get; set; }
+        public string CollapseId { get; set; }
     }
 }

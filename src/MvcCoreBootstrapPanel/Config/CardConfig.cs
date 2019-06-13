@@ -12,5 +12,7 @@ namespace MvcCoreBootstrapCard.Config
         public IHtmlContent HtmlContent { get; set; }
         public string Footer { get; set; }
         public AjaxConfig Ajax { get; set; }
+        public bool Collapse { get; set; }
+        public bool InitiallyVisible { get; set; }
     }
 }

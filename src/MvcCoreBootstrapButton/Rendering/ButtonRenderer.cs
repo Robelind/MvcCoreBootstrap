@@ -78,6 +78,7 @@ namespace MvcCoreBootstrapButton.Rendering
             this.Dropdown();
             this.Ajax(_button, _config.Ajax);
             this.TriggerModal(_button, _config.Modal);
+            this.Collapse(_button, _config.CollapseId);
             _tooltipRenderer.Render(Element, _config.Tooltip);
             
             return(Element);
@@ -179,6 +180,15 @@ namespace MvcCoreBootstrapButton.Rendering
                 //{
                 //    _builder.AppendHtml(_modalRenderer.Render(modal));
                 //}
+            }
+        }
+
+        private void Collapse(TagBuilder button, string collapseId)
+        {
+            if(collapseId != null)
+            {
+                button.Attributes.Add("data-toggle", "collapse");
+                button.Attributes.Add("data-target", collapseId.StartsWith("#") ? collapseId : $"#{collapseId}");
             }
         }
 

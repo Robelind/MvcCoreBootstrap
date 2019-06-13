@@ -287,6 +287,16 @@ namespace MvcCoreBootstrapButton.Builders
         }
 
         /// <summary>
+        /// Configures the button to collapse an element.
+        /// </summary>
+        /// <param name="id">Element id.</param>
+        /// <returns>The button builder instance.</returns>
+        public MvcCoreBootstrapButtonBuilder Collapse(string id)
+        {
+            return(this.SetConfigProp<MvcCoreBootstrapButtonBuilder>(() => _config.CollapseId = id, nameof(id)));
+        }
+
+        /// <summary>
         /// Tooltip for the button.
         /// </summary>
         /// <param name="content">Tooltip content.</param>
