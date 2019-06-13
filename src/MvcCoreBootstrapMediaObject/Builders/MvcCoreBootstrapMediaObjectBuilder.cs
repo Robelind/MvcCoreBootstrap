@@ -42,5 +42,15 @@ namespace MvcCoreBootstrapMediaObject.Builders
         {
             return(this.AddCssClass<MvcCoreBootstrapMediaObjectBuilder>(_config.CssClasses, cssClass, condition));
         }
+
+        /// <summary>
+        /// Sets the id attribute for the media object.
+        /// </summary>
+        /// <returns>The media object builder instance.</returns>
+        public MvcCoreBootstrapMediaObjectBuilder Image(string path, string alt = null)
+        {
+            this.SetConfigProp<MvcCoreBootstrapMediaObjectBuilder>(() => _config.ImagePath = path);
+            return(this.SetConfigProp<MvcCoreBootstrapMediaObjectBuilder>(() => _config.ImageAlt = alt));
+        }
     }
 }

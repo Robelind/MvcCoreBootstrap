@@ -19,23 +19,17 @@ namespace MvcCoreBootstrapMediaObject.Rendering
 
             Element = new TagBuilder("div");
             this.BaseConfig(config, "media");
+            if(!string.IsNullOrWhiteSpace(config.ImagePath))
+            {
+                TagBuilder image = new TagBuilder("img");
+
+                image.Attributes.Add("src", config.ImagePath);
+                image.Attributes.Add("alt", config.ImageAlt);
+                image.AddCssClass("mr-3");
+                Element.InnerHtml.AppendHtml(image);
+            }
             heading.AddCssClass("mt-0");
             heading.InnerHtml.AppendHtml(config.Heading);
-
-            //if(config.Dismissable)
-            //{
-            //    TagBuilder button = new TagBuilder("button");
-            //    TagBuilder x = new TagBuilder("span");
-
-            //    Element.AddCssClass("alert-dismissible");
-            //    button.AddCssClass("close");
-            //    button.Attributes.Add("data-dismiss", "alert");
-            //    button.Attributes.Add("aria-label", "Close");
-            //    x.InnerHtml.AppendHtml("&times;");
-            //    x.Attributes.Add("aria-hidden", "true");
-            //    button.InnerHtml.AppendHtml(x);
-            //    Element.InnerHtml.AppendHtml(button);
-            //}
             body.AddCssClass("media-body");
             body.InnerHtml.AppendHtml(heading);
             body.InnerHtml.AppendHtml(config.Text);
