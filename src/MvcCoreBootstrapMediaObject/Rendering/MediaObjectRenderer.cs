@@ -36,9 +36,11 @@ namespace MvcCoreBootstrapMediaObject.Rendering
             //    button.InnerHtml.AppendHtml(x);
             //    Element.InnerHtml.AppendHtml(button);
             //}
+            body.AddCssClass("media-body");
             body.InnerHtml.AppendHtml(heading);
             body.InnerHtml.AppendHtml(config.Text);
-                        
+            Element.InnerHtml.AppendHtml(body);
+
             return(Element);
         }
 
