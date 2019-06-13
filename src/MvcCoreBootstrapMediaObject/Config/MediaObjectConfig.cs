@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Config;
+﻿using MvcCoreBootstrap;
+using MvcCoreBootstrap.Config;
 
 namespace MvcCoreBootstrapMediaObject.Config
 {
@@ -8,5 +9,6 @@ namespace MvcCoreBootstrapMediaObject.Config
         public string Text { get; set; }
         public string ImagePath { get; set; }
         public string ImageAlt { get; set; }
+        public VerticalAlignment ImageAlignment { get; set; }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MvcCoreBootstrap;
 using MvcCoreBootstrap.Rendering;
 using MvcCoreBootstrapMediaObject.Config;
 
@@ -26,6 +28,18 @@ namespace MvcCoreBootstrapMediaObject.Rendering
                 image.Attributes.Add("src", config.ImagePath);
                 image.Attributes.Add("alt", config.ImageAlt);
                 image.AddCssClass("mr-3");
+                switch(config.ImageAlignment)
+                {
+                    case VerticalAlignment.Top:
+                        image.AddCssClass("align-self-start");
+                        break;
+                    case VerticalAlignment.Center:
+                        image.AddCssClass("align-self-center");
+                        break;
+                    case VerticalAlignment.Bottom:
+                        image.AddCssClass("align-self-end");
+                        break;
+                }
                 Element.InnerHtml.AppendHtml(image);
             }
             heading.AddCssClass("mt-0");

@@ -1,4 +1,5 @@
-﻿using MvcCoreBootstrap.Building;
+﻿using MvcCoreBootstrap;
+using MvcCoreBootstrap.Building;
 using MvcCoreBootstrapMediaObject.Config;
 
 namespace MvcCoreBootstrapMediaObject.Builders
@@ -47,10 +48,14 @@ namespace MvcCoreBootstrapMediaObject.Builders
         /// Sets the id attribute for the media object.
         /// </summary>
         /// <returns>The media object builder instance.</returns>
-        public MvcCoreBootstrapMediaObjectBuilder Image(string path, string alt = null)
+        public MvcCoreBootstrapMediaObjectBuilder Image(string path, VerticalAlignment alignment = VerticalAlignment.Top, string alt = null)
         {
-            this.SetConfigProp<MvcCoreBootstrapMediaObjectBuilder>(() => _config.ImagePath = path);
-            return(this.SetConfigProp<MvcCoreBootstrapMediaObjectBuilder>(() => _config.ImageAlt = alt));
+            return(this.SetConfigProp<MvcCoreBootstrapMediaObjectBuilder>(() =>
+            {
+                _config.ImagePath = path;
+                _config.ImageAlignment = alignment;
+                _config.ImageAlt = alt;
+            }));
         }
     }
 }
